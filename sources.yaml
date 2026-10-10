@@ -1,0 +1,53 @@
+# Источники новостей. Каждый проверяется каждые `interval` секунд.
+# type: rss  — обычная RSS-лента
+# type: html — разбор страницы новостей (у сайта нет RSS)
+# league: NBA или GLEAGUE — какой хэштег ставить
+# url_must_contain — пропускать ссылки, где нет этой подстроки (отсекает NFL/MLB у мультиспортивных лент)
+# exclude_categories — пропускать записи RSS с такими категориями
+
+sources:
+  # --- Официальные источники лиги ---
+  - name: NBA.com
+    type: html
+    parser: nba_com
+    url: https://www.nba.com/news
+    league: NBA
+    interval: 60
+
+  - name: NBA Communications
+    type: rss
+    url: https://pr.nba.com/feed/
+    league: NBA
+    interval: 60
+    # пресс-служба НБА публикует ещё WNBA и BAL — их отсекаем
+    exclude_categories: [WNBA, "NBA Africa", "Basketball Africa League", BAL]
+
+  - name: NBA G League
+    type: html
+    parser: gleague
+    url: https://gleague.nba.com/news
+    league: GLEAGUE
+    interval: 60
+
+  # --- Крупные американские спортивные СМИ ---
+  - name: ESPN
+    type: rss
+    url: https://www.espn.com/espn/rss/nba/news
+    league: NBA
+    interval: 60
+
+  - name: CBS Sports
+    type: rss
+    url: https://www.cbssports.com/rss/headlines/nba/
+    league: NBA
+    interval: 60
+    url_must_contain: /nba/
+
+  # Yahoo Sports: много материалов фан-блогов SB Nation, поэтому выключено.
+  # Поставьте enabled: true, если нужен больший поток.
+  - name: Yahoo Sports
+    type: rss
+    url: https://sports.yahoo.com/nba/rss.xml
+    league: NBA
+    interval: 90
+    enabled: false

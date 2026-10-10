@@ -1,0 +1,14 @@
+[Unit]
+Description=NBA / G League news -> Telegram
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+WorkingDirectory=/opt/nba-news-bot
+ExecStart=/opt/nba-news-bot/venv/bin/python -u bot.py
+Restart=always
+RestartSec=10
+User=nbabot
+
+[Install]
+WantedBy=multi-user.target

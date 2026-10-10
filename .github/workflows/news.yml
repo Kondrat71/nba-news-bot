@@ -9,6 +9,8 @@ on:
         description: "Только отправить тестовое сообщение в канал"
         type: boolean
         default: false
+  push:                       # изменение этого файла = отправить тестовое сообщение
+    paths: [".github/test-request"]
 
 # не запускать два сеанса одновременно: следующий ждёт окончания предыдущего
 concurrency:
@@ -33,14 +35,14 @@ jobs:
       - run: pip install -r requirements.txt
 
       - name: Test message
-        if: ${{ inputs.test }}
+        if: ${{ inputs.test || github.event_name == 'push' }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
         run: python bot.py --test
 
       - name: Poll sources and post news
-        if: ${{ !inputs.test }}
+        if: ${{ !inputs.test && github.event_name != 'push' }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
@@ -51,7 +53,7 @@ jobs:
         run: python bot.py --minutes 9
 
       - name: Save state
-        if: ${{ always() && !inputs.test }}
+        if: ${{ always() && !inputs.test && github.event_name != 'push' }}
         run: |
           git config user.name "nba-news-bot"
           git config user.email "nba-news-bot@users.noreply.github.com"

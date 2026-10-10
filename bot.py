@@ -106,7 +106,19 @@ class Store:
         self.db.execute(
             "CREATE TABLE IF NOT EXISTS primed (source TEXT PRIMARY KEY)"
         )
+        self.db.execute(
+            "CREATE TABLE IF NOT EXISTS pending (key TEXT PRIMARY KEY, since REAL)"
+        )
         self.db.commit()
+
+    def waiting_since(self, key: str) -> float:
+        """Сколько секунд новость ждёт перевода (первый раз — 0)."""
+        row = self.db.execute("SELECT since FROM pending WHERE key=?", (key,)).fetchone()
+        if row is None:
+            self.db.execute("INSERT INTO pending VALUES (?,?)", (key, time.time()))
+            self.db.commit()
+            return 0.0
+        return time.time() - row[0]
 
     def seen(self, key: str) -> bool:
         return self.db.execute("SELECT 1 FROM seen WHERE key=?", (key,)).fetchone() is not None
@@ -324,18 +336,61 @@ def find_og_image(page: str) -> str:
 
 
 # ---------------------------------------------------------------- translation
+# Порядок: переводчики по ключу (если ключ задан в секретах) -> бесплатные.
+# С серверов GitHub бесплатный Google почти всегда отвечает 429, рабочий бесплатный — MyMemory.
+DEEPL_API_KEY = os.environ.get("DEEPL_API_KEY", "").strip()
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash").strip()
+MYMEMORY_EMAIL = os.environ.get("MYMEMORY_EMAIL", "").strip()  # с e-mail лимит 50 000 симв./день
+WAIT_FOR_TRANSLATION_MIN = float(os.environ.get("WAIT_FOR_TRANSLATION_MIN", "30"))
+
 _translator = None
+_dead: set[str] = set()  # переводчики, исчерпавшие лимит в этом запуске
+
+
+class TranslationError(Exception):
+    pass
+
+
+def _http() -> httpx.Client:
+    return httpx.Client(headers={"User-Agent": USER_AGENT}, timeout=30)
+
+
+def _translate_deepl(text: str) -> str:
+    if not DEEPL_API_KEY:
+        raise RuntimeError("no key")
+    host = "api-free.deepl.com" if DEEPL_API_KEY.endswith(":fx") else "api.deepl.com"
+    with _http() as c:
+        r = c.post(f"https://{host}/v2/translate",
+                   headers={"Authorization": f"DeepL-Auth-Key {DEEPL_API_KEY}"},
+                   data={"text": text, "target_lang": TRANSLATE_TO.upper()})
+    r.raise_for_status()
+    return r.json()["translations"][0]["text"]
+
+
+def _translate_gemini(text: str) -> str:
+    if not GEMINI_API_KEY:
+        raise RuntimeError("no key")
+    prompt = (
+        "Переведи на русский язык новость о баскетболе (НБА). Сохрани абзацы, "
+        "имена игроков пиши в принятой русской транскрипции, названия команд — "
+        "как принято в русскоязычных СМИ. Верни только перевод, без комментариев.\n\n" + text
+    )
+    with _http() as c:
+        r = c.post(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent",
+            params={"key": GEMINI_API_KEY},
+            json={"contents": [{"parts": [{"text": prompt}]}]},
+        )
+    r.raise_for_status()
+    return r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
 
 
 def _translate_gtx(text: str) -> str:
-    """Google Translate (адрес translate.googleapis.com, реже упирается в лимиты)."""
-    r = httpx.post(
-        "https://translate.googleapis.com/translate_a/single",
-        params={"client": "gtx", "sl": "auto", "tl": TRANSLATE_TO, "dt": "t"},
-        data={"q": text},
-        headers={"User-Agent": USER_AGENT},
-        timeout=20,
-    )
+    with _http() as c:
+        r = c.post("https://translate.googleapis.com/translate_a/single",
+                   params={"client": "gtx", "sl": "auto", "tl": TRANSLATE_TO, "dt": "t"},
+                   data={"q": text})
     r.raise_for_status()
     return "".join(seg[0] for seg in r.json()[0] if seg and seg[0])
 
@@ -348,41 +403,62 @@ def _translate_deep(text: str) -> str:
     return _translator.translate(text) or ""
 
 
+def _chunks(text: str, size: int = 450) -> list[str]:
+    """Разбить по предложениям на куски до `size` символов (лимит MyMemory — 500 байт)."""
+    out, cur = [], ""
+    for sent in re.split(r"(?<=[.!?])\s+|\n+", text):
+        if not sent:
+            continue
+        while len(sent) > size:
+            out.append(sent[:size]); sent = sent[size:]
+        if len(cur) + len(sent) + 1 > size:
+            out.append(cur); cur = sent
+        else:
+            cur = f"{cur} {sent}".strip()
+    if cur:
+        out.append(cur)
+    return out
+
+
 def _translate_mymemory(text: str) -> str:
-    """MyMemory: бесплатно до ~5000 символов в день без ключа."""
-    r = httpx.get("https://api.mymemory.translated.net/get",
-                  params={"q": text[:500], "langpair": f"en|{TRANSLATE_TO}"}, timeout=20)
-    r.raise_for_status()
-    d = r.json()
-    if d.get("responseStatus") != 200:
-        raise RuntimeError(d.get("responseDetails"))
-    return d["responseData"]["translatedText"]
+    parts = []
+    with _http() as c:
+        for chunk in _chunks(text):
+            params = {"q": chunk, "langpair": f"en|{TRANSLATE_TO}"}
+            if MYMEMORY_EMAIL:
+                params["de"] = MYMEMORY_EMAIL
+            r = c.get("https://api.mymemory.translated.net/get", params=params)
+            r.raise_for_status()
+            d = r.json()
+            if d.get("responseStatus") != 200 or d.get("quotaFinished"):
+                raise RuntimeError(f"mymemory: {d.get('responseDetails')}")
+            parts.append(html.unescape(d["responseData"]["translatedText"]))
+    return " ".join(parts)
 
 
-def _translate_lingva(text: str) -> str:
-    """Lingva — открытый прокси к Google Translate."""
-    from urllib.parse import quote
-    r = httpx.get(f"https://lingva.ml/api/v1/auto/{TRANSLATE_TO}/{quote(text, safe='')}", timeout=20)
-    r.raise_for_status()
-    return r.json()["translation"]
+TRANSLATORS = [_translate_deepl, _translate_gemini, _translate_gtx, _translate_deep, _translate_mymemory]
 
 
 def translate(text: str) -> str:
-    """Перевод с повторами и запасным способом; если всё сломалось — оригинал."""
+    """Перевести или бросить TranslationError (тогда пост подождёт следующей попытки)."""
     if not TRANSLATE_TO or not text:
         return text
-    last = None
-    for attempt in range(4):
-        for fn in (_translate_gtx, _translate_deep):
-            try:
-                out = fn(text)
-                if out and out.strip() != text.strip():
-                    return out
-            except Exception as exc:
-                last = exc
-        time.sleep(2 * (attempt + 1))
-    log.warning("translate failed, posting original: %s", last)
-    return text
+    errors = []
+    for fn in TRANSLATORS:
+        if fn.__name__ in _dead:
+            continue
+        try:
+            out = fn(text)
+            if out and out.strip() != text.strip():
+                return out
+        except Exception as exc:
+            if "no key" in str(exc):
+                _dead.add(fn.__name__)
+                continue
+            if "429" in str(exc) or "TooManyRequests" in repr(exc) or "quota" in str(exc).lower():
+                _dead.add(fn.__name__)  # лимит — больше не дёргаем в этом запуске
+            errors.append(f"{fn.__name__}: {exc!r}"[:200])
+    raise TranslationError("; ".join(errors) or "all translators unavailable")
 
 
 # ---------------------------------------------------------------- telegram
@@ -422,7 +498,7 @@ def trim_text(text: str, budget: int) -> str:
     return cut.rsplit(" ", 1)[0] + "…"
 
 
-def format_post(item: Item, limit: int = 1024) -> str:
+def format_post(item: Item, limit: int = 1024, translated: bool = True) -> str:
     """Заголовок и описание на русском, ссылка на источник. Не длиннее подписи к фото (1024)."""
     league = item.league
     if league == "NBA" and G_LEAGUE_HINTS.search(item.title + " " + item.summary):
@@ -430,8 +506,12 @@ def format_post(item: Item, limit: int = 1024) -> str:
     tag = "#GLeague" if league == "GLEAGUE" else "#NBA"
     icon = "🟠" if league == "GLEAGUE" else "🏀"
 
-    title = translate(item.title)
-    desc = translate(item.summary) if item.summary else ""
+    desc_src = trim_text(item.summary, 900) if item.summary else ""  # экономим лимиты переводчика
+    if translated and TRANSLATE_TO:
+        title = translate(item.title)
+        desc = translate(desc_src) if desc_src else ""
+    else:
+        title, desc = item.title, desc_src
     original = item.title if SHOW_ORIGINAL and TRANSLATE_TO and title != item.title else ""
 
     head = f"{icon} {title}"
@@ -616,14 +696,22 @@ class Bot:
             log.info("skip duplicate: %s", item.title)
             self.store.add(item, posted=False)
             return
-        text, photo_url, photo = await self.prepare(client, item)
+        try:
+            text, photo_url, photo = await self.prepare(client, item)
+        except TranslationError as exc:
+            waited = self.store.waiting_since(item.key)
+            if waited < WAIT_FOR_TRANSLATION_MIN * 60:
+                log.warning("translation unavailable, will retry: %s | %s", item.title, exc)
+                return  # не запоминаем — попробуем на следующем круге
+            log.warning("no translation for %d min, posting original: %s", waited // 60, item.title)
+            text, photo_url, photo = await self.prepare(client, item, translated=False)
         ok = await send_telegram(client, text, photo_url, photo)
         if ok:  # неудачную отправку не запоминаем — повторим в следующий раз
             self.store.add(item, posted=True)
         log.info("%s [%s] %s", "posted" if ok else "FAILED", item.source, item.title)
         await asyncio.sleep(3)  # Telegram: не чаще ~20 сообщений в минуту в канал
 
-    async def prepare(self, client: httpx.AsyncClient, item: Item):
+    async def prepare(self, client: httpx.AsyncClient, item: Item, translated: bool = True):
         """Текст поста и картинка: карточка для матча, иначе картинка статьи (og:image)."""
         if item.caption:  # результат матча
             import json
@@ -639,7 +727,7 @@ class Bot:
                     item.summary = body
         except Exception as exc:
             log.info("article fetch failed %s: %s", item.url, exc)
-        text = await asyncio.to_thread(format_post, item)
+        text = await asyncio.to_thread(format_post, item, 1024, translated)
         if image:
             image = urljoin(item.url, image)
         return text, image, None
@@ -657,7 +745,11 @@ class Bot:
                     continue
                 if items:
                     item = items[0]
-                    text, photo_url, photo = await self.prepare(client, item)
+                    try:
+                        text, photo_url, photo = await self.prepare(client, item)
+                    except TranslationError as exc:
+                        print(f"Перевод недоступен, не публикую: {exc}")
+                        raise SystemExit(1)
                     log.info("image: %s", photo_url or ("card" if photo else "none"))
                     ok = await send_telegram(client, text, photo_url, photo)
                     if ok:
@@ -739,7 +831,7 @@ def _main() -> None:
         return
     if "--translate-test" in sys.argv:  # диагностика переводчиков, в канал ничего не идёт
         sample = "LeBron James had a strong first half in his preseason debut with the 76ers."
-        for fn in (_translate_gtx, _translate_deep, _translate_mymemory, _translate_lingva):
+        for fn in TRANSLATORS:
             try:
                 log.warning("%s OK: %s", fn.__name__, fn(sample))
             except Exception as exc:

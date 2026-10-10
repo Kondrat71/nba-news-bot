@@ -24,6 +24,16 @@ jobs:
   run:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      TRANSLATE_TO: ru
+      SHOW_ORIGINAL: "0"
+      POST_ON_FIRST_RUN: "0"
+      # необязательные ключи переводчиков (лучше качество и без лимитов бесплатного режима)
+      DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      MYMEMORY_EMAIL: ${{ secrets.MYMEMORY_EMAIL }}
     steps:
       - uses: actions/checkout@v4
 
@@ -36,10 +46,6 @@ jobs:
 
       - name: Test message
         if: ${{ inputs.test || github.event_name == 'push' }}
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-          TRANSLATE_TO: ru
         run: |
           MODE=--test
           grep -qi latest .github/test-request && MODE=--post-latest
@@ -48,12 +54,6 @@ jobs:
 
       - name: Poll sources and post news
         if: ${{ !inputs.test && github.event_name != 'push' }}
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-          TRANSLATE_TO: ru
-          SHOW_ORIGINAL: "0"
-          POST_ON_FIRST_RUN: "0"
         # опрос всех источников раз в минуту в течение 9 минут
         run: python bot.py --minutes 9
 

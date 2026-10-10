@@ -64,10 +64,14 @@ class Item:
     title: str
     url: str
     summary: str = ""
+    image: str = ""            # URL картинки (если известен заранее)
+    caption: str = ""          # готовый текст поста (результаты матчей)
+    photo: bytes | None = None  # готовая картинка (карточка матча)
+    uid: str = ""              # ключ вместо ссылки (матчи)
 
     @property
     def key(self) -> str:
-        return normalize_url(self.url)
+        return self.uid or normalize_url(self.url)
 
 
 def normalize_url(url: str) -> str:
@@ -145,7 +149,15 @@ def parse_rss(text: str, src: dict) -> list[Item]:
         cats = {t.get("term", "").lower() for t in e.get("tags", [])}
         if excl and cats & excl:
             continue
-        items.append(Item(src["name"], src["league"], title, link, clean_text(e.get("summary", ""))))
+        image = ""
+        for enc in e.get("enclosures", []) + e.get("media_content", []):
+            if str(enc.get("type", "image")).startswith("image") and enc.get("href", enc.get("url")):
+                image = enc.get("href") or enc.get("url")
+                break
+        if not image:
+            m = re.search(r'<img[^>]+src="([^"]+)"', e.get("content", [{}])[0].get("value", "") if e.get("content") else e.get("summary", ""))
+            image = m.group(1) if m else ""
+        items.append(Item(src["name"], src["league"], title, link, clean_text(e.get("summary", "")), image=image))
     return items
 
 
@@ -195,6 +207,122 @@ def parse_gleague(text: str, src: dict) -> list[Item]:
 PARSERS = {"nba_com": parse_nba_com, "gleague": parse_gleague}
 
 
+# ---------------------------------------------------------------- game results
+TEAMS_RU = {
+    "ATL": "Атланта", "BOS": "Бостон", "BKN": "Бруклин", "CHA": "Шарлотт", "CHI": "Чикаго",
+    "CLE": "Кливленд", "DAL": "Даллас", "DEN": "Денвер", "DET": "Детройт", "GS": "Голден Стэйт",
+    "GSW": "Голден Стэйт", "HOU": "Хьюстон", "IND": "Индиана", "LAC": "Клипперс", "LAL": "Лейкерс",
+    "MEM": "Мемфис", "MIA": "Майами", "MIL": "Милуоки", "MIN": "Миннесота", "NO": "Нью-Орлеан",
+    "NOP": "Нью-Орлеан", "NY": "Нью-Йорк", "NYK": "Нью-Йорк", "OKC": "Оклахома-Сити",
+    "ORL": "Орландо", "PHI": "Филадельфия", "PHX": "Финикс", "POR": "Портленд",
+    "SAC": "Сакраменто", "SA": "Сан-Антонио", "SAS": "Сан-Антонио", "TOR": "Торонто",
+    "UTAH": "Юта", "UTA": "Юта", "WSH": "Вашингтон", "WAS": "Вашингтон",
+}
+
+
+def team_ru(team: dict) -> str:
+    return TEAMS_RU.get(team.get("abbreviation", ""), team.get("displayName", "?"))
+
+
+def parse_scores(text: str, src: dict) -> list[Item]:
+    """Завершённые матчи из табло ESPN -> посты с карточкой результата."""
+    import json
+    data = json.loads(text)
+    items = []
+    for ev in data.get("events", []):
+        comp = (ev.get("competitions") or [{}])[0]
+        if not comp.get("status", ev.get("status", {})).get("type", {}).get("completed"):
+            continue
+        teams = {c["homeAway"]: c for c in comp.get("competitors", [])}
+        if "home" not in teams or "away" not in teams:
+            continue
+        home, away = teams["home"], teams["away"]
+        stage = {1: "Предсезонка", 2: "Регулярный сезон", 3: "Плей-офф"}.get(
+            (ev.get("season") or {}).get("type"), "")
+        hs, as_ = int(home.get("score", 0)), int(away.get("score", 0))
+        winner, loser = (home, away) if hs > as_ else (away, home)
+        lines = [f"🏁 <b>{html.escape(team_ru(away['team']))} {as_} : {hs} {html.escape(team_ru(home['team']))}</b>"]
+        if stage:
+            lines.append(f"<i>{stage}. Победа — {html.escape(team_ru(winner['team']))}</i>")
+        lines.append("")
+        for c in (away, home):
+            for cat in c.get("leaders", []):
+                if cat.get("name") == "points" and cat.get("leaders"):
+                    ld = cat["leaders"][0]
+                    who = ld.get("athlete", {}).get("displayName", "")
+                    lines.append(f"⭐ {html.escape(team_ru(c['team']))}: {html.escape(who)} — {ld.get('displayValue', '')} очк.")
+        link = next((l.get("href") for l in ev.get("links", []) if "summary" in l.get("rel", [])), "")
+        if link:
+            lines.append(f'\n🔗 <a href="{html.escape(link, quote=True)}">Протокол матча</a>  #NBA #результаты')
+        else:
+            lines.append("\n#NBA #результаты")
+        items.append(Item(
+            src["name"], "NBA", ev.get("name", "game"), link or ev.get("id", ""),
+            caption="\n".join(lines), uid=f"game:{ev.get('id')}",
+            image=json.dumps({  # данные для карточки, рисуется при публикации
+                "away": [team_ru(away["team"]), as_, away["team"].get("logo", "")],
+                "home": [team_ru(home["team"]), hs, home["team"].get("logo", "")],
+                "stage": stage,
+            }, ensure_ascii=False),
+        ))
+    return items
+
+
+def _font(size: int):
+    from PIL import ImageFont
+    for path in ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+                 "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf"):
+        if Path(path).exists():
+            return ImageFont.truetype(path, size)
+    return ImageFont.load_default(size=size)
+
+
+async def render_game_card(client: httpx.AsyncClient, spec: dict) -> bytes | None:
+    """Карточка результата 1280x720: логотипы, счёт, стадия."""
+    try:
+        import io
+        from PIL import Image, ImageDraw
+        W, H = 1280, 720
+        img = Image.new("RGB", (W, H), (17, 24, 39))
+        d = ImageDraw.Draw(img)
+        d.rectangle([0, 0, W, 8], fill=(234, 88, 12))
+        d.text((W // 2, 60), "ФИНАЛ", font=_font(44), fill=(234, 88, 12), anchor="mm")
+        if spec.get("stage"):
+            d.text((W // 2, 112), spec["stage"].upper(), font=_font(26), fill=(156, 163, 175), anchor="mm")
+        for (name, score, logo), cx in ((spec["away"], 300), (spec["home"], 980)):
+            if logo:
+                try:
+                    r = await client.get(logo, timeout=15)
+                    lg = Image.open(io.BytesIO(r.content)).convert("RGBA")
+                    lg.thumbnail((260, 260))
+                    img.paste(lg, (cx - lg.width // 2, 300 - lg.height // 2), lg)
+                except Exception:
+                    pass
+            d.text((cx, 480), name, font=_font(40), fill=(229, 231, 235), anchor="mm")
+            win = score == max(spec["away"][1], spec["home"][1])
+            d.text((cx, 580), str(score), font=_font(110),
+                   fill=(255, 255, 255) if win else (107, 114, 128), anchor="mm")
+        d.text((W // 2, 580), ":", font=_font(90), fill=(107, 114, 128), anchor="mm")
+        buf = io.BytesIO()
+        img.save(buf, "PNG")
+        return buf.getvalue()
+    except Exception as exc:
+        log.warning("card render failed: %s", exc)
+        return None
+
+
+OG_IMAGE = re.compile(
+    r'<meta[^>]+(?:property|name)=["\'](?:og:image|twitter:image)(?::src)?["\'][^>]*content=["\']([^"\']+)'
+    r'|<meta[^>]+content=["\']([^"\']+)["\'][^>]*(?:property|name)=["\'](?:og:image|twitter:image)',
+    re.I,
+)
+
+
+def find_og_image(page: str) -> str:
+    m = OG_IMAGE.search(page)
+    return html.unescape(m.group(1) or m.group(2)) if m else ""
+
+
 # ---------------------------------------------------------------- translation
 _translator = None
 
@@ -233,17 +361,44 @@ def format_post(item: Item) -> str:
     return "\n".join(parts)
 
 
-async def send_telegram(client: httpx.AsyncClient, text: str) -> bool:
-    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    payload = {
+def fit_caption(text: str, limit: int = 1024) -> str:
+    """Подпись к фото в Telegram — не длиннее 1024 символов: укорачиваем описание."""
+    if len(text) <= limit:
+        return text
+    parts = text.split("\n")
+    # parts: заголовок, [оригинал], [описание], ссылка — режем самый длинный средний кусок
+    mid = max(range(1, len(parts) - 1), key=lambda i: len(parts[i]), default=None)
+    if mid is not None:
+        over = len(text) - limit + 1
+        parts[mid] = parts[mid][: max(0, len(parts[mid]) - over)].rsplit(" ", 1)[0] + "…"
+    return "\n".join(parts)[:limit]
+
+
+async def send_telegram(client: httpx.AsyncClient, text: str,
+                        photo_url: str = "", photo: bytes | None = None) -> bool:
+    """Пост с картинкой (sendPhoto), а если картинки нет или Telegram её не принял — текстом."""
+    if photo or photo_url:
+        data = {"chat_id": CHANNEL_ID, "caption": fit_caption(text), "parse_mode": "HTML"}
+        if photo:
+            ok = await _tg_call(client, "sendPhoto", data=data, files={"photo": ("card.png", photo, "image/png")})
+        else:
+            ok = await _tg_call(client, "sendPhoto", json={**data, "photo": photo_url})
+        if ok:
+            return True
+        log.info("photo failed, sending as text")
+    return await _tg_call(client, "sendMessage", json={
         "chat_id": CHANNEL_ID,
         "text": text,
         "parse_mode": "HTML",
         "link_preview_options": {"is_disabled": False, "prefer_large_media": True},
-    }
+    })
+
+
+async def _tg_call(client: httpx.AsyncClient, method: str, **kwargs) -> bool:
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/{method}"
     for attempt in range(5):
         try:
-            r = await client.post(url, json=payload, timeout=20)
+            r = await client.post(url, timeout=30, **kwargs)
         except httpx.HTTPError as exc:
             log.warning("telegram network error: %s", exc)
             await asyncio.sleep(3 * (attempt + 1))
@@ -255,7 +410,7 @@ async def send_telegram(client: httpx.AsyncClient, text: str) -> bool:
             log.info("telegram rate limit, waiting %ss", wait)
             await asyncio.sleep(wait + 1)
             continue
-        log.error("telegram error %s: %s", r.status_code, r.text[:300])
+        log.error("telegram %s error %s: %s", method, r.status_code, r.text[:300])
         return False
     return False
 
@@ -281,6 +436,16 @@ class Bot:
         return r.status_code, r.text, r.headers
 
     async def fetch(self, client: httpx.AsyncClient, src: dict, use_cache: bool = True) -> list[Item]:
+        if src["type"] == "scores":
+            from datetime import datetime, timedelta, timezone
+            now_us = datetime.now(timezone(timedelta(hours=-5)))
+            items = []
+            for day in (now_us - timedelta(days=1), now_us):
+                status, text, _ = await self.get(client, f"{src['url']}?dates={day:%Y%m%d}", {})
+                if status >= 400:
+                    raise RuntimeError(f"HTTP {status}")
+                items += parse_scores(text, src)
+            return items
         headers = {}
         cache = self.etags.get(src["name"], {}) if use_cache else {}
         if cache.get("etag"):
@@ -368,12 +533,54 @@ class Bot:
             log.info("skip duplicate: %s", item.title)
             self.store.add(item, posted=False)
             return
-        text = await asyncio.to_thread(format_post, item)
-        ok = await send_telegram(client, text)
+        text, photo_url, photo = await self.prepare(client, item)
+        ok = await send_telegram(client, text, photo_url, photo)
         if ok:  # неудачную отправку не запоминаем — повторим в следующий раз
             self.store.add(item, posted=True)
         log.info("%s [%s] %s", "posted" if ok else "FAILED", item.source, item.title)
         await asyncio.sleep(3)  # Telegram: не чаще ~20 сообщений в минуту в канал
+
+    async def prepare(self, client: httpx.AsyncClient, item: Item):
+        """Текст поста и картинка: карточка для матча, иначе картинка статьи (og:image)."""
+        if item.caption:  # результат матча
+            import json
+            photo = await render_game_card(client, json.loads(item.image)) if item.image else None
+            return item.caption, "", photo
+        text = await asyncio.to_thread(format_post, item)
+        image = item.image
+        if not image:
+            try:
+                status, page, _ = await self.get(client, item.url, {})
+                if status < 400:
+                    image = find_og_image(page[:300_000])
+            except Exception as exc:
+                log.info("no image for %s: %s", item.url, exc)
+        if image:
+            image = urljoin(item.url, image)
+        return text, image, None
+
+    async def post_latest(self) -> None:
+        """Опубликовать самую свежую новость NBA.com (для проверки внешнего вида)."""
+        async with self.http_client() as client:
+            for src in self.sources:
+                if src["type"] == "scores":
+                    continue
+                try:
+                    items = await self.fetch(client, src, use_cache=False)
+                except Exception as exc:
+                    log.warning("%s: %s", src["name"], exc)
+                    continue
+                if items:
+                    item = items[0]
+                    text, photo_url, photo = await self.prepare(client, item)
+                    log.info("image: %s", photo_url or ("card" if photo else "none"))
+                    ok = await send_telegram(client, text, photo_url, photo)
+                    if ok:
+                        self.store.add(item, posted=True)
+                    print(("Опубликовано: " if ok else "Не удалось: ") + item.title)
+                    if not ok:
+                        raise SystemExit(1)
+                    return
 
     async def publisher(self, client: httpx.AsyncClient) -> None:
         while True:
@@ -421,6 +628,9 @@ def main() -> None:
                 if not ok:
                     raise SystemExit(1)
         asyncio.run(_test())
+        return
+    if "--post-latest" in sys.argv:
+        asyncio.run(Bot(sources).post_latest())
         return
     if "--minutes" in sys.argv:  # режим GitHub Actions
         minutes = float(sys.argv[sys.argv.index("--minutes") + 1])

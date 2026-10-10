@@ -327,21 +327,43 @@ def find_og_image(page: str) -> str:
 _translator = None
 
 
-def translate(text: str) -> str:
+def _translate_gtx(text: str) -> str:
+    """Google Translate (адрес translate.googleapis.com, реже упирается в лимиты)."""
+    r = httpx.post(
+        "https://translate.googleapis.com/translate_a/single",
+        params={"client": "gtx", "sl": "auto", "tl": TRANSLATE_TO, "dt": "t"},
+        data={"q": text},
+        headers={"User-Agent": USER_AGENT},
+        timeout=20,
+    )
+    r.raise_for_status()
+    return "".join(seg[0] for seg in r.json()[0] if seg and seg[0])
+
+
+def _translate_deep(text: str) -> str:
     global _translator
+    if _translator is None:
+        from deep_translator import GoogleTranslator
+        _translator = GoogleTranslator(source="auto", target=TRANSLATE_TO)
+    return _translator.translate(text) or ""
+
+
+def translate(text: str) -> str:
+    """Перевод с повторами и запасным способом; если всё сломалось — оригинал."""
     if not TRANSLATE_TO or not text:
         return text
-    try:
-        if _translator is None:
-            from deep_translator import GoogleTranslator
-            _translator = GoogleTranslator(source="auto", target=TRANSLATE_TO)
-        out = _translator.translate(text) or text
-        if out == text:
-            log.warning("translation returned original text")
-        return out
-    except Exception as exc:  # перевод не должен ронять бота
-        log.warning("translate failed: %s", exc)
-        return text
+    last = None
+    for attempt in range(4):
+        for fn in (_translate_gtx, _translate_deep):
+            try:
+                out = fn(text)
+                if out and out.strip() != text.strip():
+                    return out
+            except Exception as exc:
+                last = exc
+        time.sleep(2 * (attempt + 1))
+    log.warning("translate failed, posting original: %s", last)
+    return text
 
 
 # ---------------------------------------------------------------- telegram
@@ -405,6 +427,15 @@ def format_post(item: Item, limit: int = 1024) -> str:
         parts.append("\n" + html.escape(desc))
     parts.append(f'\n🔗 <a href="{html.escape(item.url, quote=True)}">{html.escape(item.source)}</a>  {tag}')
     return "\n".join(parts)
+
+
+def fit_caption(text: str, limit: int = 1024) -> str:
+    """Страховка: видимый текст подписи к фото не длиннее 1024 символов."""
+    visible = re.sub(r"<[^>]+>", "", text)
+    if len(html.unescape(visible)) <= limit:
+        return text
+    plain = html.unescape(visible)
+    return html.escape(trim_text(plain, limit))
 
 
 async def send_telegram(client: httpx.AsyncClient, text: str,

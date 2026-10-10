@@ -413,6 +413,15 @@ def main() -> None:
         return
     if not BOT_TOKEN or not CHANNEL_ID or "..." in BOT_TOKEN:
         raise SystemExit("Заполните TELEGRAM_BOT_TOKEN и TELEGRAM_CHANNEL_ID в файле .env")
+    if "--test" in sys.argv:  # тестовое сообщение в канал
+        async def _test():
+            async with Bot.http_client() as client:
+                ok = await send_telegram(client, "✅ Бот новостей NBA и G League подключён к каналу.")
+                print("Тестовое сообщение отправлено" if ok else "Не удалось отправить — см. ошибку выше")
+                if not ok:
+                    raise SystemExit(1)
+        asyncio.run(_test())
+        return
     if "--minutes" in sys.argv:  # режим GitHub Actions
         minutes = float(sys.argv[sys.argv.index("--minutes") + 1])
         asyncio.run(Bot(sources).run_for(minutes))

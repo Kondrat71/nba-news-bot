@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: "*/10 * * * *"   # каждые 10 минут запускается сеанс на ~9 минут
   workflow_dispatch:          # кнопка «Run workflow» для ручного запуска
+    inputs:
+      test:
+        description: "Только отправить тестовое сообщение в канал"
+        type: boolean
+        default: false
 
 # не запускать два сеанса одновременно: следующий ждёт окончания предыдущего
 concurrency:
@@ -27,7 +32,15 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+      - name: Test message
+        if: ${{ inputs.test }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+        run: python bot.py --test
+
       - name: Poll sources and post news
+        if: ${{ !inputs.test }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
@@ -38,7 +51,7 @@ jobs:
         run: python bot.py --minutes 9
 
       - name: Save state
-        if: always()
+        if: ${{ always() && !inputs.test }}
         run: |
           git config user.name "nba-news-bot"
           git config user.email "nba-news-bot@users.noreply.github.com"

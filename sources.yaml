@@ -29,6 +29,13 @@ sources:
     league: GLEAGUE
     interval: 60
 
+  # --- Результаты матчей (табло ESPN): пост с карточкой счёта после финальной сирены ---
+  - name: Результаты матчей
+    type: scores
+    url: https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard
+    league: NBA
+    interval: 60
+
   # --- Крупные американские спортивные СМИ ---
   # ESPN закрыл RSS-ленту НБА (отдаёт пустой список) — отключено
   - name: ESPN

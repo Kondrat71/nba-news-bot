@@ -9,7 +9,7 @@ on:
         description: "Только отправить тестовое сообщение в канал"
         type: boolean
         default: false
-  push:                       # изменение этого файла = отправить тестовое сообщение
+  push:                       # изменение этого файла: "test" = тестовое сообщение, "latest" = свежая новость
     paths: [".github/test-request"]
 
 # не запускать два сеанса одновременно: следующий ждёт окончания предыдущего
@@ -39,7 +39,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-        run: python bot.py --test
+        run: python bot.py $(grep -qi latest .github/test-request && echo --post-latest || echo --test)
 
       - name: Poll sources and post news
         if: ${{ !inputs.test && github.event_name != 'push' }}
@@ -53,7 +53,7 @@ jobs:
         run: python bot.py --minutes 9
 
       - name: Save state
-        if: ${{ always() && !inputs.test && github.event_name != 'push' }}
+        if: ${{ always() && !inputs.test }}
         run: |
           git config user.name "nba-news-bot"
           git config user.email "nba-news-bot@users.noreply.github.com"

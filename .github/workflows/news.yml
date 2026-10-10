@@ -40,7 +40,11 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           TRANSLATE_TO: ru
-        run: python bot.py $(grep -qi latest .github/test-request && echo --post-latest || echo --test)
+        run: |
+          MODE=--test
+          grep -qi latest .github/test-request && MODE=--post-latest
+          grep -qi translate .github/test-request && MODE=--translate-test
+          python bot.py $MODE
 
       - name: Poll sources and post news
         if: ${{ !inputs.test && github.event_name != 'push' }}

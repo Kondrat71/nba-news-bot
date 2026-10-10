@@ -348,6 +348,25 @@ def _translate_deep(text: str) -> str:
     return _translator.translate(text) or ""
 
 
+def _translate_mymemory(text: str) -> str:
+    """MyMemory: бесплатно до ~5000 символов в день без ключа."""
+    r = httpx.get("https://api.mymemory.translated.net/get",
+                  params={"q": text[:500], "langpair": f"en|{TRANSLATE_TO}"}, timeout=20)
+    r.raise_for_status()
+    d = r.json()
+    if d.get("responseStatus") != 200:
+        raise RuntimeError(d.get("responseDetails"))
+    return d["responseData"]["translatedText"]
+
+
+def _translate_lingva(text: str) -> str:
+    """Lingva — открытый прокси к Google Translate."""
+    from urllib.parse import quote
+    r = httpx.get(f"https://lingva.ml/api/v1/auto/{TRANSLATE_TO}/{quote(text, safe='')}", timeout=20)
+    r.raise_for_status()
+    return r.json()["translation"]
+
+
 def translate(text: str) -> str:
     """Перевод с повторами и запасным способом; если всё сломалось — оригинал."""
     if not TRANSLATE_TO or not text:
@@ -717,6 +736,14 @@ def _main() -> None:
                 if not ok:
                     raise SystemExit(1)
         asyncio.run(_test())
+        return
+    if "--translate-test" in sys.argv:  # диагностика переводчиков, в канал ничего не идёт
+        sample = "LeBron James had a strong first half in his preseason debut with the 76ers."
+        for fn in (_translate_gtx, _translate_deep, _translate_mymemory, _translate_lingva):
+            try:
+                log.warning("%s OK: %s", fn.__name__, fn(sample))
+            except Exception as exc:
+                log.warning("%s FAIL: %r", fn.__name__, exc)
         return
     if "--post-latest" in sys.argv:
         asyncio.run(Bot(sources).post_latest())

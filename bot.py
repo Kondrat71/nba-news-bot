@@ -418,7 +418,7 @@ async def send_telegram(client: httpx.AsyncClient, text: str,
             ok = await _tg_call(client, "sendPhoto", json={**data, "photo": photo_url})
         if ok:
             return True
-        log.info("photo failed, sending as text")
+        log.warning("photo failed (%s), sending as text", photo_url or "card")
     return await _tg_call(client, "sendMessage", json={
         "chat_id": CHANNEL_ID,
         "text": text,
@@ -643,10 +643,33 @@ class Bot:
                 await asyncio.sleep(interval)
 
 
+class GitHubAnnotations(logging.Handler):
+    """В GitHub Actions предупреждения и ошибки видны прямо на странице запуска."""
+    def emit(self, record):
+        kind = "error" if record.levelno >= logging.ERROR else "warning"
+        msg = self.format(record).replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+        print(f"::{kind}::{msg}", flush=True)
+
+
 def main() -> None:
     logging.basicConfig(
         level=LOG_LEVEL, format="%(asctime)s %(levelname)s %(message)s", datefmt="%H:%M:%S"
     )
+    if os.environ.get("GITHUB_ACTIONS"):
+        h = GitHubAnnotations(level=logging.WARNING)
+        h.setFormatter(logging.Formatter("%(message)s"))
+        logging.getLogger().addHandler(h)
+    try:
+        _main()
+    except SystemExit:
+        raise
+    except Exception:
+        import traceback
+        log.error("crash: %s", traceback.format_exc()[-1500:])
+        raise
+
+
+def _main() -> None:
     import sys
     with open(SOURCES_FILE, encoding="utf-8") as f:
         sources = yaml.safe_load(f)["sources"]

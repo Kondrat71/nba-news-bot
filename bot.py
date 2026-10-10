@@ -35,7 +35,7 @@ load_dotenv()
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 CHANNEL_ID = os.environ.get("TELEGRAM_CHANNEL_ID", "")  # @my_channel или -100...
 TRANSLATE_TO = os.environ.get("TRANSLATE_TO", "ru").strip()  # "" = без перевода
-SHOW_ORIGINAL = os.environ.get("SHOW_ORIGINAL", "1") == "1"
+SHOW_ORIGINAL = os.environ.get("SHOW_ORIGINAL", "0") == "1"
 POST_ON_FIRST_RUN = os.environ.get("POST_ON_FIRST_RUN", "0") == "1"
 DB_PATH = os.environ.get("DB_PATH", "data/seen.db")
 SOURCES_FILE = os.environ.get("SOURCES_FILE", str(Path(__file__).with_name("sources.yaml")))
@@ -334,44 +334,77 @@ def translate(text: str) -> str:
     try:
         if _translator is None:
             from deep_translator import GoogleTranslator
-            _translator = GoogleTranslator(source="en", target=TRANSLATE_TO)
-        return _translator.translate(text) or text
+            _translator = GoogleTranslator(source="auto", target=TRANSLATE_TO)
+        out = _translator.translate(text) or text
+        if out == text:
+            log.warning("translation returned original text")
+        return out
     except Exception as exc:  # перевод не должен ронять бота
         log.warning("translate failed: %s", exc)
         return text
 
 
 # ---------------------------------------------------------------- telegram
-def format_post(item: Item) -> str:
+ARTICLE_JUNK = re.compile(
+    r"getty images|copyright|all rights reserved|sign up|subscribe|newsletter|cookie|"
+    r"photo by|click here|download the|follow us|^advertisement|terms of use|privacy policy",
+    re.I,
+)
+
+
+def extract_article(page: str, limit: int = 1600) -> str:
+    """Первые абзацы текста статьи (для описания поста)."""
+    soup = BeautifulSoup(page, "html.parser")
+    for tag in soup(["script", "style", "nav", "header", "footer", "aside", "figure", "figcaption"]):
+        tag.decompose()
+    root = soup.find("article") or soup.find("main") or soup.body or soup
+    out, total = [], 0
+    for p in root.find_all("p"):
+        t = re.sub(r"\s+", " ", p.get_text(" ", strip=True))
+        if len(t) < 60 or ARTICLE_JUNK.search(t) or t in out:
+            continue
+        out.append(t)
+        total += len(t)
+        if total >= limit:
+            break
+    return "\n\n".join(out)
+
+
+def trim_text(text: str, budget: int) -> str:
+    """Обрезать по границе предложения, чтобы влезть в лимит Telegram."""
+    if len(text) <= budget:
+        return text
+    cut = text[: max(0, budget - 1)]
+    best = max(cut.rfind(x) for x in (". ", "! ", "? ", "\n"))
+    if best > budget * 0.4:
+        return cut[: best + 1].rstrip()
+    return cut.rsplit(" ", 1)[0] + "…"
+
+
+def format_post(item: Item, limit: int = 1024) -> str:
+    """Заголовок и описание на русском, ссылка на источник. Не длиннее подписи к фото (1024)."""
     league = item.league
     if league == "NBA" and G_LEAGUE_HINTS.search(item.title + " " + item.summary):
         league = "GLEAGUE"
     tag = "#GLeague" if league == "GLEAGUE" else "#NBA"
     icon = "🟠" if league == "GLEAGUE" else "🏀"
 
-    title_tr = translate(item.title)
-    summary_tr = translate(item.summary) if item.summary else ""
+    title = translate(item.title)
+    desc = translate(item.summary) if item.summary else ""
+    original = item.title if SHOW_ORIGINAL and TRANSLATE_TO and title != item.title else ""
 
-    parts = [f"{icon} <b>{html.escape(title_tr)}</b>"]
-    if SHOW_ORIGINAL and TRANSLATE_TO and title_tr != item.title:
-        parts.append(f"<i>{html.escape(item.title)}</i>")
-    if summary_tr:
-        parts.append(html.escape(summary_tr))
+    head = f"{icon} {title}"
+    foot = f"🔗 {item.source}  {tag}"
+    budget = limit - len(head) - len(foot) - len(original) - 8
+    desc = trim_text(desc, budget) if desc else ""
+
+    parts = [f"{icon} <b>{html.escape(title)}</b>"]
+    if original:
+        parts.append(f"<i>{html.escape(original)}</i>")
+    if desc:
+        parts.append("\n" + html.escape(desc))
     parts.append(f'\n🔗 <a href="{html.escape(item.url, quote=True)}">{html.escape(item.source)}</a>  {tag}')
     return "\n".join(parts)
-
-
-def fit_caption(text: str, limit: int = 1024) -> str:
-    """Подпись к фото в Telegram — не длиннее 1024 символов: укорачиваем описание."""
-    if len(text) <= limit:
-        return text
-    parts = text.split("\n")
-    # parts: заголовок, [оригинал], [описание], ссылка — режем самый длинный средний кусок
-    mid = max(range(1, len(parts) - 1), key=lambda i: len(parts[i]), default=None)
-    if mid is not None:
-        over = len(text) - limit + 1
-        parts[mid] = parts[mid][: max(0, len(parts[mid]) - over)].rsplit(" ", 1)[0] + "…"
-    return "\n".join(parts)[:limit]
 
 
 async def send_telegram(client: httpx.AsyncClient, text: str,
@@ -546,15 +579,17 @@ class Bot:
             import json
             photo = await render_game_card(client, json.loads(item.image)) if item.image else None
             return item.caption, "", photo
-        text = await asyncio.to_thread(format_post, item)
         image = item.image
-        if not image:
-            try:
-                status, page, _ = await self.get(client, item.url, {})
-                if status < 400:
-                    image = find_og_image(page[:300_000])
-            except Exception as exc:
-                log.info("no image for %s: %s", item.url, exc)
+        try:  # страница статьи: картинка и текст для описания
+            status, page, _ = await self.get(client, item.url, {})
+            if status < 400:
+                image = image or find_og_image(page[:300_000])
+                body = extract_article(page)
+                if len(body) > len(item.summary):
+                    item.summary = body
+        except Exception as exc:
+            log.info("article fetch failed %s: %s", item.url, exc)
+        text = await asyncio.to_thread(format_post, item)
         if image:
             image = urljoin(item.url, image)
         return text, image, None

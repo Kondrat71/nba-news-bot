@@ -39,6 +39,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          TRANSLATE_TO: ru
         run: python bot.py $(grep -qi latest .github/test-request && echo --post-latest || echo --test)
 
       - name: Poll sources and post news
@@ -47,7 +48,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           TRANSLATE_TO: ru
-          SHOW_ORIGINAL: "1"
+          SHOW_ORIGINAL: "0"
           POST_ON_FIRST_RUN: "0"
         # опрос всех источников раз в минуту в течение 9 минут
         run: python bot.py --minutes 9

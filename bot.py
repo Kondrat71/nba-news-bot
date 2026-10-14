@@ -187,14 +187,18 @@ def _rss_fallback(text: str) -> list[dict]:
 
 
 def parse_rss(text: str, src: dict) -> list[Item]:
-    feed = feedparser.parse(text)
-    if not feed.entries and "<item" in text:
-        feed = type("F", (), {"entries": _rss_fallback(text)})()
+    items = _rss_items(feedparser.parse(text).entries, src)
+    if not items and "<item" in text:  # feedparser не справился с «кривой» лентой
+        items = _rss_items(_rss_fallback(text), src)
+    return items
+
+
+def _rss_items(entries, src: dict) -> list[Item]:
     excl = {c.lower() for c in src.get("exclude_categories", [])}
     excl_pub = {p.lower() for p in src.get("exclude_publishers", [])}
     must = src.get("url_must_contain")
     items = []
-    for e in feed.entries:
+    for e in entries:
         link = (e.get("link") or "").strip()
         title = clean_text(e.get("title", ""), 300)
         if not link or not title or (must and must not in link):
@@ -650,7 +654,7 @@ class Bot:
                             break
                 if games:
                     t, u, p = await self.prepare_game(client, games[-1])
-                    print("game:", await send_telegram(client, t, u, p))
+                    log.warning("demo game: %s", await send_telegram(client, t, u, p))
             # 2. самая свежая травма из списка
             inj = next((s for s in self.sources if s["type"] == "injuries"), None)
             if inj:
@@ -661,7 +665,7 @@ class Bot:
                 if pick:
                     it = Item(inj["name"], "NBA", pick["name"], pick["url"], kind="injury", data={"kind": "new", **pick})
                     t, u, p = await self.prepare_injury(client, it)
-                    print("injury:", await send_telegram(client, t, u, p))
+                    log.warning("demo injury %s: %s", pick["name"], await send_telegram(client, t, u, p))
             # 3. свежий слух / конфликт
             for src in self.sources:
                 if src["type"] not in ("rss",) or src["name"] not in ("RealGM Wiretap", "Sportsnet", "Fadeaway World"):
@@ -676,7 +680,7 @@ class Bot:
                         it.data.update(category=cat, rumor=rumor)
                         res = await self.prepare_news(client, it)
                         if res:
-                            print("rumor:", await send_telegram(client, *res))
+                            log.warning("demo rumor %s: %s", it.title, await send_telegram(client, *res))
                             return
 
 

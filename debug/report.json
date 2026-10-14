@@ -1,42 +1,28 @@
 {
- "espn_scoreboard": {
-  "status": 200,
-  "len": 94071,
-  "titles": []
- },
  "espn_summary": {
   "status": 200,
   "event": "401898403",
-  "len": 463399
+  "len": 463396
  },
- "ghmodels:openai/gpt-4.1": {
+ "token_len": 377,
+ "models:gh_new": {
   "status": 200,
-  "out": "OK\r\n",
-  "limits": {}
+  "text": "OK\r\n",
+  "headers": {
+   "content-type": "text/plain",
+   "connection": "close"
+  }
  },
- "ghmodels:openai/gpt-4.1-mini": {
+ "models:gh_new_4.1": {
   "status": 200,
-  "out": "OK\r\n",
-  "limits": {}
+  "text": "OK\r\n",
+  "headers": {
+   "content-type": "text/plain",
+   "connection": "close"
+  }
  },
- "ghmodels:openai/gpt-4o-mini": {
-  "status": 200,
-  "out": "OK\r\n",
-  "limits": {}
+ "models:azure_old": {
+  "error": "ConnectError('[Errno -2] Name or service not known')"
  },
- "ghmodels:openai/gpt-4o": {
-  "status": 200,
-  "out": "OK\r\n",
-  "limits": {}
- },
- "ghmodels:deepseek/deepseek-v3-0324": {
-  "status": 200,
-  "out": "OK\r\n",
-  "limits": {}
- },
- "ghmodels:meta/llama-4-maverick-17b-128e-instruct-fp8": {
-  "status": 200,
-  "out": "OK\r\n",
-  "limits": {}
- }
+ "env_proxy": {}
 }

@@ -19,12 +19,15 @@ concurrency:
 
 permissions:
   contents: write   # чтобы сохранять data/seen.db (какие новости уже опубликованы)
+  models: read      # бесплатные нейросети GitHub Models для перевода
+  actions: write    # чтобы бот сам перезапускал себя для круглосуточной работы
 
 jobs:
   run:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
       TRANSLATE_TO: ru
@@ -50,6 +53,12 @@ jobs:
           MODE=--test
           grep -qi latest .github/test-request && MODE=--post-latest
           grep -qi translate .github/test-request && MODE=--translate-test
+          if grep -qi probe .github/test-request; then
+            python tools/probe.py
+            git config user.name "nba-news-bot"; git config user.email "nba-news-bot@users.noreply.github.com"
+            git add -f debug && git commit -qm "debug: probe" && git pull -q --rebase -X theirs origin main && git push -q
+            exit 0
+          fi
           python bot.py $MODE
 
       - name: Poll sources and post news

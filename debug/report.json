@@ -1,19 +1,12 @@
 {
- "nba_movement": {
-  "status": 200,
-  "len": 4213667,
-  "titles": []
- },
- "nba_transactions_page": {
-  "status": 200,
-  "len": 233374,
-  "titles": [
-   "NBA Player Transactions | NBA.com"
-  ]
- },
  "espn_transactions": {
   "status": 200,
   "len": 95811,
+  "titles": []
+ },
+ "espn_roster": {
+  "status": 200,
+  "len": 99281,
   "titles": []
  },
  "espn_summary": {

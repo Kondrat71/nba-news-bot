@@ -37,12 +37,15 @@ FEEDS = {
     "espn_scoreboard": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261013",
 }
 
+ONLY = os.environ.get("PROBE_ONLY", "")
+if ONLY:
+    FEEDS = {k: v for k, v in FEEDS.items() if k in ONLY.split(",")}
 for name, url in FEEDS.items():
     try:
         status, text = get(url)
         titles = re.findall(r"<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</title>", text, re.S)[:8]
         report[name] = {"status": status, "len": len(text), "titles": titles}
-        (OUT / f"{name}.txt").write_text(text[:60000], encoding="utf-8")
+        (OUT / f"{name}.txt").write_text(text if name == "espn_scoreboard" else text[:60000], encoding="utf-8")
     except Exception as exc:
         report[name] = {"error": repr(exc)[:300]}
 
@@ -58,7 +61,7 @@ except Exception as exc:
 
 # бесплатные нейросети GitHub Models
 token = os.environ.get("GITHUB_TOKEN", "")
-for model in ("openai/gpt-4.1", "openai/gpt-4.1-mini", "openai/gpt-4o-mini", "openai/gpt-4o"):
+for model in ("openai/gpt-4.1", "openai/gpt-4.1-mini", "openai/gpt-4o-mini", "openai/gpt-4o", "deepseek/deepseek-v3-0324", "meta/llama-4-maverick-17b-128e-instruct-fp8"):
     try:
         r = httpx.post(
             "https://models.github.ai/inference/chat/completions",
@@ -69,8 +72,10 @@ for model in ("openai/gpt-4.1", "openai/gpt-4.1-mini", "openai/gpt-4o-mini", "op
             ]},
             timeout=60,
         )
-        body = r.json() if r.headers.get("content-type", "").startswith("application/json") else r.text[:300]
-        msg = body["choices"][0]["message"]["content"] if r.status_code == 200 else body
+        try:
+            msg = r.json()["choices"][0]["message"]["content"]
+        except Exception:
+            msg = r.text[:400]
         report[f"ghmodels:{model}"] = {"status": r.status_code, "out": msg,
                                        "limits": {k: v for k, v in r.headers.items() if "ratelimit" in k.lower()}}
     except Exception as exc:

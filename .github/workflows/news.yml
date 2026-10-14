@@ -54,7 +54,7 @@ jobs:
           grep -qi latest .github/test-request && MODE=--post-latest
           grep -qi translate .github/test-request && MODE=--translate-test
           if grep -qi probe .github/test-request; then
-            python tools/probe.py
+            PROBE_ONLY="$(sed -n 2p .github/test-request)" python tools/probe.py
             git config user.name "nba-news-bot"; git config user.email "nba-news-bot@users.noreply.github.com"
             git add -f debug && git commit -qm "debug: probe" && git pull -q --rebase -X theirs origin main && git push -q
             exit 0

@@ -50,6 +50,10 @@ SOURCES_FILE = os.environ.get("SOURCES_FILE", str(Path(__file__).with_name("sour
 LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
 WAIT_FOR_TRANSLATION_MIN = float(os.environ.get("WAIT_FOR_TRANSLATION_MIN", "30"))
 POST_INJURY_CHANGES = os.environ.get("POST_INJURY_CHANGES", "1") == "1"
+TOP_SALARY = float(os.environ.get("TOP_SALARY", "30000000"))       # звезда: зарплата от $30 млн
+SIGNIFICANT_SALARY = float(os.environ.get("SIGNIFICANT_SALARY", "3000000"))  # игрок ротации / 1-й раунд
+ESPN = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba"
+GTD_STATUSES = {"day-to-day", "questionable", "doubtful", "probable"}
 
 USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
               "(KHTML, like Gecko) Chrome/129.0 Safari/537.36")
@@ -268,7 +272,15 @@ def parse_scores(text: str, src: dict) -> list[Item]:
     items = []
     for ev in json.loads(text).get("events", []):
         comp = (ev.get("competitions") or [{}])[0]
-        if not comp.get("status", ev.get("status", {})).get("type", {}).get("completed"):
+        st = comp.get("status", ev.get("status", {}))
+        if st.get("type", {}).get("state") == "in" and int(st.get("period") or 0) >= 2:
+            # матч идёт вторую четверть: проверяем, вышли ли игроки «под вопросом»
+            teams = [c.get("team", {}).get("abbreviation", "") for c in comp.get("competitors", [])]
+            items.append(Item(src["name"], "NBA", f"GTD {ev.get('name', '')}", ev.get("id", ""),
+                              uid=f"gtd:{ev.get('id')}", kind="gtd", priority=0,
+                              data={"event": ev.get("id"), "teams": teams, "name": ev.get("name", "")}))
+            continue
+        if not st.get("type", {}).get("completed"):
             continue
         link = next((l.get("href") for l in ev.get("links", []) if "summary" in l.get("rel", [])), "")
         items.append(Item(src["name"], "NBA", ev.get("name", "game"), link or ev.get("id", ""),
@@ -276,7 +288,42 @@ def parse_scores(text: str, src: dict) -> list[Item]:
     return items
 
 
-PARSERS = {"nba_com": parse_nba_com, "gleague": parse_gleague, "espn_news": parse_espn_news}
+def parse_nba_trades(text: str, src: dict) -> list[Item]:
+    """Официальный журнал транзакций НБА: только обмены, строки одной сделки — в один пост."""
+    rows = json.loads(text).get("NBA_Player_Movement", {}).get("rows", [])
+    groups: dict[str, list[dict]] = {}
+    for r in rows:
+        if r.get("Transaction_Type") != "Trade":
+            continue
+        key = f"{r.get('TRANSACTION_DATE', '')[:10]}:{r.get('GroupSort', '')}"
+        groups.setdefault(key, []).append(r)
+    items = []
+    for key, rs in groups.items():
+        desc = list(dict.fromkeys(r.get("TRANSACTION_DESCRIPTION", "") for r in rs))
+        items.append(Item(src["name"], "NBA", "Trade: " + " ".join(desc), "https://www.nba.com/players/transactions",
+                          " ".join(desc), uid=f"trade:{key}", official=True, priority=1,
+                          data={"force_category": "trade"}))
+    return items
+
+
+def parse_espn_transactions(text: str, src: dict) -> list[Item]:
+    """Журнал транзакций ESPN: переводы игроков в G League."""
+    items = []
+    for t in json.loads(text).get("transactions", []):
+        desc = t.get("description", "")
+        m = re.match(r"Assigned (?:[A-Z]{1,2} )?(.+?) to (?:the )?(.+?)\.?$", desc)
+        if not m:
+            continue
+        team = (t.get("team") or {}).get("displayName", "")
+        items.append(Item(src["name"], "NBA", f"{team}: {desc}", "https://www.espn.com/nba/transactions",
+                          f"{team} {desc[0].lower()}{desc[1:]}", uid=f"tx:{t.get('date', '')[:10]}:{desc}",
+                          official=True, priority=1,
+                          data={"force_category": "assignment", "players": [m.group(1)]}))
+    return items
+
+
+PARSERS = {"nba_com": parse_nba_com, "gleague": parse_gleague, "espn_news": parse_espn_news,
+           "nba_trades": parse_nba_trades, "espn_transactions": parse_espn_transactions}
 
 ARTICLE_JUNK = re.compile(r"getty images|copyright|all rights reserved|sign up|subscribe|newsletter|cookie|"
                           r"photo by|click here|download the|follow us|^advertisement|terms of use|privacy policy",
@@ -372,6 +419,7 @@ class Bot:
         self.store = Store(DB_PATH)
         self.etags: dict[str, dict] = {}
         self.curl = None
+        self.last_poll: dict[str, float] = {}
 
     @staticmethod
     def http_client() -> httpx.AsyncClient:
@@ -481,27 +529,96 @@ class Bot:
         out = []
         only = set(src.get("only_categories", []))
         for i in new:
-            if i.kind == "news":
+            if i.kind == "news" and not i.data.get("force_category"):
                 cat, rumor, skip = nba_classify.classify(i.title, i.summary, i.official)
-                if skip or (only and cat not in only and not (rumor and "rumor" in only)):
+                # аналитика, обзоры, фэнтези — не публикуем (и не тратим на них нейросеть)
+                if skip or cat in ("other", "game") and not rumor or (only and cat not in only
+                                                                       and not (rumor and "rumor" in only)):
                     self.store.add(i, posted=False)
                     continue
-                i.priority = {"injury": 0, "trade": 1, "conflict": 2, "signing": 2}.get(cat, 5)
+                i.priority = {"injury": 0, "gtd": 0, "trade": 1, "assignment": 1, "suspension": 1}.get(cat, 3)
                 i.data.update(category=cat, rumor=rumor)
             out.append(i)
         if out:
             log.info("%s: %d new", name, len(out))
         return out
 
+    # ---- зарплаты игроков (значимость) по составам ESPN, обновляются раз в 12 часов
+    async def salaries(self, client) -> dict[str, float]:
+        cached = self.store.get("salaries") or {}
+        if cached.get("map") and time.time() - cached.get("ts", 0) < 12 * 3600:
+            return cached["map"]
+        sal: dict[str, float] = {}
+        try:
+            _, text, _ = await self.get(client, f"{ESPN}/teams")
+            teams = [t["team"]["id"] for t in json.loads(text)["sports"][0]["leagues"][0]["teams"]]
+            for tid in teams:
+                status, text, _ = await self.get(client, f"{ESPN}/teams/{tid}/roster")
+                if status >= 400:
+                    continue
+                for a in json.loads(text).get("athletes", []):
+                    money = float((a.get("contract") or {}).get("salary") or 0)
+                    sal[a.get("displayName", "").lower()] = money
+        except Exception as exc:
+            log.warning("salaries refresh failed: %r", exc)
+        if len(sal) > 300:
+            self.store.put("salaries", {"ts": time.time(), "map": sal})
+            log.info("salaries: %d players", len(sal))
+            return sal
+        return cached.get("map", {})
+
+    async def players_in(self, text: str, client) -> set[str]:
+        sal = await self.salaries(client)
+        low = text.lower()
+        return {n for n in sal if len(n) > 6 and n in low}
+
+    async def max_salary(self, names, client) -> float:
+        sal = await self.salaries(client)
+        return max([sal.get(n.lower(), 0.0) for n in names] or [0.0])
+
     # ---- подготовка постов
+    async def prepare_gtd(self, client, item: Item):
+        """Матч идёт: кто из игроков «под вопросом» вышел на площадку, а кто нет."""
+        inj = self.store.get("injuries") or {}
+        doubtful = [v for v in inj.values() if v.get("team_abbr") in item.data["teams"]
+                    and (v.get("gtd") or v.get("status", "").lower() in GTD_STATUSES)]
+        if not doubtful:
+            return None
+        status, text, _ = await self.get(client, f"{ESPN}/summary?event={item.data['event']}")
+        if status >= 400:
+            raise RuntimeError(f"summary HTTP {status}")
+        box = {}
+        for team in json.loads(text).get("boxscore", {}).get("players", []):
+            st = team["statistics"][0]
+            keys = st.get("keys", [])
+            for a in st.get("athletes", []):
+                stats = dict(zip(keys, a.get("stats") or []))
+                box[a["athlete"]["displayName"]] = {"dnp": a.get("didNotPlay"), "reason": a.get("reason", ""),
+                                                    "min": stats.get("minutes", "0"), "starter": a.get("starter")}
+        lines = []
+        for v in doubtful:
+            b = box.get(v["name"])
+            who = f"<b>{html.escape(v['name'])}</b> ({v['team_abbr']})"
+            if b is None or b["dnp"]:
+                lines.append(f"❌ {who} — не играет")
+            elif str(b["min"]).isdigit() and int(b["min"]) > 0:
+                role = "в стартовой пятёрке" if b["starter"] else "со скамейки"
+                lines.append(f"✅ {who} — играет, {role} ({b['min']} мин.)")
+        if not lines:
+            return None
+        title = item.data["name"].replace(" at ", " @ ")
+        caption = (f"⏱ <b>GAME-TIME DECISIONS</b>\n{html.escape(title)} · идёт 2-я четверть\n\n"
+                   + "\n".join(lines) + "\n\n#NBA #травмы #GTD")
+        card = await asyncio.to_thread(nba_cards.news_card, title, "GAME-TIME DECISIONS", "gtd", "ESPN live")
+        return caption, "", card
+
     async def prepare_game(self, client, item: Item):
         status, text, _ = await self.get(
             client, f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={item.data['event']}")
         if status >= 400:
             raise RuntimeError(f"summary HTTP {status}")
         g = nba_games.build_game(json.loads(text))
-        names = [p["en"] for plist in g["players"].values() for p in plist]
-        nba_games.apply_names(g, await asyncio.to_thread(tr.names_ru, names))
+        nba_games.apply_names(g)
         logos = {t["abbr"]: await self.get_bytes(client, t["logo"]) for t in g["teams"]}
         card = await asyncio.to_thread(nba_cards.game_card, g, logos)
         return nba_games.caption(g, item.url if item.url.startswith("http") else ""), "", card
@@ -509,12 +626,12 @@ class Bot:
     async def prepare_injury(self, client, item: Item):
         ev = item.data
         info = nba_injuries.describe(ev)
-        name_ru = (await asyncio.to_thread(tr.names_ru, [ev["name"]])).get(ev["name"], ev["name"])
-        info["name"] = name_ru
+        name_ru = ev["name"]  # имена — в оригинале
         comment = ""
-        if ev["kind"] != "return" and ev.get("comment"):
+        src_text = ev.get("long") or ev.get("comment")
+        if ev["kind"] != "return" and src_text:
             try:
-                comment = await asyncio.to_thread(tr.translate_text, ev["comment"])
+                comment = await asyncio.to_thread(tr.injury_note, src_text)
             except tr.TranslationError:
                 comment = ""  # травма — срочно: публикуем без комментария, но не ждём
         headshot = await self.get_bytes(client, ev.get("headshot"))
@@ -539,17 +656,31 @@ class Bot:
         if translated:
             res = await asyncio.to_thread(tr.rewrite_news, item.title, text_src, item.source)
         else:
-            res = {"title": item.title, "text": trim_text(text_src, 600), "category": "", "rumor": False, "skip": False}
-        if res.get("skip"):
+            res = {"title": item.title, "text": trim_text(text_src, 600), "category": "", "players": [],
+                   "top_player": False, "significant": False, "rumor": False, "nba": True, "llm": False}
+        cat = item.data.get("force_category") or (res.get("category") if res.get("llm") else "") \
+            or item.data.get("category", "other")
+        rumor = (res.get("rumor") if res.get("llm") else item.data.get("rumor")) and not item.official
+        # значимость игроков: оценка нейросети + зарплата по составам ESPN
+        names = set(res.get("players") or []) | set(item.data.get("players") or [])
+        names |= await self.players_in(item.title + " " + text_src[:600], client)
+        salary = await self.max_salary(names, client)
+        top = bool(res.get("top_player")) or salary >= TOP_SALARY
+        significant = top or bool(res.get("significant")) or salary >= SIGNIFICANT_SALARY
+        keep = {"injury": significant, "gtd": True, "trade": True, "suspension": True,
+                "assignment": significant, "rumor": top, "conflict": top, "signing": top}.get(cat, False)
+        if rumor and not top:
+            keep = False  # слухи — только про топ-игроков
+        if not res.get("nba", True):
+            keep = False  # только НБА
+        if not keep:
+            log.info("skip [%s rumor=%s top=%s sig=%s $%.0fM %s]: %s", cat, rumor, top, significant,
+                     salary / 1e6, sorted(names)[:3], item.title)
             return None
-        cat = res.get("category") or item.data.get("category", "other")
-        rumor = (res.get("rumor") if tr.llm_available() else item.data.get("rumor")) and not item.official
         if cat == "rumor":
             rumor = False  # рубрика и так «Слухи»
-        if item.official and cat == "other":
-            cat = "official"
         icon, label, tag = nba_classify.rubric(cat, bool(rumor))
-        league_tag = "#GLeague" if (item.league == "GLEAGUE" or G_LEAGUE_HINTS.search(item.title)) else "#NBA"
+        league_tag = "#NBA"
 
         head = f"{icon} <b>{label}</b>\n\n" if label else ""
         title = res["title"]
@@ -573,6 +704,12 @@ class Bot:
         try:
             if item.kind == "game":
                 text, url, photo = await self.prepare_game(client, item)
+            elif item.kind == "gtd":
+                res = await self.prepare_gtd(client, item)
+                if res is None:
+                    self.store.add(item, posted=False)
+                    return False
+                text, url, photo = res
             elif item.kind == "injury":
                 text, url, photo = await self.prepare_injury(client, item)
             else:
@@ -600,7 +737,11 @@ class Bot:
         return ok
 
     async def cycle(self, client) -> None:
-        batches = await asyncio.gather(*(self.poll_source(client, s) for s in self.sources))
+        now = time.monotonic()
+        due = [s for s in self.sources if now - self.last_poll.get(s["name"], -1e9) >= s.get("interval", 60) - 5]
+        for s_ in due:
+            self.last_poll[s_["name"]] = now
+        batches = await asyncio.gather(*(self.poll_source(client, s) for s in due))
         items = sorted((i for b in batches for i in b), key=lambda i: i.priority)
         for i in items:
             await self.publish_one(client, i)
@@ -635,6 +776,18 @@ class Bot:
                     lines.append(f"OK {src['name']}: {len(items)} | {items[0].title[:70] if items else '—'}")
                 except Exception as exc:
                     lines.append(f"FAIL {src['name']}: {exc!r}"[:200])
+            sal = await self.salaries(client)
+            lines.append(f"Зарплаты: {len(sal)} игроков; звёзд (от ${TOP_SALARY / 1e6:.0f} млн): "
+                         f"{sum(1 for v in sal.values() if v >= TOP_SALARY)}")
+        if tr.llm_available():
+            lines.append(f"Модели Gemini: {tr.gemini_models()[:3]}")
+            try:
+                r = tr.rewrite_news("Nuggets' Jamal Murray (hamstring) ruled out vs. Lakers; Christian Braun to start",
+                                    "Murray was diagnosed with a left hamstring strain and will be re-evaluated in "
+                                    "one week, the team announced Wednesday.", "ESPN")
+                lines.append(f"Перевод: {r}")
+            except Exception as exc:
+                lines.append(f"Перевод FAIL: {exc!r}"[:300])
         print("\n".join(lines))
         log.warning("CHECK\n" + "\n".join(lines))
 
@@ -655,20 +808,32 @@ class Bot:
                 if games:
                     t, u, p = await self.prepare_game(client, games[-1])
                     log.warning("demo game: %s", await send_telegram(client, t, u, p))
-            # 2. самая свежая травма из списка
+            # 2. травма: сначала game-time decision, иначе свежая «out»
             inj = next((s for s in self.sources if s["type"] == "injuries"), None)
             if inj:
                 _, text, _ = await self.get(client, inj["url"])
                 cur = sorted(nba_injuries.parse_injuries(json.loads(text)).values(),
                              key=lambda x: x.get("date", ""), reverse=True)
-                pick = next((x for x in cur if x.get("status", "").lower() == "out"), cur[0] if cur else None)
+                pick = (next((x for x in cur if x.get("gtd")), None)
+                        or next((x for x in cur if x.get("status", "").lower() == "out" and x.get("return")), None)
+                        or (cur[0] if cur else None))
                 if pick:
                     it = Item(inj["name"], "NBA", pick["name"], pick["url"], kind="injury", data={"kind": "new", **pick})
                     t, u, p = await self.prepare_injury(client, it)
                     log.warning("demo injury %s: %s", pick["name"], await send_telegram(client, t, u, p))
-            # 3. свежий слух / конфликт
+            # 3. последний официальный трейд
+            trades = next((s for s in self.sources if s.get("parser") == "nba_trades"), None)
+            if trades:
+                items = await self.fetch(client, trades, use_cache=False)
+                if items:
+                    it = max(items, key=lambda i: i.uid)
+                    res = await self.prepare_news(client, it)
+                    if res:
+                        log.warning("demo trade %s: %s", it.title, await send_telegram(client, *res))
+            # 4. слух о топ-игроке
+            tries = 0
             for src in self.sources:
-                if src["type"] not in ("rss",) or src["name"] not in ("RealGM Wiretap", "Sportsnet", "Fadeaway World"):
+                if src["type"] != "rss" or src.get("official"):
                     continue
                 try:
                     items = await self.fetch(client, src, use_cache=False)
@@ -676,12 +841,17 @@ class Bot:
                     continue
                 for it in items:
                     cat, rumor, skip = nba_classify.classify(it.title, it.summary)
-                    if not skip and (rumor or cat == "conflict"):
-                        it.data.update(category=cat, rumor=rumor)
-                        res = await self.prepare_news(client, it)
-                        if res:
-                            log.warning("demo rumor %s: %s", it.title, await send_telegram(client, *res))
-                            return
+                    if skip or not (rumor or cat in ("conflict", "rumor")):
+                        continue
+                    tries += 1
+                    it.data.update(category=cat, rumor=rumor)
+                    res = await self.prepare_news(client, it)
+                    if res:
+                        log.warning("demo rumor %s: %s", it.title, await send_telegram(client, *res))
+                        return
+                    if tries >= 10:
+                        log.warning("demo rumor: no top-player rumor found in %d candidates", tries)
+                        return
 
 
 class GitHubAnnotations(logging.Handler):

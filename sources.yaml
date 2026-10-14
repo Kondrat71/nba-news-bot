@@ -1,7 +1,10 @@
 # Источники. Все опрашиваются раз в минуту.
 # type: rss | html (parser) | espn_news | scores | injuries
+# interval — как часто опрашивать, секунд (по умолчанию 60)
 # official: true — официальный источник лиги (такие новости не помечаются как слухи)
-# only_categories — брать из источника только эти темы: injury, trade, signing, conflict, rumor
+# only_categories — брать из источника только эти темы: injury, gtd, trade, assignment, suspension, signing, conflict, rumor
+# Что публикуется: травмы и GTD; трейды; переводы значимых игроков в G League; дисквалификации;
+# слухи, конфликты и контракты — только про топ-игроков (TOP_SALARY, по умолчанию от $30 млн, или звезда по оценке Gemini).
 # exclude_publishers — пропускать материалы этих изданий (для лент-агрегаторов)
 
 sources:
@@ -31,11 +34,20 @@ sources:
     official: true
     exclude_categories: [WNBA, "NBA Africa", "Basketball Africa League", BAL]
 
-  - name: NBA G League
+  # --- Официальные журналы транзакций: трейды и переводы в G League ---
+  - name: NBA Transactions
     type: html
-    parser: gleague
-    url: https://gleague.nba.com/news
-    league: GLEAGUE
+    parser: nba_trades
+    url: https://stats.nba.com/js/data/playermovement/NBA_Player_Movement.json
+    league: NBA
+    official: true
+    interval: 180        # файл большой — раз в 3 минуты
+
+  - name: ESPN Transactions
+    type: html
+    parser: espn_transactions
+    url: https://site.api.espn.com/apis/site/v2/sports/basketball/nba/transactions
+    league: NBA
     official: true
 
   # --- Крупные американские СМИ ---

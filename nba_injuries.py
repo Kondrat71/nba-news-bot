@@ -7,7 +7,6 @@ import re
 from datetime import datetime
 
 from nba_cards import readable
-from nba_games import TEAMS_RU
 
 STATUS_RU = {
     "out": "не сыграет",
@@ -67,7 +66,7 @@ def parse_injuries(data: dict) -> dict[str, dict]:
                 "pid": pid,
                 "name": ath.get("displayName", "?"),
                 "team_abbr": t.get("abbreviation", ""),
-                "team": TEAMS_RU.get(t.get("abbreviation", ""), team.get("displayName", "")),
+                "team": t.get("displayName") or team.get("displayName", ""),
                 "color": t.get("color", ""), "alt": t.get("alternateColor", ""),
                 "logo": logo,
                 "headshot": (ath.get("headshot") or {}).get("href", ""),
@@ -75,6 +74,8 @@ def parse_injuries(data: dict) -> dict[str, dict]:
                 "type": det.get("type", ""), "detail": det.get("detail", ""), "side": det.get("side", ""),
                 "return": det.get("returnDate", ""),
                 "comment": inj.get("shortComment", ""),
+                "long": inj.get("longComment", ""),
+                "gtd": ((det.get("fantasyStatus") or {}).get("abbreviation", "") == "GTD"),
                 "date": inj.get("date", ""),
                 "url": href,
             }
@@ -88,7 +89,8 @@ def diff(prev: dict[str, dict], cur: dict[str, dict]) -> list[dict]:
         old = prev.get(pid)
         if old is None:
             events.append({"kind": "new", **inj})
-        elif old.get("status") != inj.get("status") or old.get("type") != inj.get("type"):
+        elif (old.get("status") != inj.get("status") or old.get("type") != inj.get("type")
+              or bool(old.get("gtd")) != bool(inj.get("gtd"))):
             events.append({"kind": "change", "old_status": old.get("status", ""), **inj})
     removed = [p for p in prev if p not in cur]
     if len(removed) <= 25:  # массовое «исчезновение» — сбой источника, а не 25 выздоровевших
@@ -116,6 +118,8 @@ def describe(ev: dict) -> dict:
     if what:
         detail = f"{detail}: {what}" if detail else what.capitalize()
     status = _ru(ev.get("status"), STATUS_RU)
+    if ev.get("gtd") and ev["kind"] != "return":
+        status = "game-time decision — решение перед игрой"
     ret = _date_ru(ev.get("return", ""))
     return {
         "kind": "return" if ev["kind"] == "return" else "injury",
@@ -123,6 +127,7 @@ def describe(ev: dict) -> dict:
         "status": "вернулся в строй" if ev["kind"] == "return" else status,
         "detail": "" if ev["kind"] == "return" else detail,
         "return_date": f"Ориентировочное возвращение: {ret}" if ret and ev["kind"] != "return" else "",
+        "gtd": bool(ev.get("gtd")) and ev["kind"] != "return",
         "color": readable(ev.get("color"), ev.get("alt")),
     }
 
@@ -130,22 +135,27 @@ def describe(ev: dict) -> dict:
 def caption(ev: dict, info: dict, name_ru: str, comment_ru: str) -> str:
     e = html.escape
     if ev["kind"] == "return":
-        lines = [f"✅ <b>ВОЗВРАЩЕНИЕ</b> · «{e(info['team'])}»", "",
+        lines = [f"✅ <b>ВОЗВРАЩЕНИЕ</b> · {e(info['team'])}", "",
                  f"<b>{e(name_ru)}</b> больше не значится в списке травмированных."]
         tag = "#травмы"
     else:
-        head = "🚑 <b>ТРАВМА</b>" if ev["kind"] == "new" else "🚑 <b>ОБНОВЛЕНИЕ ПО ТРАВМЕ</b>"
-        lines = [f"{head} · «{e(info['team'])}»", "", f"<b>{e(name_ru)}</b> — {e(info['status'])}"]
+        if ev.get("gtd"):
+            head = "⏱ <b>GAME-TIME DECISION</b>"
+        else:
+            head = "🚑 <b>ТРАВМА</b>" if ev["kind"] == "new" else "🚑 <b>ОБНОВЛЕНИЕ ПО ТРАВМЕ</b>"
+        lines = [f"{head} · {e(info['team'])}", "", f"<b>{e(name_ru)}</b> — {e(info['status'])}"]
         if ev["kind"] == "change" and ev.get("old_status"):
             lines[-1] += f" (было: {e(_ru(ev['old_status'], STATUS_RU))})"
         if info["detail"]:
             lines.append(e(info["detail"]))
         if info["return_date"]:
-            lines.append(e(info["return_date"]))
+            lines.append("📅 " + e(info["return_date"]))
         if comment_ru:
             lines += ["", e(comment_ru)]
         tag = "#травмы"
     link = f'🔗 <a href="{e(ev["url"], quote=True)}">ESPN</a>  ' if ev.get("url") else ""
+    if ev.get("gtd") and ev["kind"] != "return":
+        tag += " #GTD"
     lines.append(f"\n{link}#NBA {tag}")
     return "\n".join(lines)
 

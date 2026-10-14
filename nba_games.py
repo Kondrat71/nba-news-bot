@@ -15,7 +15,7 @@ TEAMS_RU = {
     "SAC": "Сакраменто", "SA": "Сан-Антонио", "SAS": "Сан-Антонио", "TOR": "Торонто",
     "UTAH": "Юта", "UTA": "Юта", "WSH": "Вашингтон", "WAS": "Вашингтон",
 }
-STAGES = {1: "Предсезонка", 2: "Регулярный сезон", 3: "Плей-офф", 5: "Плей-ин"}
+STAGES = {1: "Preseason", 2: "Regular Season", 3: "Playoffs", 5: "Play-In"}
 
 
 def team_ru(team: dict) -> str:
@@ -47,6 +47,23 @@ def _pct(made_att: str) -> str:
         return "—"
 
 
+def _ratio(made_att: str) -> float:
+    try:
+        m, a = (int(x) for x in made_att.split("-"))
+        return m / a if a else 0.0
+    except Exception:
+        return 0.0
+
+
+def _pct1(made_att: str) -> str:
+    """'41-91' -> '45.1'"""
+    try:
+        m, a = (int(x) for x in made_att.split("-"))
+        return f"{100 * m / a:.1f}" if a else "—"
+    except Exception:
+        return "—"
+
+
 def build_game(summary: dict) -> dict:
     """Структура матча для карточки и подписи."""
     comp = summary["header"]["competitions"][0]
@@ -64,7 +81,7 @@ def build_game(summary: dict) -> dict:
         rec = next((r.get("displayValue") or r.get("summary") for r in c.get("record", [])
                     if r.get("type") == "total"), "")
         teams.append({
-            "abbr": abbr, "name": team_ru(t), "full": t.get("displayName", abbr),
+            "abbr": abbr, "name": t.get("displayName", abbr), "short": t.get("shortDisplayName") or t.get("name", abbr),
             "score": int(c.get("score") or 0), "winner": bool(c.get("winner")),
             "quarters": [ls.get("displayValue", "") for ls in c.get("linescores", [])],
             "record": rec, "logo": _logo(t),
@@ -73,28 +90,25 @@ def build_game(summary: dict) -> dict:
         })
 
     n = max(len(t["quarters"]) for t in teams) if teams else 4
-    periods = [str(i + 1) for i in range(min(n, 4))] + [("ОТ" if i == 4 else f"ОТ{i - 3}") for i in range(4, n)]
-    ot = "" if n <= 4 else ("ОВЕРТАЙМ" if n == 5 else f"{n - 4} ОВЕРТАЙМА" if n < 9 else f"{n - 4} ОВЕРТАЙМОВ")
+    periods = [f"Q{i + 1}" for i in range(min(n, 4))] + [("OT" if i == 4 else f"OT{i - 3}") for i in range(4, n)]
+    ot = "" if n <= 4 else ("OT" if n == 5 else f"{n - 4}OT")
 
     a, h = teams[0]["stats"], teams[1]["stats"]
-    rows = []
-    def row(label, key, fmt=lambda v: v, num=_num):
-        if key in a and key in h:
-            rows.append((label, fmt(a[key]), fmt(h[key]), num(a[key]), num(h[key])))
     fg = "fieldGoalsMade-fieldGoalsAttempted"
     tp = "threePointFieldGoalsMade-threePointFieldGoalsAttempted"
     ft = "freeThrowsMade-freeThrowsAttempted"
-    pct_num = lambda v: _num(_pct(v).rstrip("%")) if _pct(v) != "—" else 0
-    row("С игры", fg, lambda v: f"{v.replace('-', '/')} ({_pct(v)})", pct_num)
-    row("Трёхочковые", tp, lambda v: f"{v.replace('-', '/')} ({_pct(v)})", pct_num)
-    row("Штрафные", ft, lambda v: f"{v.replace('-', '/')} ({_pct(v)})", pct_num)
-    row("Подборы", "totalRebounds")
-    row("Передачи", "assists")
-    row("Потери", "turnovers")
-    row("Перехваты", "steals")
-    row("Очки в краске", "pointsInPaint")
-    row("Блок-шоты", "blocks")
-    row("Очки с быстрого прорыва", "fastBreakPoints")
+    rows = [("PTS", str(teams[0]["score"]), str(teams[1]["score"]), teams[0]["score"], teams[1]["score"])]
+    def row(label, key, fmt=lambda v: v, num=_num):
+        if key in a and key in h:
+            rows.append((label, fmt(a[key]), fmt(h[key]), num(a[key]), num(h[key])))
+    row("FG%", fg, _pct1, lambda v: _ratio(v))
+    row("FT%", ft, _pct1, lambda v: _ratio(v))
+    row("3PM", tp, lambda v: v.split("-")[0])
+    row("REB", "totalRebounds")
+    row("AST", "assists")
+    row("STL", "steals")
+    row("BLK", "blocks")
+    row("TOV", "turnovers")
 
     players = {}
     for t in teams:
@@ -111,8 +125,10 @@ def build_game(summary: dict) -> dict:
             pts, reb, ast = int(_num(s.get("points", 0))), int(_num(s.get("rebounds", 0))), int(_num(s.get("assists", 0)))
             stl, blk = int(_num(s.get("steals", 0))), int(_num(s.get("blocks", 0)))
             rows_p.append({
-                "en": ath["athlete"]["displayName"], "pts": pts, "reb": reb, "ast": ast, "stl": stl, "blk": blk,
-                "fg": s.get("fieldGoalsMade-fieldGoalsAttempted", ""), "tp": s.get(tp, ""),
+                "en": ath["athlete"]["displayName"], "name": ath["athlete"]["displayName"],
+                "pts": pts, "reb": reb, "ast": ast, "stl": stl, "blk": blk,
+                "tov": int(_num(s.get("turnovers", 0))),
+                "fg": s.get(fg, ""), "ft": s.get(ft, ""), "tp": s.get(tp, ""),
                 "min": s.get("minutes", ""), "pm": s.get("plusMinus", ""),
                 "score": pts + 1.2 * reb + 1.5 * ast + 2 * (stl + blk),
             })
@@ -137,67 +153,76 @@ def _decline(n: int, one: str, few: str, many: str) -> str:
 
 
 def player_line(p: dict) -> str:
-    parts = [f"{p['pts']} оч.", f"{p['reb']} подб.", f"{p['ast']} пер."]
-    if p["stl"] >= 3:
-        parts.append(f"{p['stl']} перехв.")
-    if p["blk"] >= 3:
-        parts.append(f"{p['blk']} блок.")
-    if p["fg"]:
-        parts.append(f"{p['fg'].replace('-', '/')} с игры")
-    return ", ".join(parts)
+    """'24 PTS · 8 REB · 3 AST · 1 STL · 0 BLK · 2 TOV'"""
+    return " · ".join(f"{p[k]} {lbl}" for k, lbl in
+                      (("pts", "PTS"), ("reb", "REB"), ("ast", "AST"), ("stl", "STL"), ("blk", "BLK"), ("tov", "TOV")))
+
+
+def shooting_line(p: dict) -> str:
+    """'FG% 76.9 (10/13) · 3PM 2 · FT% 100.0 (2/2)'"""
+    parts = []
+    if p.get("fg") and p["fg"] != "0-0":
+        parts.append(f"FG% {_pct1(p['fg'])} ({p['fg'].replace('-', '/')})")
+    if p.get("tp"):
+        parts.append(f"3PM {p['tp'].split('-')[0]}")
+    if p.get("ft") and p["ft"] != "0-0":
+        parts.append(f"FT% {_pct1(p['ft'])} ({p['ft'].replace('-', '/')})")
+    return " · ".join(parts)
 
 
 def _achievement(p: dict) -> str:
     tens = sum(1 for k in ("pts", "reb", "ast", "stl", "blk") if p[k] >= 10)
-    if tens >= 3:
-        return "трипл-дабл"
-    if tens == 2:
-        return "дабл-дабл"
-    return ""
+    return "трипл-дабл" if tens >= 3 else "дабл-дабл" if tens == 2 else ""
 
 
-def apply_names(g: dict, names: dict[str, str]) -> None:
+def apply_names(g: dict, names: dict[str, str] | None = None) -> None:
     for plist in g["players"].values():
         for p in plist:
-            p["name"] = names.get(p["en"], p["en"])
-            p["line"] = player_line(p).upper().replace(" ОЧ.", " ОЧК").replace(", ", " · ")
+            p["line"] = player_line(p)
+            p["line2"] = shooting_line(p)
 
 
 def caption(g: dict, link: str) -> str:
+    """Подпись к фото — не длиннее 1024 видимых символов: при необходимости по 1 игроку на команду."""
+    import re
+    for per_team in (2, 1, 0):
+        text = _caption(g, link, per_team)
+        if len(html.unescape(re.sub(r"<[^>]+>", "", text))) <= 1020:
+            return text
+    return text
+
+
+def _caption(g: dict, link: str, per_team: int) -> str:
     away, home = g["teams"]
     win = away if away["winner"] else home
     lose = home if win is away else away
     diff = win["score"] - lose["score"]
     e = html.escape
-    lines = [f"🏁 <b>«{e(away['name'])}» {away['score']} : {home['score']} «{e(home['name'])}»</b>"]
-    meta = [x for x in (g.get("stage"), g.get("ot") and g["ot"].lower()) if x]
+    lines = [f"🏁 <b>{e(away['name'])} {away['score']} : {home['score']} {e(home['name'])}</b>"]
+    meta = [x for x in (g.get("stage"), g.get("ot")) if x]
     if meta:
         lines.append("<i>" + e(" · ".join(meta)) + "</i>")
-    lines.append("")
-    margin = f"{diff} {_decline(diff, 'очко', 'очка', 'очков')}"
-    lines.append(f"Победа «{e(win['name'])}» с разницей в {margin}.")
+    lines.append(f"\nПобеда {e(win['short'])}, разница {diff} {_decline(diff, 'очко', 'очка', 'очков')}.")
     if away["quarters"]:
-        q = ", ".join(f"{x}:{y}" for x, y in zip(away["quarters"], home["quarters"]))
-        lines.append(f"По четвертям: {q}")
-    lines.append("")
+        lines.append("Четверти: " + ", ".join(f"{x}:{y}" for x, y in zip(away["quarters"], home["quarters"])))
 
-    lines.append("⭐ <b>Лучшие</b>")
+    # таблица командной статистики моноширинным шрифтом
+    w = max(len(away["abbr"]), len(home["abbr"]), 5)
+    tbl = [f"{'':<5}{away['abbr']:>{w + 2}}{home['abbr']:>{w + 2}}"]
+    for label, av, hv, _, _ in g["stats"]:
+        tbl.append(f"{label:<5}{av:>{w + 2}}{hv:>{w + 2}}")
+    lines.append("\n📊 <b>Статистика команд</b>\n<pre>" + e("\n".join(tbl)) + "</pre>")
+
+    if per_team:
+        lines.append("⭐ <b>Лучшие игроки</b>")
     for t in (away, home):
-        for p in g["players"].get(t["abbr"], [])[:2]:
+        for p in g["players"].get(t["abbr"], [])[:per_team]:
             ach = _achievement(p)
             tail = f" — <b>{ach}</b>" if ach else ""
-            lines.append(f"• {e(p['name'])} ({t['abbr']}): {e(player_line(p))}{tail}")
-    lines.append("")
-
-    stats = {r[0]: r for r in g["stats"]}
-    show = [("С игры", "🎯"), ("Трёхочковые", "🏹"), ("Подборы", "💪"), ("Передачи", "🤝"), ("Потери", "❌")]
-    st_lines = [f"{icon} {label}: {stats[label][1]} — {stats[label][2]}" for label, icon in show if label in stats]
-    if st_lines:
-        lines.append(f"📊 <b>Статистика</b> ({away['abbr']} — {home['abbr']})")
-        lines += [e(x) for x in st_lines]
+            lines.append(f"• <b>{e(p['name'])}</b> ({t['abbr']}){tail}\n   {e(player_line(p))}\n   {e(shooting_line(p))}")
     rec = [f"{t['abbr']} {t['record']}" for t in (away, home) if t.get("record")]
     if rec:
         lines.append(f"\nБаланс: {e(', '.join(rec))}")
-    tail = f'🔗 <a href="{e(link, quote=True)}">Протокол матча</a>  ' if link else ""
+    tail = f'🔗 <a href="{e(link, quote=True)}">Box score</a>  ' if link else ""
     lines.append(f"\n{tail}#NBA #матчи")
     return "\n".join(lines)

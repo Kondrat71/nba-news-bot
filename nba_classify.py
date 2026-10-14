@@ -4,6 +4,10 @@ from __future__ import annotations
 import re
 
 RULES = [
+    ("gtd", r"game-time decision|\bgtd\b|\bgame time decision|\b(questionable|doubtful|probable) (for|vs\.?|against|tonight)"),
+    ("assignment", r"\bassign(ed|s|ment)?\b.*\bg[- ]league|\bg[- ]league assignment|\bsent (down )?to (the )?g[- ]league|"
+                   r"\bd-league"),
+    ("suspension", r"\bsuspen(d|ded|sion|sions)\b|\bfined?\b|\bban(ned)?\b"),
     ("injury", r"\binjur|ruled out|\bout (for|indefinitely|with|vs\.?)|questionable|doubtful|"
                r"\bsprain|\bstrain|\btorn\b|\btear\b|fractur|surgery|concussion|hamstring|achilles|"
                r"\bacl\b|\bmcl\b|plantar|day-to-day|sidelined|re-?evaluat|\bmiss(es|ing)? (the )?(rest|start|game|\d)|"
@@ -53,6 +57,9 @@ def classify(title: str, text: str = "", official: bool = False) -> tuple[str, b
 # рубрика: (значок, подпись, хэштег)
 RUBRICS = {
     "injury": ("🚑", "ТРАВМА", "#травмы"),
+    "gtd": ("⏱", "GAME-TIME DECISION", "#травмы #GTD"),
+    "assignment": ("⬇️", "ПЕРЕВОД В G LEAGUE", "#GLeague"),
+    "suspension": ("⛔", "ДИСКВАЛИФИКАЦИЯ", "#дисквалификации"),
     "return": ("✅", "ВОЗВРАЩЕНИЕ", "#травмы"),
     "trade": ("🔁", "ОБМЕН", "#обмены"),
     "signing": ("✍️", "КОНТРАКТЫ И ПЕРЕХОДЫ", "#контракты"),

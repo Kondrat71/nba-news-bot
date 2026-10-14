@@ -22,8 +22,8 @@ log = logging.getLogger("nba-bot")
 
 TRANSLATE_TO = os.environ.get("TRANSLATE_TO", "ru").strip()
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
-GEMINI_MODELS = [m.strip() for m in os.environ.get(
-    "GEMINI_MODELS", "gemini-2.5-flash,gemini-2.5-flash-lite,gemini-2.0-flash").split(",") if m.strip()]
+GEMINI_MODELS_ENV = [m.strip() for m in os.environ.get("GEMINI_MODELS", "").split(",") if m.strip()]
+_gemini_models: list[str] | None = None
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "").strip()
 OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1").strip().rstrip("/")
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini").strip()
@@ -34,7 +34,7 @@ NAMES_FILE = Path(os.environ.get("NAMES_FILE", "data/names.json"))
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/129.0 Safari/537.36")
 
-CATEGORIES = ("injury", "trade", "signing", "conflict", "rumor", "official", "game", "other")
+CATEGORIES = ("injury", "gtd", "trade", "assignment", "suspension", "signing", "rumor", "conflict", "game", "other")
 
 
 class TranslationError(Exception):
@@ -63,9 +63,37 @@ def llm_available() -> bool:
 
 
 # ---------------------------------------------------------------- нейросети
+def _version(name: str) -> tuple:
+    nums = re.findall(r"\d+(?:\.\d+)?", name)
+    return tuple(float(n) for n in nums[:1]) or (0.0,)
+
+
+def gemini_models() -> list[str]:
+    """Актуальные модели Gemini Flash из списка Google (старые модели Google отключает)."""
+    global _gemini_models
+    if GEMINI_MODELS_ENV:
+        return GEMINI_MODELS_ENV
+    if _gemini_models is None:
+        found = []
+        try:
+            r = httpx.get("https://generativelanguage.googleapis.com/v1beta/models",
+                          params={"key": GEMINI_API_KEY, "pageSize": 200}, timeout=30)
+            for m in r.json().get("models", []):
+                name = m.get("name", "").removeprefix("models/")
+                if ("flash" in name and "generateContent" in m.get("supportedGenerationMethods", [])
+                        and not re.search(r"image|tts|audio|live|embed|preview-\d{2}-\d{2}|exp", name)):
+                    found.append(name)
+        except Exception as exc:
+            log.warning("gemini model list failed: %r", exc)
+        found.sort(key=lambda n: ("lite" in n, -_version(n)[0], len(n)))
+        _gemini_models = found or ["gemini-3.8-flash", "gemini-3.5-flash-lite"]
+        log.info("gemini models: %s", _gemini_models[:4])
+    return _gemini_models
+
+
 def _gemini(prompt: str, want_json: bool) -> str:
     last = "no key"
-    for model in GEMINI_MODELS:
+    for model in gemini_models()[:4]:
         name = f"gemini:{model}"
         if not _ready(name):
             continue
@@ -88,6 +116,9 @@ def _gemini(prompt: str, want_json: bool) -> str:
             continue
         if r.status_code in (400, 403, 404):
             _cool(name, 6 * 3600)  # нет такой модели или нет доступа
+            hint = re.search(r"use models/([\w.\-]+)", r.text)
+            if hint and hint.group(1) not in gemini_models():
+                gemini_models().insert(0, hint.group(1))
             last = f"{model}: {r.status_code} {r.text[:150]}"
             continue
         if r.status_code >= 500:
@@ -140,13 +171,11 @@ def _json_from(text: str) -> dict:
 
 
 EDITOR = """Ты — редактор русскоязычного Telegram-канала о баскетболе НБА.
-Перескажи новость по-русски живым языком спортивных СМИ (как sports.ru или «Чемпионат»),
-а не дословным переводом. Строго сохрани все факты, цифры, сроки и формулировки
-о степени достоверности («по данным источников», «как сообщает …»). Ничего не придумывай.
-Имена игроков и тренеров — в принятой русской транскрипции (LeBron James — Леброн Джеймс,
-Nikola Jokic — Никола Йокич, Shai Gilgeous-Alexander — Шей Гилджес-Александер).
-Команды — по-русски в кавычках: «Лейкерс», «Бостон», «Голден Стэйт», «Оклахома-Сити»,
-«Сан-Антонио», «Филадельфия» и т.п. Аббревиатуры: НБА, Джи-Лига (G League).
+Пиши по-русски живым языком спортивных СМИ, а не дословным переводом.
+Строго сохраняй факты, цифры, сроки и степень достоверности («по данным источников», «как сообщает …»).
+Ничего не придумывай. ВАЖНО: имена игроков, тренеров и названия команд оставляй на английском
+в оригинальном написании (LeBron James, Shai Gilgeous-Alexander, Oklahoma City Thunder, Lakers) —
+не переводи и не транслитерируй их. Термины G League, NBA, GTD тоже оставляй как есть.
 """
 
 REWRITE_TASK = """Новость (источник: {source}):
@@ -154,14 +183,18 @@ REWRITE_TASK = """Новость (источник: {source}):
 ТЕКСТ: {text}
 
 Верни JSON:
-{{"title": "короткий русский заголовок, до 110 символов",
-  "text": "суть новости по-русски: 2–4 коротких абзаца, всего до 650 символов, абзацы через \\n\\n",
-  "category": "одно из: injury (травма/восстановление), trade (обмен), signing (контракт, подписание, отчисление),
-               conflict (недовольство, критика, конфликт, штраф, дисквалификация), rumor (слух, интерес клуба,
-               возможный обмен, инсайд без подтверждения), official (официальное заявление лиги), game (матч, игра),
-               other (всё остальное)",
+{{"title": "короткий русский заголовок до 110 символов (имена и команды — по-английски)",
+  "text": "суть новости по-русски: 2–4 коротких абзаца, до 650 символов, абзацы через \\n\\n",
+  "category": "одно из: injury (травма, сроки восстановления, возвращение), gtd (game-time decision: сыграет ли игрок сегодня),
+               trade (обмен между клубами НБА), assignment (перевод игрока НБА в G League / D-League),
+               suspension (дисквалификация, штраф), signing (контракт, продление, подписание),
+               rumor (слух, интерес клуба, инсайд без подтверждения), conflict (недовольство, критика, конфликт),
+               game (обзор или анонс матча), other (всё остальное: аналитика, рейтинги, интервью, фэнтези)",
+  "players": ["главные игроки новости, полные имена по-английски"],
+  "top_player": true если новость касается звезды (All-Star, игрок с max-контрактом, лицо франшизы, топ-драфтпик-новичок), иначе false,
+  "significant": true если игрок значимый для состава (стартовая пятёрка или ротация, выбор первого раунда драфта), иначе false,
   "rumor": true если это неподтверждённая информация/инсайд, иначе false,
-  "skip": true если это фэнтези-баскетбол, ставки и прогнозы на ставки, реклама, WNBA или не про НБА/Джи-Лигу, иначе false}}
+  "nba": true если новость про НБА (не WNBA, не G League как лига, не Евролига/зарубежные клубы, не NCAA), иначе false}}
 """
 
 
@@ -174,9 +207,13 @@ def rewrite_news(title: str, text: str, source: str) -> dict:
             out = {
                 "title": str(data.get("title", "")).strip(),
                 "text": str(data.get("text", "")).strip(),
-                "category": data.get("category") if data.get("category") in CATEGORIES else "",
+                "category": data.get("category") if data.get("category") in CATEGORIES else "other",
+                "players": [str(p) for p in data.get("players", []) if p][:6],
+                "top_player": bool(data.get("top_player")),
+                "significant": bool(data.get("significant")),
                 "rumor": bool(data.get("rumor")),
-                "skip": bool(data.get("skip")),
+                "nba": data.get("nba", True) is not False,
+                "llm": True,
             }
             if out["title"]:
                 return out
@@ -186,7 +223,22 @@ def rewrite_news(title: str, text: str, source: str) -> dict:
             log.warning("llm answer parse failed: %r", exc)
     return {"title": machine_translate(title),
             "text": machine_translate(text) if text else "",
-            "category": "", "rumor": False, "skip": False}
+            "category": "", "players": [], "top_player": False, "significant": False,
+            "rumor": False, "nba": True, "llm": False}
+
+
+def injury_note(text: str) -> str:
+    """Комментарий о травме: 1–2 предложения по-русски, акцент на сроках восстановления."""
+    if not text:
+        return ""
+    if llm_available():
+        try:
+            return llm(EDITOR + "\nПерескажи по-русски в 1–2 предложениях, обязательно сохрани сроки "
+                       "восстановления, дату повторного обследования и пропуск матчей, если они есть. "
+                       "Только текст, без кавычек:\n\n" + text).strip()
+        except TranslationError as exc:
+            log.warning("llm injury note failed: %s", exc)
+    return machine_translate(text)
 
 
 def translate_text(text: str) -> str:
@@ -334,7 +386,7 @@ MACHINE = [("deepl", _mt_deepl), ("google", _mt_google), ("mymemory", _mt_mymemo
 def machine_translate(text: str) -> str:
     if not TRANSLATE_TO or not text:
         return text
-    src = apply_glossary(text)
+    src = text
     errors = []
     for name, fn in MACHINE:
         if not _ready(name):

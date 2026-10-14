@@ -16,7 +16,8 @@ RED = (220, 38, 38)
 GREEN = (22, 163, 74)
 
 CATEGORY_COLORS = {
-    "injury": RED, "return": GREEN, "trade": (37, 99, 235), "signing": (13, 148, 136),
+    "injury": RED, "return": GREEN, "gtd": (217, 119, 6), "assignment": (8, 145, 178),
+    "suspension": (185, 28, 28), "trade": (37, 99, 235), "signing": (13, 148, 136),
     "conflict": (217, 119, 6), "rumor": (147, 51, 234), "official": (71, 85, 105),
     "game": ORANGE, "other": ORANGE,
 }
@@ -106,15 +107,16 @@ def _png(img: Image.Image) -> bytes:
 
 # ---------------------------------------------------------------- матч
 def game_card(g: dict, logos: dict[str, bytes]) -> bytes:
-    n_stats = min(len(g.get("stats", [])), 7)
+    n_stats = min(len(g.get("stats", [])), 9)
     n_players = max([len(v) for v in g.get("players", {}).values()] or [0])
-    W, H = 1280, 950 + n_stats * 66 + (60 + n_players * 92 if n_players else 0) + 50
+    ROW = 132
+    W, H = 1280, 950 + n_stats * 66 + (60 + n_players * ROW if n_players else 0) + 50
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
     d.rectangle([0, 0, W, 10], fill=ORANGE)
     away, home = g["teams"]
 
-    title = "ФИНАЛ" + (f" · {g['ot']}" if g.get("ot") else "")
+    title = "FINAL" + (f" · {g['ot']}" if g.get("ot") else "")
     d.text((W // 2, 62), title, font=font(46), fill=ORANGE, anchor="mm")
     sub = " · ".join(x for x in (g.get("stage"), g.get("venue")) if x)
     if sub:
@@ -125,7 +127,7 @@ def game_card(g: dict, logos: dict[str, bytes]) -> bytes:
         lg = _img(logos.get(t["abbr"]), 210)
         if lg:
             img.paste(lg, (cx - lg.width // 2, 270 - lg.height // 2), lg)
-        d.text((cx, 410), t["name"], font=_fit(d, t["name"], "bold", 40, 520), fill=TEXT, anchor="mm")
+        d.text((cx, 410), t["name"], font=_fit(d, t["name"], "bold", 40, 560), fill=TEXT, anchor="mm")
         d.text((cx, 515), str(t["score"]), font=font(130), fill=TEXT if t["winner"] else MUTED, anchor="mm")
         if t.get("record"):
             d.text((cx, 600), t["record"], font=font(26, "regular"), fill=MUTED, anchor="mm")
@@ -135,7 +137,7 @@ def game_card(g: dict, logos: dict[str, bytes]) -> bytes:
     y0 = 660
     d.rounded_rectangle([60, y0, W - 60, y0 + 190], radius=18, fill=PANEL)
     periods = g.get("periods", [])
-    cols = periods + ["И"]
+    cols = periods + ["T"]
     x_start, x_end = 330, W - 120
     step = (x_end - x_start) / max(1, len(cols) - 1) if len(cols) > 1 else 0
     for i, p in enumerate(cols):
@@ -150,7 +152,7 @@ def game_card(g: dict, logos: dict[str, bytes]) -> bytes:
 
     # командная статистика
     y = 900
-    d.text((W // 2, y), "СТАТИСТИКА КОМАНД", font=font(30), fill=ORANGE, anchor="mm")
+    d.text((W // 2, y), "TEAM STATS", font=font(30), fill=ORANGE, anchor="mm")
     y += 50
     for label, av, hv, an, hn in g.get("stats", [])[:n_stats]:
         d.text((90, y), av, font=font(32), fill=TEXT, anchor="lm")
@@ -169,15 +171,17 @@ def game_card(g: dict, logos: dict[str, bytes]) -> bytes:
     if not n_players:
         return _png(img)
     y += 20
-    d.text((W // 2, y), "ЛУЧШИЕ ИГРОКИ", font=font(30), fill=ORANGE, anchor="mm")
+    d.text((W // 2, y), "TOP PERFORMERS", font=font(30), fill=ORANGE, anchor="mm")
     y += 45
     for t, x0 in ((away, 70), (home, 670)):
         yy = y
-        d.rectangle([x0, yy, x0 + 6, yy + n_players * 92 - 20], fill=t["color"])
+        d.rectangle([x0, yy, x0 + 6, yy + n_players * ROW - 24], fill=t["color"])
         for p in g.get("players", {}).get(t["abbr"], [])[:3]:
             d.text((x0 + 24, yy + 4), p["name"], font=_fit(d, p["name"], "condensed", 32, 520), fill=TEXT, anchor="lt")
-            d.text((x0 + 24, yy + 46), p["line"], font=_fit(d, p["line"], "regular", 24, 520), fill=MUTED, anchor="lt")
-            yy += 92
+            d.text((x0 + 24, yy + 46), p["line"], font=_fit(d, p["line"], "bold", 23, 520), fill=(200, 205, 215), anchor="lt")
+            d.text((x0 + 24, yy + 80), p.get("line2", ""), font=_fit(d, p.get("line2", ""), "regular", 22, 520),
+                   fill=MUTED, anchor="lt")
+            yy += ROW
     return _png(img)
 
 
@@ -201,10 +205,11 @@ def injury_card(info: dict, headshot: bytes | None, logo: bytes | None) -> bytes
         img.paste(lg, (60, 48), lg)
 
     ret = info.get("kind") == "return"
-    badge = "ВОЗВРАЩЕНИЕ" if ret else "ТРАВМА"
+    badge = "ВОЗВРАЩЕНИЕ" if ret else ("GAME-TIME DECISION" if info.get("gtd") else "ТРАВМА")
     bw = d.textlength(badge, font=font(30)) + 44
     bx = 60 + (110 if lg else 0)
-    d.rounded_rectangle([bx, 66, bx + bw, 126], radius=14, fill=GREEN if ret else RED)
+    d.rounded_rectangle([bx, 66, bx + bw, 126], radius=14,
+                        fill=GREEN if ret else ((217, 119, 6) if info.get("gtd") else RED))
     d.text((bx + bw / 2, 96), badge, font=font(30), fill=(255, 255, 255), anchor="mm")
 
     left_w = 700 if hs else 1150

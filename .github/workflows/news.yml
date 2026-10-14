@@ -67,6 +67,10 @@ jobs:
           case "$MODE" in
             demo)  python bot.py --demo ;;
             start) gh workflow run news.yml --ref "${{ github.ref_name }}" -f mode=run ;;
+            restart)   # остановить текущую смену (состояние сохранится) и начать новую
+              for id in $(gh run list --workflow news.yml --status in_progress --json databaseId,event \
+                          -q '.[] | select(.event != "push") | .databaseId'); do gh run cancel "$id"; done
+              gh workflow run news.yml --ref "${{ github.ref_name }}" -f mode=run ;;
             check) python bot.py --check ;;
             probe)
               PROBE_ONLY="$(sed -n 2p .github/test-request)" python tools/probe.py

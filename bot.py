@@ -170,8 +170,26 @@ def _first_image(e) -> str:
     return m.group(1) if m else ""
 
 
+def _rss_fallback(text: str) -> list[dict]:
+    """Разбор «кривого» RSS регулярками, если feedparser не справился."""
+    def tag(block, name):
+        m = re.search(rf"<{name}[^>]*>(.*?)</{name}\s*>", block, re.S)
+        v = (m.group(1) if m else "").strip()
+        v = re.sub(r"^<!\[CDATA\[(.*)\]\]>$", r"\1", v, flags=re.S).strip()
+        return html.unescape(v)
+    out = []
+    for block in re.findall(r"<item[^>]*>(.*?)</item>", text, re.S):
+        img = re.search(r'<media:(?:content|thumbnail)[^>]+url="([^"]+)"', block)
+        out.append({"title": tag(block, "title"), "link": tag(block, "link"),
+                    "summary": tag(block, "description"), "content": [{"value": tag(block, "content:encoded")}],
+                    "media_content": [{"url": img.group(1), "type": "image"}] if img else []})
+    return out
+
+
 def parse_rss(text: str, src: dict) -> list[Item]:
     feed = feedparser.parse(text)
+    if not feed.entries and "<item" in text:
+        feed = type("F", (), {"entries": _rss_fallback(text)})()
     excl = {c.lower() for c in src.get("exclude_categories", [])}
     excl_pub = {p.lower() for p in src.get("exclude_publishers", [])}
     must = src.get("url_must_contain")
@@ -402,7 +420,7 @@ class Bot:
         self.etags[src["name"]] = {"etag": resp_headers.get("ETag"), "modified": resp_headers.get("Last-Modified")}
         if src["type"] == "rss":
             return parse_rss(text, src)
-        return PARSERS[src["parser"]](text, src)
+        return PARSERS[src.get("parser", src["type"])](text, src)
 
     async def fetch_injuries(self, client, src: dict) -> list[Item]:
         status, text, _ = await self.get(client, src["url"])

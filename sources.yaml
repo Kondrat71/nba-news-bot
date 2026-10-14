@@ -60,6 +60,7 @@ sources:
     type: rss
     url: https://www.sportsnet.ca/basketball/nba/feed/
     league: NBA
+    url_must_contain: /nba/article/
 
   - name: Fadeaway World         # таблоид: берём только слухи, конфликты и сделки
     type: rss

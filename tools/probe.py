@@ -34,6 +34,9 @@ FEEDS = {
     "fadeaway": "https://www.fadeawayworld.net/feed",
     "espn_injuries": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
     "espn_news_api": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news?limit=50",
+    "nba_movement": "https://stats.nba.com/js/data/playermovement/NBA_Player_Movement.json",
+    "nba_transactions_page": "https://www.nba.com/players/transactions",
+    "espn_transactions": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/transactions",
     "espn_scoreboard": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261013",
 }
 
@@ -81,6 +84,16 @@ for name, url, extra, model in variants:
     except Exception as exc:
         report[f"models:{name}"] = {"error": repr(exc)[:300]}
 report["env_proxy"] = {k: v for k, v in os.environ.items() if "proxy" in k.lower()}
+
+gk = os.environ.get("GEMINI_API_KEY", "")
+for model in ("gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash"):
+    try:
+        r = httpx.post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+                       params={"key": gk}, json={"contents": [{"parts": [{"text": "Say OK"}]}]}, timeout=60)
+        report[f"gemini:{model}"] = {"status": r.status_code, "text": r.text[:300]}
+    except Exception as exc:
+        report[f"gemini:{model}"] = {"error": repr(exc)[:200]}
+report["gemini_key_len"] = len(gk)
 
 (OUT / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
 print(json.dumps(report, ensure_ascii=False, indent=1)[:5000])

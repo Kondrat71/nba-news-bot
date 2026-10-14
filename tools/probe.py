@@ -61,25 +61,26 @@ except Exception as exc:
 
 # бесплатные нейросети GitHub Models
 token = os.environ.get("GITHUB_TOKEN", "")
-for model in ("openai/gpt-4.1", "openai/gpt-4.1-mini", "openai/gpt-4o-mini", "openai/gpt-4o", "deepseek/deepseek-v3-0324", "meta/llama-4-maverick-17b-128e-instruct-fp8"):
+report["token_len"] = len(token)
+MSG = [{"role": "system", "content": "Переведи на русский как спортивный журналист. Только перевод."},
+       {"role": "user", "content": "Nuggets' Jamal Murray (hamstring) ruled out vs. Lakers; Christian Braun to start."}]
+variants = [
+    ("gh_new", "https://models.github.ai/inference/chat/completions",
+     {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}, "openai/gpt-4.1-mini"),
+    ("gh_new_4.1", "https://models.github.ai/inference/chat/completions",
+     {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}, "openai/gpt-4.1"),
+    ("azure_old", "https://models.inference.ai.azure.com/chat/completions", {}, "gpt-4o-mini"),
+]
+for name, url, extra, model in variants:
     try:
-        r = httpx.post(
-            "https://models.github.ai/inference/chat/completions",
-            headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
-            json={"model": model, "messages": [
-                {"role": "system", "content": "Переведи на русский как спортивный журналист. Только перевод."},
-                {"role": "user", "content": "Nuggets' Jamal Murray (hamstring) ruled out vs. Lakers; Christian Braun to start."},
-            ]},
-            timeout=60,
-        )
-        try:
-            msg = r.json()["choices"][0]["message"]["content"]
-        except Exception:
-            msg = r.text[:400]
-        report[f"ghmodels:{model}"] = {"status": r.status_code, "out": msg,
-                                       "limits": {k: v for k, v in r.headers.items() if "ratelimit" in k.lower()}}
+        with httpx.Client(trust_env=False, timeout=60) as c:
+            r = c.post(url, headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json", **extra},
+                       json={"model": model, "messages": MSG})
+        report[f"models:{name}"] = {"status": r.status_code, "text": r.text[:600],
+                                    "headers": dict(list(r.headers.items())[:25])}
     except Exception as exc:
-        report[f"ghmodels:{model}"] = {"error": repr(exc)[:300]}
+        report[f"models:{name}"] = {"error": repr(exc)[:300]}
+report["env_proxy"] = {k: v for k, v in os.environ.items() if "proxy" in k.lower()}
 
 (OUT / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
 print(json.dumps(report, ensure_ascii=False, indent=1)[:5000])

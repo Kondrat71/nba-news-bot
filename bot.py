@@ -600,19 +600,21 @@ class Bot:
 
     # ---- проверки и демонстрация
     async def check(self) -> None:
-        print(f"curl_cffi: {'да' if CurlSession else 'НЕТ'}; перевод: {tr.status()}")
+        lines = [f"curl_cffi: {'да' if CurlSession else 'НЕТ'}; перевод: {tr.status()}"]
         async with self.http_client() as client:
             for src in self.sources:
                 try:
                     if src["type"] == "injuries":
                         status, text, _ = await self.get(client, src["url"])
                         n = len(nba_injuries.parse_injuries(json.loads(text)))
-                        print(f"OK    {src['name']:<22} {n} игроков в списке травм")
+                        lines.append(f"OK {src['name']}: {n} игроков в списке травм")
                         continue
                     items = await self.fetch(client, src, use_cache=False)
-                    print(f"OK    {src['name']:<22} {len(items):>3} | {items[0].title[:70] if items else '—'}")
+                    lines.append(f"OK {src['name']}: {len(items)} | {items[0].title[:70] if items else '—'}")
                 except Exception as exc:
-                    print(f"FAIL  {src['name']:<22} {exc}")
+                    lines.append(f"FAIL {src['name']}: {exc!r}"[:200])
+        print("\n".join(lines))
+        log.warning("CHECK\n" + "\n".join(lines))
 
     async def demo(self) -> None:
         """Опубликовать по одному примеру: итог матча, травма, слух/конфликт."""

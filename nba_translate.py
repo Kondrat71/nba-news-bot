@@ -92,44 +92,48 @@ def gemini_models() -> list[str]:
 
 
 def _gemini(prompt: str, want_json: bool) -> str:
-    last = "no key"
-    for model in gemini_models()[:4]:
-        name = f"gemini:{model}"
-        if not _ready(name):
-            continue
-        cfg = {"temperature": 0.3}
-        if want_json:
-            cfg["responseMimeType"] = "application/json"
-        try:
-            r = httpx.post(
-                f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-                params={"key": GEMINI_API_KEY},
-                json={"contents": [{"parts": [{"text": prompt}]}], "generationConfig": cfg},
-                timeout=90,
-            )
-        except httpx.HTTPError as exc:
-            last = repr(exc)
-            continue
-        if r.status_code == 429:
-            _cool(name, _limit_pause(r))
-            last = f"{model}: 429"
-            continue
-        if r.status_code in (400, 403, 404):
-            _cool(name, 6 * 3600)  # нет такой модели или нет доступа
-            hint = re.search(r"use models/([\w.\-]+)", r.text)
-            if hint and hint.group(1) not in gemini_models():
-                gemini_models().insert(0, hint.group(1))
-            last = f"{model}: {r.status_code} {r.text[:150]}"
-            continue
-        if r.status_code >= 500:
-            last = f"{model}: {r.status_code}"
-            continue
-        try:
-            parts = r.json()["candidates"][0]["content"]["parts"]
-            return "".join(p.get("text", "") for p in parts).strip()
-        except Exception:
-            last = f"{model}: empty answer {r.text[:150]}"
-    raise RuntimeError(f"gemini: {last}")
+    errors = []
+    models = gemini_models()
+    order = [m for m in models if "lite" not in m][:3] + [m for m in models if "lite" in m][:2]
+    for attempt in range(3):
+        for model in order:
+            name = f"gemini:{model}"
+            if not _ready(name):
+                continue
+            cfg = {"temperature": 0.3}
+            if want_json:
+                cfg["responseMimeType"] = "application/json"
+            try:
+                r = httpx.post(
+                    f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+                    params={"key": GEMINI_API_KEY},
+                    json={"contents": [{"parts": [{"text": prompt}]}], "generationConfig": cfg},
+                    timeout=120,
+                )
+            except httpx.HTTPError as exc:
+                errors.append(f"{model}: {exc!r}"[:120])
+                continue
+            if r.status_code == 200:
+                try:
+                    parts = r.json()["candidates"][0]["content"]["parts"]
+                    out = "".join(p.get("text", "") for p in parts if not p.get("thought")).strip()
+                    if out:
+                        return out
+                except Exception:
+                    pass
+                errors.append(f"{model}: empty answer {r.text[:120]}")
+                continue
+            errors.append(f"{model}: {r.status_code} {r.text[:120]}")
+            if r.status_code == 429:
+                _cool(name, _limit_pause(r))
+            elif r.status_code in (400, 403, 404):
+                _cool(name, 6 * 3600)  # нет такой модели или нет доступа
+                hint = re.search(r"use models/([\w.\-]+)", r.text)
+                if hint and hint.group(1) not in order:
+                    order.insert(0, hint.group(1))
+            # 5xx — перегрузка: пробуем следующую модель, потом повторяем круг
+        time.sleep(4 * (attempt + 1))
+    raise RuntimeError("gemini: " + " | ".join(errors[-4:]))
 
 
 def _openai(prompt: str, want_json: bool) -> str:

@@ -59,11 +59,14 @@ jobs:
 
       - name: Service mode
         if: env.MAIN != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           MODE="${{ inputs.mode }}"
           [ -z "$MODE" ] && MODE=$(head -1 .github/test-request | awk '{print $1}')
           case "$MODE" in
             demo)  python bot.py --demo ;;
+            start) gh workflow run news.yml --ref "${{ github.ref_name }}" -f mode=run ;;
             check) python bot.py --check ;;
             probe)
               PROBE_ONLY="$(sed -n 2p .github/test-request)" python tools/probe.py

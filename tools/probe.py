@@ -37,6 +37,8 @@ FEEDS = {
     "nba_movement": "https://stats.nba.com/js/data/playermovement/NBA_Player_Movement.json",
     "nba_transactions_page": "https://www.nba.com/players/transactions",
     "espn_transactions": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/transactions",
+    "espn_roster": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/den/roster",
+    "espn_models_list": "https://generativelanguage.googleapis.com/v1beta/models?key=" + os.environ.get("GEMINI_API_KEY", ""),
     "espn_scoreboard": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261013",
 }
 

@@ -1,28 +1,48 @@
 {
+ "nba_movement": {
+  "status": 200,
+  "len": 4213667,
+  "titles": []
+ },
+ "nba_transactions_page": {
+  "status": 200,
+  "len": 233374,
+  "titles": [
+   "NBA Player Transactions | NBA.com"
+  ]
+ },
+ "espn_transactions": {
+  "status": 200,
+  "len": 95811,
+  "titles": []
+ },
  "espn_summary": {
   "status": 200,
   "event": "401898403",
-  "len": 463396
+  "len": 463488
  },
- "token_len": 377,
+ "token_len": 0,
  "models:gh_new": {
-  "status": 200,
-  "text": "OK\r\n",
-  "headers": {
-   "content-type": "text/plain",
-   "connection": "close"
-  }
+  "error": "LocalProtocolError(\"Illegal header value b'Bearer '\")"
  },
  "models:gh_new_4.1": {
-  "status": 200,
-  "text": "OK\r\n",
-  "headers": {
-   "content-type": "text/plain",
-   "connection": "close"
-  }
+  "error": "LocalProtocolError(\"Illegal header value b'Bearer '\")"
  },
  "models:azure_old": {
   "error": "ConnectError('[Errno -2] Name or service not known')"
  },
- "env_proxy": {}
+ "env_proxy": {},
+ "gemini:gemini-2.5-flash": {
+  "status": 404,
+  "text": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs"
+ },
+ "gemini:gemini-2.5-flash-lite": {
+  "status": 404,
+  "text": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"This model models/gemini-2.5-flash-lite is no longer available to new users. Please update your code to use models/gemini-3.5-flash-lite for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemin"
+ },
+ "gemini:gemini-2.0-flash": {
+  "status": 404,
+  "text": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs/get-started)"
+ },
+ "gemini_key_len": 53
 }

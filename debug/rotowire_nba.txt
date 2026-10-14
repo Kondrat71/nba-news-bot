@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>RotoWire.com Latest NBA News</title>
+    <copyright>Copyright (c) 2026 Roto Sports, Inc, All rights reserved.</copyright>
+    <description>Fantasy Sports from RotoWire.com</description>
+    <category>Fantasy Sports</category>
+    <language>en-us</language>
+    <ttl>10</ttl>
+    <image>
+      <title>RotoWire.com Fantasy Sports</title>
+      <width>120</width>
+      <height>30</height>
+      <link>https://www.rotowire.com</link>
+      <url>https://assets.rotowire.com/images/logo_roto_small.gif</url>
+    </image>
+    <link>https://www.rotowire.com</link>
+    <item>
+        <guid>nba534343</guid>
+        <title>Deni Avdija: Efficient in limited run</title>
+        <link>https://www.rotowire.com//basketball/player/deni-avdija-5152</link>
+        <description>Avdija recorded 26 points (9-13 FG, 2-6 3Pt, 6-6 FT), nine rebounds, four assists and two blocks across 25 minutes in Tuesday's 110-98 preseason win against Sacramento.
+
+        Visit RotoWire.com for more analysis on this update.</description>
+        <pubDate>Tue, 13 Oct 2026 9:33:00 PM PDT</pubDate>
+    </item>
+    <item>
+        <guid>nba534340</guid>
+        <title>Yaxel Lendeborg: Solid showing despite ankle scare</title>
+        <link>https://www.rotowire.com//basketball/player/yaxel-lendeborg-6562</link>
+        <description>Lendeborg recorded 17 points (5-11 FG, 1-4 3Pt, 6-9 FT), five rebounds, four assists and two steals across 26 minutes in Tuesday's preseason matchup against the Lakers.
+
+        Visit RotoWire.com for more analysis on this update.</description>
+        <pubDate>Tue, 13 Oct 2026 9:27:00 PM PDT</pubDate>
+    </item>
+    <item>
+        <guid>nba534339</guid>
+        <title>Austin Reaves: Pours in 28 points</title>
+        <link>https://www.rotowire.com//basketball/player/austin-reaves-5334</link>
+        <description>Reaves recorded 28 points (10-18 FG, 4-7 3Pt, 4-4 FT), four rebounds and seven assists across 25 minutes in Tuesday's 101-89 preseason loss against Golden State.
+
+        Visit RotoWire.com for more analysis on this update.</description>
+        <pubDate>Tue, 13 Oct 2026 9:26:00 PM PDT</pubDate>
+    </item>
+    <item>
+        <guid>nba534338</guid>
+        <title>Tyrese Haliburton: Plays well against Thunder</title>
+        <link>https://www.rotowire.com//basketball/player/tyrese-haliburton-5114</link>
+        <description>Haliburton recorded 24 points (9-14 FG, 4-6 3Pt, 2-3 FT), five rebounds, three assists and two blocks across 18 minutes in Tuesday's 114-112 preseason loss to Oklahoma City.
+
+        Visit RotoWire.com for more analysis on this update.</description>
+        <pubDate>Tue, 13 Oct 2026 7:50:00 PM PDT</pubDate>
+    </item>
+    <item>
+        <guid>nba534337</guid>
+        <title>Jared McCain: Strikes for 20 points Tuesday</title>
+        <link>https://www.rotowire.com//basketball/player/jared-mccain-6266</link>
+        <description>McCain amassed 20 points (6-13 FG, 6-12 3Pt, 2-2 FT), two rebounds, two assists and one steal across 19 minutes in Tuesday's 114-112 preseason win over the Pacers in overtime.
+
+        Visit RotoWire.com for more analysis on this update.</description>
+        <pubDate>Tue, 13 Oct 2026 7:46:00 PM PDT</pubDate>
+    </item>
+  </channel>
+</rss>

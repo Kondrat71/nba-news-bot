@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+   <channel>
+   <title>RealGM Basketball Wiretap</title>
+   <link>https://basketball.realgm.com/news</link>
+   <description>Basketball News, Rumors, Scores, Stats, Analysis, Depth Charts, Forums</description>
+   <language>en-us</language>
+   <pubDate>Wed, 14 Oct 2026 11:17:01 EDT</pubDate>
+   <lastBuildDate>Wed, 14 Oct 2026 11:17:01 EDT</lastBuildDate>
+   <item>
+      <title>Payton Pritchard, Celtics Agree To Two-Year, $44.2M Extension</title>
+      <link>https://basketball.realgm.com/wiretap/287623/Payton-Pritchard-Celtics-Agree-To-Two-Year-$442M-Extension</link>
+      <description>&lt;p&gt;The Boston Celtics and guard Payton Pritchard have agreed to a two-year, $44.2 million contract extension that includes a mutual option for 2029-30. &lt;/p&gt;
+&lt;p&gt;Pritchard will earn more than $21 million in 2028-29. The mutual option for 2029-30 is worth nearly $23 million. His current contract pays him $7.8 million this season and $8.3 million next season.&lt;/p&gt;
+&lt;p&gt;Pritchard set career highs last season with 17 points, 5.2 assists and 3.9 rebounds per game. Pritchard started 50 games and took on a bigger offensive role while Jayson Tatum missed most of the season.&lt;/p&gt;
+&lt;p&gt;Pritchard&apos;s touches per game rose from 51.8 in 2024-25 to nearly 70 last season. That was the second-biggest jump among the 33 players with at least 4,000 touches in both seasons.&lt;/p&gt;
+&lt;p&gt;Pritchard won the 2025 Sixth Man of the Year award and an NBA title with Boston in 2024. He is one of four players in franchise history with multiple 200-three-pointer seasons, joining Tatum, Derrick White and Antoine Walker.&lt;/p&gt;
+&lt;p&gt;Pritchard has also stayed healthy and his 241 games over the last three seasons are tied for the third-most in the NBA in that span.&lt;/p&gt;
+&lt;p&gt;The Celtics drafted Pritchard 26th overall in 2020. The extension keeps him in Boston through at least his ninth season, or a 10th if the option is exercised.&lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 16:14:23 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287623/Payton-Pritchard-Celtics-Agree-To-Two-Year-$442M-Extension</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/Pritchard_Payton_bos_210205.jpg" />
+   </item>
+   <item>
+      <title>Giannis Antetokounmpo Now Eligible For Extension, Waiting Until January Adds $82M</title>
+      <link>https://basketball.realgm.com/wiretap/287620/Giannis-Antetokounmpo-Now-Eligible-For-Extension-Waiting-Until-January-Adds-$82M</link>
+      <description>&lt;p&gt;Giannis Antetokounmpo became eligible for a contract extension with the Miami Heat on Oct. 1. However, holding off until January, or even until the 2027 offseason, would allow him to sign for substantially more money.&lt;/p&gt;
+&lt;p&gt;Because the Milwaukee Bucks traded him to Miami on July 6, his current options are limited as he can extend for three years and $194 million, or two years and $135.1 million.&lt;/p&gt;
+&lt;p&gt;Jan. 6 is the six-month mark following the trade. On that date, Antetokounmpo becomes eligible for a four-year, $276 million extension.&lt;/p&gt;
+&lt;p&gt;The first year of that deal would replace his $62.8 million player option.&lt;/p&gt;
+&lt;p&gt;Waiting even longer could pay off more. If he skips a January extension, Antetokounmpo could re-sign with Miami as a free agent in the 2027 offseason, following the approach Nikola Jokic is taking with the Denver Nuggets.&lt;/p&gt;
+&lt;p&gt;The free agency path would make Antetokounmpo eligible for a five-year, $357 million contract. It would raise his career on-court earnings to $754 million, the most in NBA history.&lt;/p&gt;
+&lt;p&gt;Antetokounmpo is entering his first season with the Heat and turns 32 in December.&lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 12:02:16 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287620/Giannis-Antetokounmpo-Now-Eligible-For-Extension-Waiting-Until-January-Adds-$82M</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/Antetokounmpo_Giannis_mia_261009.jpg" />
+   </item>
+   <item>
+      <title>Dream To Host WNBA Finals Games 3 And 4 At State Farm Arena</title>
+      <link>https://basketball.realgm.com/wiretap/287622/Dream-To-Host-WNBA-Finals-Games-3-And-4-At-State-Farm-Arena</link>
+      <description>&lt;p&gt;The Atlanta Dream will play Games 3 and 4 of the WNBA Finals at State Farm Arena, the home of the Atlanta Hawks. The franchise announced the decision Tuesday morning and moved Game 3 up one day to Oct. 21 to accommodate the move.&lt;/p&gt;
+&lt;p&gt;Game 4 stays on Oct. 24. The Dream and the Golden State Valkyries open the best-of-seven series on Saturday, with Golden State hosting the first two games.&lt;/p&gt;
+&lt;p&gt;The Dream wanted a bigger venue than Gateway Center Arena at College Park. That arena has been the team&apos;s home since 2021 and holds only 3,500 fans. State Farm Arena seats more than 17,000.&lt;/p&gt;
+&lt;p&gt;&quot;The change of venue dramatically expands the seating capacity,&quot; said WNBA commissioner Cathy Engelbert, &quot;and ensures that the Dream will be able to provide an extraordinary atmosphere for the first WNBA Finals game to be played in the Atlanta market since 2013. We are pleased that thousands more fans across the Southeast region will have the opportunity to experience the ultimate WNBA action -- the WNBA Finals -- in person.&quot;&lt;/p&gt;
+&lt;p&gt;Several events forced scheduling changes. A Sombr concert was booked at State Farm Arena on Oct. 22, so Game 3 moved up a day. On Oct. 24, the Valkyries and Dream will tip off at 1 p.m. instead of 3:30. The Hawks pushed their game against the Houston Rockets that night from 8 p.m. to 8:30.&lt;/p&gt;
+&lt;p&gt;The Dream have already played six regular-season games and all three of their playoff games at State Farm Arena this season.&lt;/p&gt;
+&lt;p&gt;&quot;This is what the players and the fans deserve,&quot; said Dream majority owner Larry Gottesdiener. &quot;We are grateful to all of the stakeholders who worked together to resolve the conflicts and make this happen.&quot;&lt;/p&gt;
+&lt;p&gt;Golden State had its own scheduling conflict. A Doja Cat concert planned for Game 2 night, Oct. 19, at Chase Center has moved to Oct. 25. The Valkyries will host Games 1 and 2, plus Games 5 and 7 if needed.&lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 14:36:12 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287622/Dream-To-Host-WNBA-Finals-Games-3-And-4-At-State-Farm-Arena</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/wnba_atlantadream.jpg" />
+   </item>
+   <item>
+      <title>Optimizing NBA Betting Strategy With BetQL&apos;s Predictive Analytics</title>
+      <link>https://basketball.realgm.com/wiretap/287621/Optimizing-NBA-Betting-Strategy-With-BetQLs-Predictive-Analytics</link>
+      <description>&lt;p&gt;Navigating the high-tempo dynamics of the National Basketball Association (NBA) requires quantitative precision. As lines shift dynamically across major sportsbooks, evaluating true value in point spreads, moneylines, and player props demands real-time data integration. &lt;a href=&quot;https://betql.co/nba&quot;&gt;BetQL&lt;/a&gt; functions as an authoritative quantitative framework, delivering predictive modeling, algorithm-driven picks, and market analysis for NBA handicappers.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Analytics Behind BetQL&apos;s NBA Engine&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The foundational mechanism behind &lt;a href=&quot;https://betql.co/nba/odds/totals-spread&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot; data-saferedirecturl=&quot;https://www.google.com/url?q=https://betql.co/nba/odds/totals-spread&amp;source=gmail&amp;ust=1791989977697000&amp;usg=AOvVaw1SK4Aaaw0k85lzjob6VXqa&quot;&gt;BetQL&lt;/a&gt; relies on machine learning models that process thousands of game simulations per matchup. By ingesting real-time variables such as offensive efficiency metrics, defensive rating differentials, pace factors, player rotation changes, and injury reports. The platform calculates precise projection lines independently of traditional sportsbook oddsmakers.&lt;/p&gt;
+&lt;p&gt;Key analytical features available through &lt;a href=&quot;https://betql.co/how-it-works&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot; data-saferedirecturl=&quot;https://www.google.com/url?q=https://betql.co/how-it-works&amp;source=gmail&amp;ust=1791989977697000&amp;usg=AOvVaw34vD8qJ4p7jgarTBNMNeC4&quot;&gt;BetQL&lt;/a&gt; include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;5-Star Value Ratings:&lt;/strong&gt; The platform assigns quantitative confidence scores (ranging from 1 to 5 stars) by calculating the mathematical divergence between the model&apos;s projected line and live sportsbook odds. A 5-star pick highlights significant market mispricing.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Line Movement &amp; Sharp Money Tracking:&lt;/strong&gt; By cross-referencing public wagering volume against total handle distribution, &lt;a href=&quot;https://betql.co/nba&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot; data-saferedirecturl=&quot;https://www.google.com/url?q=https://betql.co/nba&amp;source=gmail&amp;ust=1791989977697000&amp;usg=AOvVaw20M9-3Mq_RdR2E5TqnZvdw&quot;&gt;BetQL&lt;/a&gt; identifies &quot;sharp money&quot; the capital flows belonging to professional syndicates.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Prop Bet Simulation Engines:&lt;/strong&gt; Evaluating individual player performance indicators against prospective defensive matchups allows bettors to evaluate points, rebounds, and assist totals with probabilistic precision.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Exploiting Market Efficiency in the NBA&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Because the modern NBA schedule involves back-to-back sequences, localized travel fatigue, and frequent late-breaking injury updates, lines fluctuate rapidly. Traditional manual analysis often fails to adapt to line changes in real time. The algorithmic structure at &lt;a href=&quot;https://betql.co/nba&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot; data-saferedirecturl=&quot;https://www.google.com/url?q=https://betql.co/nba&amp;source=gmail&amp;ust=1791989977697000&amp;usg=AOvVaw20M9-3Mq_RdR2E5TqnZvdw&quot;&gt;BetQL&lt;/a&gt; continuously retrains its simulation models as new inputs arrive, guaranteeing that projections stay updated prior to tip-off.&lt;/p&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th&gt;
+&lt;p&gt;Feature Metric&lt;/p&gt;
+&lt;/th&gt;
+&lt;th&gt;
+&lt;p&gt;Standard Intuitive Betting&lt;/p&gt;
+&lt;/th&gt;
+&lt;th&gt;
+&lt;p&gt;Algorithmic Execution via BetQL&lt;/p&gt;
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;&lt;strong&gt;Data Processing&lt;/strong&gt;&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;Recency bias &amp; intuitive guesswork&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;Algorithmic analysis of thousands of simulated outcomes&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;&lt;strong&gt;Line Tracking&lt;/strong&gt;&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;Manual comparison across sportsbooks&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;Real-time consensus aggregation &amp; sharp tracking&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;&lt;strong&gt;Edge Detection&lt;/strong&gt;&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;Emotional wagering on favored teams&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;Objective star-rated variance analysis vs. implied probability&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Establishing a Data-Driven Betting Framework&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Integrating quantitative insights into daily betting strategies mitigates operational risk. Utilizing predictive intelligence from platforms like &lt;a href=&quot;https://betql.co/nba&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot; data-saferedirecturl=&quot;https://www.google.com/url?q=https://betql.co/nba&amp;source=gmail&amp;ust=1791989977697000&amp;usg=AOvVaw20M9-3Mq_RdR2E5TqnZvdw&quot;&gt;BetQL&lt;/a&gt; offers sports bettors a systematic path to evaluating market discrepancies across every game on the slate. Utilizing verified statistical modeling ensures every placed wager relies on empirical evidence rather than subjective bias.&lt;/p&gt;
+&lt;p&gt;Some users say: &quot;BetQL has really helped me understand where the value could be with different odds from the bookmakers and is my first choice of sportsbetting tools to find out where I want to bet&quot;&lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 13:48:54 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287621/Optimizing-NBA-Betting-Strategy-With-BetQLs-Predictive-Analytics</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/BetQL_basketballiphone.jpg" />
+   </item>
+   <item>
+      <title>Brad Jones Hired As General Manager Of 76ers&apos; G League Team</title>
+      <link>https://basketball.realgm.com/wiretap/287618/Brad-Jones-Hired-As-General-Manager-Of-76ers-G-League-Team</link>
+      <description>&lt;p&gt;The Delaware Blue Coats, the Philadelphia 76ers&apos; G League affiliate, are hiring Brad Jones as general manager. Jones replaces Ariana Andonian, who left last month to lead the WNBA&apos;s Los Angeles Sparks.&lt;/p&gt;
+&lt;p&gt;Sixers president Mike Gansey and Jameer Nelson, the executive vice president of basketball operations, chose Jones for the job, sources said.&lt;/p&gt;
+&lt;p&gt;Jones has worked in the G League&apos;s New York offices for the past eight years. He handled player contracts and transactions, basketball operations, basketball affairs and player personnel.&lt;/p&gt;
+&lt;p&gt;Jones started his career with the Orlando Magic while Nelson was playing there. He began as an intern and rose to a spot on the team&apos;s video and personnel staff.&lt;/p&gt;
+&lt;p&gt;Delaware finished 18-18 last season. &lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 10:33:00 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287618/Brad-Jones-Hired-As-General-Manager-Of-76ers-G-League-Team</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_philadelphiasixers.jpg" />
+   </item>
+   <item>
+      <title>Dylan Cardwell Out At Least 2 Weeks With Calf Injury</title>
+      <link>https://basketball.realgm.com/wiretap/287624/Dylan-Cardwell-Out-At-Least-2-Weeks-With-Calf-Injury</link>
+      <description>&lt;p&gt;Dylan Cardwell will miss at least the next two weeks with a calf injury, the Sacramento Kings announced on Tuesday.&lt;/p&gt;
+&lt;p&gt;Cardwell averaged 5.4 points and 7.5 rebounds last season.&lt;/p&gt;
+&lt;p&gt;The Kings are already &lt;a href=&quot;https://basketball.realgm.com/wiretap/287593/Maxime-Raynaud-Out-At-Least-Two-Weeks-Due-To-Knee-Injury&quot;&gt;without Maxime Raynaud&lt;/a&gt; for two weeks due to a knee injury. &lt;/p&gt;</description>
+      <pubDate>Wed, 14 Oct 2026 01:15:51 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287624/Dylan-Cardwell-Out-At-Least-2-Weeks-With-Calf-Injury</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/Cardwell_Dylan_sac_260116.jpg" />
+   </item>
+   <item>
+      <title>Raptors Waive Chucky Hepburn From Two-Way Deal; Sign Jamarion Sharp To Camp Contract</title>
+      <link>https://basketball.realgm.com/wiretap/287614/Raptors-Waive-Chucky-Hepburn-From-Two-Way-Deal;-Sign-Jamarion-Sharp-To-Camp-Contract</link>
+      <description>&lt;p&gt;The Toronto Raptors waived guard Chucky Hepburn from his two-way contract. Toronto then filled their open roster spot by signing center Jamarion Sharp to an Exhibit 10 contract.&lt;/p&gt;
+&lt;p&gt;Sharp was briefly signed to a two-way contract with the LA Clippers earlier in this offseason. The 7-foot-5 center spent last season with the Texas Legends of the G League. In 39 games, Sharp averaged 7.7 points, 7.3 rebounds and 3.9 blocks per game.&lt;/p&gt;
+&lt;p&gt;Sharp is expected to compete with Nate Bittle, Nimari Burnett, Tyson Degenhart and Tyreke Key for the Raptors now open two-way spot.&lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 08:24:46 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287614/Raptors-Waive-Chucky-Hepburn-From-Two-Way-Deal;-Sign-Jamarion-Sharp-To-Camp-Contract</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_torontoraptors.jpg" />
+   </item>
+   <item>
+      <title>Kings Sign Damari Monsanto, Aaron Nkrumah To Exhibit 10 Contracts</title>
+      <link>https://basketball.realgm.com/wiretap/287616/Kings-Sign-Damari-Monsanto-Aaron-Nkrumah-To-Exhibit-10-Contracts</link>
+      <description>&lt;p&gt;The Sacramento Kings have signed wings Damari Monsanto and Aaron Nkrumah to Exhibit 10 contract. Monsanto and Nkrumah may be competing for the Kings open two-way spot. If neither lands a two-way deal, both players are expected to join the Stockton Kings for the G League season.&lt;/p&gt;
+&lt;p&gt;Monsanto played in 45 combined G League games last season with the Delaware Blue Coats, Rio Grande Valley Vipers and Capital City Go-Go. The 6-foot-6 wing averaged 9.6 points on 44/43/83 shooting splits.&lt;/p&gt;
+&lt;p&gt;Nkrumah went undrafted out of Tennessee State at the 2026 NBA Draft. The 6-foot-6 wing averaged 17.7 points, 5.5 rebounds, 3.0 assists and 2.8 steals as a senior for the Tigers last season.&lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 08:55:09 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287616/Kings-Sign-Damari-Monsanto-Aaron-Nkrumah-To-Exhibit-10-Contracts</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_sacramentokings.jpg" />
+   </item>
+   <item>
+      <title>Zach Cleveland, Grizzlies Sign Exhibit 10 Contract</title>
+      <link>https://basketball.realgm.com/wiretap/287615/Zach-Cleveland-Grizzlies-Sign-Exhibit-10-Contract</link>
+      <description>&lt;p&gt;The Memphis Grizzlies have signed forward Zach Cleveland to an Exhibit 10 contract. Following the NBA preseason, Cleveland is expected to join the Memphis Hustle for the G League season.&lt;/p&gt;
+&lt;p&gt;Cleveland went undrafted out of Liberty at the 2026 NBA Draft. The 6-foot-7 forward averaged 11.9 points, 7.6 rebounds, 6.8 assists, 1.3 steals and 1.3 blocks per game as a senior for the Flames.&lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 08:28:32 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287615/Zach-Cleveland-Grizzlies-Sign-Exhibit-10-Contract</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_memphisgrizzlies.jpg" />
+   </item>
+   <item>
+      <title>KJ Simpson Nearing Deal With Turkish Club Galatasaray</title>
+      <link>https://basketball.realgm.com/wiretap/287617/KJ-Simpson-Nearing-Deal-With-Turkish-Club-Galatasaray</link>
+      <description>&lt;p&gt;Free agent point guard K.J. Simpson is expected to join Turkish club Galatasaray. Simpson and Galatasaray are expected to sign a deal in the coming days.&lt;/p&gt;
+&lt;p&gt;The Denver Nuggets recently waived Simpson from his two-way contract. The Nuggets were forced to waive Simpson when they added point guard Ryan Nembhard on a two-way deal.&lt;/p&gt;
+&lt;p&gt;Simpson has appeared in 56 NBA games over two seasons with the Nuggets and Charlotte Hornets. The 6-foot-2 point guard has averaged 6.7 points, 2.6 rebounds and 2.8 assists in NBA games.&lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 09:05:04 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287617/KJ-Simpson-Nearing-Deal-With-Turkish-Club-Galatasaray</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/Logo_RealGM_Basketball.jpg" />
+   </item>
+   <item>
+      <title>Kings Waive Damari Monsanto, Aaron Nkrumah</title>
+      <link>https://basketball.realgm.com/wiretap/287631/Kings-Waive-Damari-Monsanto-Aaron-Nkrumah</link>
+      <description>&lt;p&gt;The Sacramento Kings have waived wings Damari Monsanto and Aaron Nkrumah. Sacramento had signed Monsanto and Nkrumah to non-guaranteed Exhibit 10 contracts earlier in the week.&lt;/p&gt;
+&lt;p&gt;Both Monsanto and Nkrumah are expected to join the Stockton Kings for the upcoming G League season.&lt;/p&gt;</description>
+      <pubDate>Wed, 14 Oct 2026 10:08:39 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287631/Kings-Waive-Damari-Monsanto-Aaron-Nkrumah</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_sacramentokings.jpg" />
+   </item>
+   <item>
+      <title>Jazz Waive Mohamed Wague</title>
+      <link>https://basketball.realgm.com/wiretap/287630/Jazz-Waive-Mohamed-Wague</link>
+      <description>&lt;p&gt;The Utah Jazz have waived center Mohamed Wague. Utah had signed Wague to a non-guaranteed Exhibit 10 contract earlier this offseason.&lt;/p&gt;
+&lt;p&gt;Wague is expected to join the Salt Lake City Stars for the upcoming G League season.&lt;/p&gt;</description>
+      <pubDate>Wed, 14 Oct 2026 10:06:51 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287630/Jazz-Waive-Mohamed-Wague</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_utahjazz.jpg" />
+   </item>
+   <item>
+      <title>Hawks Waive Isaac McKneely</title>
+      <link>https://basketball.realgm.com/wiretap/287629/Hawks-Waive-Isaac-McKneely</link>
+      <description>&lt;p&gt;The Atlanta Hawks waived guard Isaac McKneely. Atlanta had signed McKneely to a non-guaranteed Exhibit 10 training camp contract.&lt;/p&gt;
+&lt;p&gt;McKneely is expected to join the College Park Skyhawks for the upcoming G League season.&lt;/p&gt;</description>
+      <pubDate>Wed, 14 Oct 2026 10:04:19 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287629/Hawks-Waive-Isaac-McKneely</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_atlantahawks.jpg" />
+   </item>
+   <item>
+      <title>Thunder Guard Otega Oweh Suffers Apparently Serious Leg Injury</title>
+      <link>https://basketball.realgm.com/wiretap/287628/Thunder-Guard-Otega-Oweh-Suffers-Apparently-Serious-Leg-Injury</link>
+      <description>&lt;p&gt;Oklahoma City Thunder rookie guard Otega Oweh suffered an apparently serious right leg injury during the team&apos;s preseason game on Tuesday. Oweh went down on a non-contact play in overtime of the Thunder&apos;s preseason victory over the Atlanta Hawks.&lt;/p&gt;
+&lt;p&gt;Oweh immediately reached for the back of his right leg and had to be helped off the floor. The Thunder have not confirmed the extent of the injury, but the mechanism and reaction are consistent with a torn Achilles&apos; tendon.&lt;/p&gt;
+&lt;p&gt;Oklahoma City selected Oweh with the 41st pick of the 2026 NBA Draft. The 6-foot-4 guard signed a two-way contract with the Thunder earlier this offseason.&lt;/p&gt;</description>
+      <pubDate>Wed, 14 Oct 2026 09:26:59 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287628/Thunder-Guard-Otega-Oweh-Suffers-Apparently-Serious-Leg-Injury</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_oklahomacitythunder.jpg" />
+   </item>
+   <item>
+      <title>Spurs Waive RJ Davis</title>
+      <link>https://basketball.realgm.com/wiretap/287627/Spurs-Waive-RJ-Davis</link>
+      <description>&lt;p&gt;The San Antonio Spurs waived RJ Davis on Tuesday.&lt;/p&gt;
+&lt;p&gt;Davis opened training camp with the team.&lt;/p&gt;
+&lt;p&gt;Davis, who was on an Exhibit 10 deal, is likely to join the Austin Spurs in the G League.&lt;/p&gt;</description>
+      <pubDate>Wed, 14 Oct 2026 01:28:38 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287627/Spurs-Waive-RJ-Davis</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_sanantoniospurs.jpg" />
+   </item>
+   <item>
+      <title>Nuggets Sign-And-Waive Pedro Bradshaw</title>
+      <link>https://basketball.realgm.com/wiretap/287626/Nuggets-Sign-And-Waive-Pedro-Bradshaw</link>
+      <description>&lt;p&gt;The Denver Nuggets signed-and-waived Pedro Bradshaw on Tuesday, reported Keith Smith of Spotrac.&lt;/p&gt;
+&lt;p&gt;Bradshaw played with the Maine Celtics last season.&lt;/p&gt;
+&lt;p&gt;The move is designed to get Bradshaw to the Grand Rapids Gold for the upcoming season. &lt;/p&gt;</description>
+      <pubDate>Wed, 14 Oct 2026 01:26:23 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287626/Nuggets-Sign-And-Waive-Pedro-Bradshaw</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_denvernuggets.jpg" />
+   </item>
+   <item>
+      <title>Mavs Sign Jorge Diaz-Graham To Exhibit 10 Deal; Waive Chris Mantis, Darin Green Jr.</title>
+      <link>https://basketball.realgm.com/wiretap/287625/Mavs-Sign-Jorge-Diaz-Graham-To-Exhibit-10-Deal;-Waive-Chris-Mantis-Darin-Green-Jr</link>
+      <description>&lt;p&gt;The Dallas Mavericks signed Jorge Diaz-Graham to an Exhibit 10 contract on Tuesday.&lt;/p&gt;
+&lt;p&gt;Diaz-Graham started three games for the Mavs during Summer League.&lt;/p&gt;
+&lt;p&gt;The team also waived Chris Mantis and Darin Green Jr.&lt;/p&gt;
+&lt;p&gt;The Mavs previously &lt;a href=&quot;https://basketball.realgm.com/wiretap/287610/Mavs-Sign-Matt-Cross-To-Training-Camp-Deal&quot;&gt;signed Matt Cross&lt;/a&gt; to a training camp deal on Monday.&lt;/p&gt;</description>
+      <pubDate>Wed, 14 Oct 2026 01:23:30 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287625/Mavs-Sign-Jorge-Diaz-Graham-To-Exhibit-10-Deal;-Waive-Chris-Mantis-Darin-Green-Jr</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_dallasmavericks.jpg" />
+   </item>
+   <item>
+      <title>Clippers Waive Yuki Kawamura</title>
+      <link>https://basketball.realgm.com/wiretap/287612/Clippers-Waive-Yuki-Kawamura</link>
+      <description>&lt;p&gt;The Los Angeles Clippers waived Yuki Kawamura on Monday night. &lt;/p&gt;
+&lt;p&gt;Kawamura, who was signed to an Exhibit 10 deal, could join the G League&apos;s San Diego Clippers.&lt;/p&gt;
+&lt;p&gt;Kawamura averaged 3.4 points and 2.6 assists for the Bulls last season.&lt;/p&gt;
+&lt;p&gt;The Clippers now have 20 players on their preseason roster. &lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 01:21:53 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287612/Clippers-Waive-Yuki-Kawamura</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/Kawakurma_Yuki_chi_260109.jpg" />
+   </item>
+   <item>
+      <title>Nuggets Waive Lonnie Walker IV</title>
+      <link>https://basketball.realgm.com/wiretap/287611/Nuggets-Waive-Lonnie-Walker-IV</link>
+      <description>&lt;p&gt;The Denver Nuggets waived Lonnie Walker IV on Monday.&lt;/p&gt;
+&lt;p&gt;Walker signed an Exhibit 9 contract with the Nuggets in September.&lt;/p&gt;
+&lt;p&gt;It was also announced that Walker &lt;a href=&quot;https://x.com/MiskoRaznatovic/status/2109735798006567010&quot;&gt;signed with agent Misko Raznatovic&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;The Nuggets now have an opening on their preseason roster. &lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 01:18:36 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287611/Nuggets-Waive-Lonnie-Walker-IV</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/Walker_Lonnie_phi_250227.jpg" />
+   </item>
+   <item>
+      <title>Mavs Sign Matt Cross To Training Camp Deal</title>
+      <link>https://basketball.realgm.com/wiretap/287610/Mavs-Sign-Matt-Cross-To-Training-Camp-Deal</link>
+      <description>&lt;p&gt;The Dallas Mavericks signed Matt Cross to a training camp deal on Monday.&lt;/p&gt;
+&lt;p&gt;Cross averaged 6.1 points and 6.8 rebounds with the G League&apos;s Texas Legends last season.&lt;/p&gt;
+&lt;p&gt;The Mavs now have 21 players on the roster. &lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 01:15:53 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287610/Mavs-Sign-Matt-Cross-To-Training-Camp-Deal</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_dallasmavericks.jpg" />
+   </item>
+   <item>
+      <title>Pelicans Waive Caleb Houstan</title>
+      <link>https://basketball.realgm.com/wiretap/287609/Pelicans-Waive-Caleb-Houstan</link>
+      <description>&lt;p&gt;The New Orleans Pelicans waived Caleb Houstan on Monday.&lt;/p&gt;
+&lt;p&gt;Houstan signed an Exhibit 9 contract with the Pelicans in early August.&lt;/p&gt;
+&lt;p&gt;Houstan averaged 2.3 points per game last season with the Hawks. &lt;/p&gt;</description>
+      <pubDate>Tue, 13 Oct 2026 01:13:26 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287609/Pelicans-Waive-Caleb-Houstan</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_neworleanspelicans.jpg" />
+   </item>
+   <item>
+      <title>Chris Finch: LaMelo Ball Has Helped Wolves Trade &apos;Moodiness For Giddiness&apos;</title>
+      <link>https://basketball.realgm.com/wiretap/287608/Chris-Finch-LaMelo-Ball-Has-Helped-Wolves-Trade-Moodiness-For-Giddiness</link>
+      <description>&lt;p&gt;Chris Finch said LaMelo Ball has transformed the Minnesota Timberwolves&apos; attitude since arriving in an offseason trade from the Charlotte Hornets. Finch spoke Monday at Madison Square Garden before a preseason game against the New York Knicks.&lt;/p&gt;
+&lt;p&gt;&quot;He&apos;s always in a great mood,&quot; said Finch. &quot;Always comes in smiling. He and Anthony have a shared quality: They&apos;re really hard to stay mad at. And they do some things that you want to get mad at. They have a reflective joy, and I think that&apos;s important. They tease the joy out of each other as practice goes along. So, that kind of adds to the overall spirit of the group, which we really needed.&lt;/p&gt;
+&lt;p&gt;&quot;We referred to ourselves as a moody team in the last couple of years at times, and it&apos;s probably gotten in our way. We&apos;ve traded moodiness for giddiness, so we&apos;ve got to kind of get back to some sort of equilibrium. But it&apos;s been fun to go to work every day so far.&quot;&lt;/p&gt;
+&lt;p&gt;Minnesota acquired Ball from the Charlotte Hornets this summer for Naz Reid, a 2033 first-round pick, three second-round picks and three first-round pick swaps. Finch said team president Tim Connelly had discussed Ball with Charlotte several times over the previous year.&lt;/p&gt;
+&lt;p&gt;Two days earlier, the Wolves sent Julius Randle and the No. 28 pick to the Brooklyn Nets in a three-team deal. Minnesota received an early second-round pick and salary-cap space.&lt;/p&gt;
+&lt;p&gt;Ball helped lead Charlotte to 44 wins last season as he averaged 20.1 points, 7.1 assists and 4.8 rebounds while shooting 36.8% on 10.3 3-point attempts per game.&lt;/p&gt;
+&lt;p&gt;The San Antonio Spurs eliminated Minnesota in six games in the second round last season. Finch said Ball gives the Wolves another player alongside Anthony Edwards who can create and make shots late in games.&lt;/p&gt;</description>
+      <pubDate>Mon, 12 Oct 2026 23:03:13 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287608/Chris-Finch-LaMelo-Ball-Has-Helped-Wolves-Trade-Moodiness-For-Giddiness</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/Ball_Lamelo_min_261009.jpg" />
+   </item>
+   <item>
+      <title>Kentavious Caldwell-Pope Says Chemistry Will Be Key To 76ers&apos; Title Hopes</title>
+      <link>https://basketball.realgm.com/wiretap/287607/Kentavious-Caldwell-Pope-Says-Chemistry-Will-Be-Key-To-76ers-Title-Hopes</link>
+      <description>&lt;p&gt;Kentavious Caldwell-Pope said Monday that the chemistry of the team will determine how far the Philadelphia 76ers go this season. The veteran guard joins a roster built around stars and championship expectations.&lt;/p&gt;
+&lt;p&gt;&quot;Our chemistry is gonna be the biggest part for us,&quot; said Caldwell-Pope. &quot;Us liking each other, being able to be around each other and have fun on and off the court.&quot;&lt;/p&gt;
+&lt;p&gt;Caldwell-Pope signed a one-year, $3.9 million deal with Philadelphia after reaching a buyout with the Memphis Grizzlies in July.&lt;/p&gt;
+&lt;p&gt;Caldwell-Pope has experience joining contenders as he won titles with LeBron James and the Los Angeles Lakers in 2020, and again with the Denver Nuggets in 2023.&lt;/p&gt;
+&lt;p&gt;Caldwell-Pope said the Sixers have already started bonding through team dinners, which will increase as the season goes on.&lt;/p&gt;
+&lt;p&gt;&quot;We have so much talent from one through 12, or 15, however many guys we&apos;ve got, and it&apos;s talent everywhere,&quot; said Caldwell-Pope. &quot;So, I think our biggest thing is just communicating with each other, learning each other&apos;s tendencies, and just trying to implement that on and off the court.&quot;&lt;/p&gt;
+&lt;p&gt;Caldwell-Pope had surgery in February to correct a misaligned right pinkie and missed the final 31 games. Before the injury, he averaged 8.4 points, 2.7 assists and 2.5 rebounds in 21.3 minutes over 51 games for Memphis.&lt;/p&gt;
+&lt;p&gt;Those were his lowest scoring and minutes averages since his rookie season. His 31.6% shooting from 3-point range was the second-worst mark of his career.&lt;/p&gt;</description>
+      <pubDate>Mon, 12 Oct 2026 22:25:35 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287607/Kentavious-Caldwell-Pope-Says-Chemistry-Will-Be-Key-To-76ers-Title-Hopes</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_philadelphiasixers.jpg" />
+   </item>
+   <item>
+      <title>Kristaps Porzingis Expected To Return To Warriors Facility Tuesday</title>
+      <link>https://basketball.realgm.com/wiretap/287606/Kristaps-Porzingis-Expected-To-Return-To-Warriors-Facility-Tuesday</link>
+      <description>&lt;p&gt;Kristaps Porzingis is expected to return to the Golden State Warriors&apos; practice facility Tuesday afternoon, coach Steve Kerr said. Porzingis has missed the first two weeks of the preseason while dealing with what the team has called a private health issue.&lt;/p&gt;
+&lt;p&gt;There is no timeline for his return to the court. Porzingis will meet with Rick Celebrini, the team&apos;s lead medical decision-maker, in San Francisco while the Warriors play a preseason game in Las Vegas.&lt;/p&gt;
+&lt;p&gt;Porzingis has stayed in regular contact with Celebrini and the front office during his absence. Team executives have told Kerr and the players to focus on the season rather than his uncertain availability.&lt;/p&gt;
+&lt;p&gt;Porzingis contracted an upper respiratory virus two seasons ago while with the Boston Celtics and he has since spoken in general terms about its lasting effect on his health and his ability to play consistently.&lt;/p&gt;
+&lt;p&gt;Porzingis played just 34 games last season for the Atlanta Hawks and Warriors. Golden State acquired him in February in a trade that sent Jonathan Kuminga to Atlanta.&lt;/p&gt;
+&lt;p&gt;The Warriors re-signed Porzingis to a two-year, $40 million deal this past offseason. The contract allows Golden State to trade him at any time, with only $3 million of next season&apos;s $20 million guaranteed.&lt;/p&gt;
+&lt;p&gt;Without Porzingis, Kerr said he is leaning toward a smaller starting lineup that would feature Stephen Curry, Brandin Podziemski, Gui Santos, Yaxel Lendeborg and Draymond Green.&lt;/p&gt;</description>
+      <pubDate>Mon, 12 Oct 2026 22:22:29 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287606/Kristaps-Porzingis-Expected-To-Return-To-Warriors-Facility-Tuesday</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/Porzingis_Kristaps_gsw_260306.jpg" />
+   </item>
+   <item>
+      <title>Dunc&apos;d On: Podz Extension; Knicks Non-Extensions, Camp News, Blazers Bumbles</title>
+      <link>https://basketball.realgm.com/wiretap/287605/Duncd-On-Podz-Extension;-Knicks-Non-Extensions-Camp-News-Blazers-Bumbles</link>
+      <description>&lt;p&gt;&lt;iframe src=&quot;https://player.simplecast.com/ca8b54b6-72c5-47e6-bce6-3fdbd9fcb19b?dark=false&quot; width=&quot;100%&quot; height=&quot;200px&quot; frameborder=&quot;no&quot; scrolling=&quot;no&quot; seamless=&quot;&quot; data-mce-fragment=&quot;1&quot;&gt;&lt;/iframe&gt;&lt;/p&gt;
+&lt;p&gt;Nate and Danny Leroux discuss Brandin Podziemski&apos;s extension, the Knicks&apos; negotiations with Karl-Anthony Towns and Josh Hart, and the latest developments in the Lakers&apos; ownership dispute. They also examine preseason injuries and rotation decisions around the league, the Spurs&apos; three-guard lineup, NBA expansion and the league&apos;s European plans, and the debate over Portland&apos;s firing of announcer Braiden Bell.&lt;/p&gt;
+&lt;h3&gt;Timestamps&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;0:00 - Brandin Podziemski&apos;s extension and Golden State&apos;s long-term flexibility.&lt;/li&gt;
+&lt;li&gt;7:43 - Karl-Anthony Towns&apos; extension negotiations.&lt;/li&gt;
+&lt;li&gt;13:23 - Josh Hart&apos;s contract situation and the Knicks&apos; roster outlook.&lt;/li&gt;
+&lt;li&gt;15:14 - The Buss siblings&apos; response in the Lakers&apos; ownership dispute.&lt;/li&gt;
+&lt;li&gt;18:01 - Lakers injuries and the competition for starting spots.&lt;/li&gt;
+&lt;li&gt;19:34 - Injury updates around the league.&lt;/li&gt;
+&lt;li&gt;22:56 - Ben Simmons&apos; preseason return and Maxime Raynaud&apos;s injury in Sacramento.&lt;/li&gt;
+&lt;li&gt;24:37 - San Antonio&apos;s injuries and the potential Fox-Castle-Harper starting lineup.&lt;/li&gt;
+&lt;li&gt;29:14 - Utah&apos;s frontcourt injuries and their impact on the rotation.&lt;/li&gt;
+&lt;li&gt;32:02 - Bulls and Hornets injuries, roster moves, and preseason developments.&lt;/li&gt;
+&lt;li&gt;34:28 - Kyrie Irving&apos;s return and Santi Aldama&apos;s injury in Dallas.&lt;/li&gt;
+&lt;li&gt;35:58 - Raptors, Wizards, and 76ers injury updates.&lt;/li&gt;
+&lt;li&gt;38:04 - Jonathan Isaac&apos;s status and Anthony Black&apos;s extension outlook.&lt;/li&gt;
+&lt;li&gt;39:25 - NBA expansion: Las Vegas, Seattle, and the potential timeline.&lt;/li&gt;
+&lt;li&gt;40:56 - NBA Europe and negotiations with the EuroLeague.&lt;/li&gt;
+&lt;li&gt;42:03 - Braiden Bell&apos;s firing: Portland&apos;s decision, the reporting, and accountability in public-facing jobs.&lt;/li&gt;
+&lt;/ul&gt;</description>
+      <pubDate>Mon, 12 Oct 2026 10:44:40 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287605/Duncd-On-Podz-Extension;-Knicks-Non-Extensions-Camp-News-Blazers-Bumbles</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/Podziemski_Brandin_phx_231129.jpg" />
+   </item>
+   <item>
+      <title>Michael Jordan&apos;s 1998 NBA Finals Jersey Sells For Record $14M</title>
+      <link>https://basketball.realgm.com/wiretap/287604/Michael-Jordans-1998-NBA-Finals-Jersey-Sells-For-Record-$14M</link>
+      <description>&lt;p&gt;Michael Jordan&apos;s game-worn and autographed jersey from the 1998 NBA Finals has sold privately for $14 million, Hunt Auctions announced Monday. The Pennsylvania-based auction house called it the highest price ever paid for basketball memorabilia.&lt;/p&gt;
+&lt;p&gt;The buyer is Miami real estate investor Ron Firman. Jordan wore the red road jersey in Game 2 on June 5, 1998, when the Chicago Bulls beat the Utah Jazz to even the series.&lt;/p&gt;
+&lt;p&gt;&quot;While Michael Jordan&apos;s importance within the sports memorabilia marketplace has long been established it has now escalated to an elite asset class more typically reserved for iconic works of art,&quot; said Hunt Auctions president David Hunt. &quot;We are very pleased to have been able to facilitate this historic sale which serves as another benchmark for our industry.&quot;&lt;/p&gt;
+&lt;p&gt;Chicago won the series in six games, giving Jordan his sixth and final NBA title. The 1997-98 season was chronicled in the 2020 documentary series &quot;The Last Dance.&quot;&lt;/p&gt;
+&lt;p&gt;The sale ranks as the second-highest known price for a game-worn jersey. Babe Ruth&apos;s &quot;called shot&quot; jersey from the 1932 World Series sold for $24.12 million in 2024.&lt;/p&gt;
+&lt;p&gt;At least three Jordan jerseys from the 1998 Finals have now topped $10 million. A Game 1 jersey sold for about $10.1 million in 2022, and a Game 3 jersey brought about $12.3 million last month.&lt;/p&gt;
+&lt;p&gt;&quot;Michael Jordan was an incredibly talented player who is admired around the world,&quot; said Firman. &quot;I&apos;m very excited about the purchase.&quot;&lt;/p&gt;
+&lt;p&gt;A private collector bought the jersey from the Bulls in 2003. It had changed hands only once since then.&lt;/p&gt;
+&lt;p&gt;Interest in items from Jordan&apos;s final Bulls season remains strong. The Air Jordan sneakers he wore in the same Game 2 sold at Sotheby&apos;s for $2.2 million in 2023, a record for sneakers at the time.&lt;/p&gt;</description>
+      <pubDate>Mon, 12 Oct 2026 09:54:12 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287604/Michael-Jordans-1998-NBA-Finals-Jersey-Sells-For-Record-$14M</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/Jordan_Michael_chi_980514.jpg" />
+   </item>
+   <item>
+      <title>Sixers Unlikely To Replace Ariel Hukporti Before December</title>
+      <link>https://basketball.realgm.com/wiretap/287603/Sixers-Unlikely-To-Replace-Ariel-Hukporti-Before-December</link>
+      <description>&lt;p&gt;The Philadelphia 76ers are unlikely to sign a replacement for Ariel Hukporti before early December, according to Marc Stein and Jake Fischer of The Stein Line.&lt;/p&gt;
+&lt;p&gt;Hukporti &lt;a href=&quot;https://basketball.realgm.com/wiretap/287542/Ariel-Hukporti-Suffers-Torn-Achilles-Tendon&quot;&gt;suffered a torn Achilles&lt;/a&gt; last Monday.&lt;/p&gt;
+&lt;p&gt;With the team just $1.8 million below the first apron, minimum contracts in early December become pro-rated and would no longer push the payroll past the apron.&lt;/p&gt;
+&lt;p&gt;The Sixers are already without Adem Bona and Tacko Fall due to injuries. &lt;/p&gt;</description>
+      <pubDate>Mon, 12 Oct 2026 01:42:42 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287603/Sixers-Unlikely-To-Replace-Ariel-Hukporti-Before-December</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/nba_philadelphiasixers.jpg" />
+   </item>
+   <item>
+      <title>Knicks To Prioritize Re-Signing Karl-Anthony Towns Over Josh Hart, Could Trade Deuce McBride</title>
+      <link>https://basketball.realgm.com/wiretap/287602/Knicks-To-Prioritize-Re-Signing-Karl-Anthony-Towns-Over-Josh-Hart-Could-Trade-Deuce-McBride</link>
+      <description>&lt;p&gt;The New York Knicks will prioritize re-signing Karl-Anthony Towns over Josh Hart, sources told Marc Stein and Jake Fischer of The Stein Line.&lt;/p&gt;
+&lt;p&gt;The team recently announced that they will no longer hold contract discussions with Towns or Hart until later this season.&lt;/p&gt;
+&lt;p&gt;It was reported last week that Towns and the Knicks &lt;a href=&quot;https://basketball.realgm.com/wiretap/287562/Karl-Anthony-Towns-Knicks-Remain-Far-Apart-On-Extension&quot;&gt;remain far apart&lt;/a&gt; on agreeing to an extension.&lt;/p&gt;
+&lt;p&gt;The Knicks hold a $22.4 million team option on Hart next offseason.&lt;/p&gt;
+&lt;p&gt;Stein adds that rival teams expect Deuce McBride to eventually become available in trade talks this season. &lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;</description>
+      <pubDate>Mon, 12 Oct 2026 01:30:55 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287602/Knicks-To-Prioritize-Re-Signing-Karl-Anthony-Towns-Over-Josh-Hart-Could-Trade-Deuce-McBride</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/Towns_Karlanthony_nyk_260605.jpg" />
+   </item>
+   <item>
+      <title>Ahmed Nur Commits To Ole Miss For 2027 Class</title>
+      <link>https://basketball.realgm.com/wiretap/287601/Ahmed-Nur-Commits-To-Ole-Miss-For-2027-Class</link>
+      <description>&lt;p&gt;Ahmed Nur announced his commitment to Ole Miss for the class of 2027 over the weekend.&lt;/p&gt;
+&lt;p&gt;Nur, ranked No. 19 in the SC Next 100, is Ole Miss&apos; highest-ranked recruit in at least 20 years.&lt;/p&gt;
+&lt;p&gt;&quot;I believe it is the best fit for me and my play style. I believe I will flourish in their system,&quot; Nur told ESPN. &quot;Coach [Chris] Beard has been consistent in recruiting me and making it known I&apos;m going to be a priority in the program.&quot;&lt;/p&gt;
+&lt;p&gt;Nur is the program&apos;s first commit for the 2027 class. &lt;/p&gt;</description>
+      <pubDate>Mon, 12 Oct 2026 01:22:11 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287601/Ahmed-Nur-Commits-To-Ole-Miss-For-2027-Class</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/Logo_OleMiss.jpg" />
+   </item>
+   <item>
+      <title>Location of Dream Home Games For WNBA Finals Still Not Determined</title>
+      <link>https://basketball.realgm.com/wiretap/287600/Location-of-Dream-Home-Games-For-WNBA-Finals-Still-Not-Determined</link>
+      <description>&lt;p&gt;The location for the Atlanta Dream&apos;s home games for the WNBA Finals still has yet to be determined.&lt;/p&gt;
+&lt;p&gt;The Dream currently play at Gateway Center Arena at College Park, which has a capacity of 3500 fans. The team have played all three playoff games this year at State Farm Arena, which has a capacity of 17,044 fans.&lt;/p&gt;
+&lt;p&gt;The Dream are scheduled to host the Valkyries for Games 3, 4, and 6 (if necessary) on October 22, 24, and 29.&lt;/p&gt;
+&lt;p&gt;State Farm Arena is currently booked on all three dates, including a concert and two Hawks home games. &lt;/p&gt;
+&lt;p&gt;The Valkyries will host their home games at the Chase Center, which has a capacity of 18,064. &lt;/p&gt;</description>
+      <pubDate>Mon, 12 Oct 2026 01:11:35 EDT</pubDate>
+      <guid>https://basketball.realgm.com/wiretap/287600/Location-of-Dream-Home-Games-For-WNBA-Finals-Still-Not-Determined</guid>
+      <media:thumbnail url="https://basketball.realgm.com/images/nba/4.2/wiretap/photos/2006/wnba_atlantadream.jpg" />
+   </item>
+   <item>
+      <title>Get Your Latest NBA News From RealGM's Basketball Wiretap</title>
+      <link>https://basketball.realgm.com/news</link>
+      <description>Get all the latest news and happenings from around the NBA with RealGM's Basketball Wiretap.</description>
+      <pubDate>Wed, 14 Oct 2026 11:17:01 EDT</pubDate>
+      <guid>https://basketball.realgm.com/news</guid>
+   </item>
+   </channel>
+</rss>

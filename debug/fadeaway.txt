@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:media="http://search.yahoo.com/mrss/"
+>
+
+<channel>
+	<title>Fadeaway World</title>
+	<atom:link href="https://fadeawayworld.net/feed" rel="self" type="application/rss+xml" />
+	<link>https://fadeawayworld.net</link>
+	<description></description>
+	<lastBuildDate>Wed, 14 Oct 2026 15:14:57 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.0.2</generator>
+
+<image>
+	<url>https://fadeawayworld.net/wp-content/uploads/2025/09/cropped-fw-favicon-32x32.png</url>
+	<title>Fadeaway World</title>
+	<link>https://fadeawayworld.net</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Nick Young Accuses NBA Of Burying Footage Of His Dunk On LeBron James</title>
+		<link>https://fadeawayworld.net/nba-media/nick-young-accuses-nba-of-burying-footage-of-his-dunk-on-lebron-james</link>
+					<comments>https://fadeawayworld.net/nba-media/nick-young-accuses-nba-of-burying-footage-of-his-dunk-on-lebron-james#respond</comments>
+		
+		<dc:creator><![CDATA[Vishwesha Kumar]]></dc:creator>
+		<pubDate>Wed, 14 Oct 2026 15:14:57 +0000</pubDate>
+				<category><![CDATA[NBA News & Media]]></category>
+		<category><![CDATA[Cleveland Cavaliers Archive]]></category>
+		<category><![CDATA[LeBron James]]></category>
+		<category><![CDATA[Nick Young]]></category>
+		<category><![CDATA[Washington Wizards Archive]]></category>
+		<guid isPermaLink="false">https://fadeawayworld.net/?p=206031</guid>
+
+					<description><![CDATA[<img width="1024" height="743" src="https://fadeawayworld.net/wp-content/uploads/2026/10/Nick-Young-1024x743.jpg" class="attachment-large size-large wp-post-image" alt="Washington Wizards shooting guard Nick Young during game against the Phoenix Suns at the US Airways Center. The Suns defeated the Wizards 104-88." style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" />Nick Young claims the NBA deliberately downplayed his rookie-season dunk on LeBron James to protect the superstar's image.]]></description>
+										<content:encoded><![CDATA[<img width="1024" height="743" src="https://fadeawayworld.net/wp-content/uploads/2026/10/Nick-Young-1024x743.jpg" class="attachment-large size-large wp-post-image" alt="Washington Wizards shooting guard Nick Young during game against the Phoenix Suns at the US Airways Center. The Suns defeated the Wizards 104-88." style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" /><p>Former NBA champion <a href="https://fadeawayworld.net/tag/nick-young" target="_blank" rel="noopener">Nick Young</a> has accused the league of purposely hiding footage of a spectacular dunk he threw down on <a href="https://fadeawayworld.net/tag/lebron-james" target="_blank" rel="noopener">LeBron James</a> during his rookie season. The former <a href="https://fadeawayworld.net/nba/washington-wizards" target="_blank" rel="noopener">Washington Wizards</a> star thinks the highlight deserved a lot more recognition, and he suggested the NBA was protecting the image of its biggest superstar.</p>
+<p><a href="https://x.com/ClubShayShay/status/2110154867872563276?s=20" target="_blank" rel="nofollow noopener">During a recent appearance on the Club Shay Shay podcast</a>, Young spoke about dunking on LeBron in the 2007-08 season when the four-time MVP was playing for the <a href="https://fadeawayworld.net/nba/cleveland-cavaliers" target="_blank" rel="noopener">Cleveland Cavaliers</a>.</p>
+<p><em>&#8220;I dunked on LeBron my rookie year, and they did the tape too. That&#8217;s when they was hiding the tapes. He tried to do the same thing, but I was younger then. So I was playing defense on him. He looked me up like, &#8216;What&#8217;s this rookie doing on me?&#8217; Shot the three, it was a long rebound, got it. Coast to coast. Tried to do that chase-down.&#8221;</em></p>
+<p><em>&#8220;I was only, I was what, top 10? I thought I was going to be number one because of LeBron. It was number 10. I should&#8217;ve got number one. It was a random night. It was like a Wednesday. It&#8217;s LeBron getting dunked on, but it was around when they was hiding LeBron tapes.&#8221;</em></p>
+<p><em>&#8220;He got dunked on by Jordan Crawford, and they hid the tape, and I was the second one, so it was like, he can&#8217;t keep getting the bears. It&#8217;s the face. It&#8217;s our future, so.&#8221;</em></p>
+<p>The former Wizards star also connected his experience to another controversial incident involving LeBron and former NBA guard Jordan Crawford. Young was referring to the infamous 2009 incident at the LeBron James Skills Academy, where Crawford, who was a college basketball player, <a href="https://fadeawayworld.net/nba/jordan-crawford-nike-owe-500-dunking-lebron-james" target="_blank" rel="noopener">reportedly dunked on LeBron during a pickup game</a>.</p>
+<p>The incident became a big controversy because Nike representatives confiscated recordings of the play from people who had filmed it. Footage eventually surfaced online, which generated a lot of attention and fueled speculation that LeBron&#8217;s representatives were attempting to protect his reputation.</p>
+<p>But there is an important distinction between Crawford&#8217;s incident and Young&#8217;s allegation.</p>
+<p>While the confiscation of footage of the 2009 basketball play has been widely reported, Young hasn&#8217;t provided any evidence that the NBA suppressed his dunk. In fact, his own recollection suggests that the highlight was publicly featured, even if only at number 10, rather than the top position, which he thought it deserved.</p>
+<p>Nevertheless, Young&#8217;s frustration is quite understandable from his point of view.</p>
+<p>LeBron was basketball&#8217;s biggest star in the 2007-08 season, having led the Cavaliers to the 2007 NBA Finals. His signature chase-down block had become an important part of his reputation as an extraordinary athlete and defender.</p>
+<p>For a rookie Young, successfully finishing a dunk with James chasing him would have been a significant achievement.</p>
+<p>Nick Young eventually had a successful 12-year NBA career, playing for several teams, including the Wizards, <a href="https://fadeawayworld.net/nba/los-angeles-lakers" target="_blank" rel="noopener">Los Angeles Lakers</a>, and <a href="https://fadeawayworld.net/nba/golden-state-warriors" target="_blank" rel="noopener">Golden State Warriors</a>. He won an NBA championship with the Warriors in 2018 as he became a popular figure for his wild personality and scoring ability.</p>
+<p>LeBron, meanwhile, has developed into one of the greatest players in NBA history, winning four NBA championships, four NBA MVP awards, and four Finals MVP awards, and establishing numerous all-time records.</p>
+<p>Being dunked on occasionally is hardly unusual for a player who is constantly challenging shots at the rim, but Young thinks his memorable moment against LeBron deserved a much bigger spotlight.</p>
+<p>Whether the NBA intentionally minimized the highlight is yet to be proven, but nearly two decades later, Nick Young still hasn&#8217;t forgotten what he calls an overlooked moment from his rookie season.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://fadeawayworld.net/nba-media/nick-young-accuses-nba-of-burying-footage-of-his-dunk-on-lebron-james/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<media:content url="https://fadeawayworld.net/wp-content/uploads/2026/10/Nick-Young-scaled.jpg" medium="image" type="image/jpeg"><media:title>Nick Young Accuses NBA Of Burying Footage Of His Dunk On LeBron James</media:title></media:content><enclosure url="https://fadeawayworld.net/wp-content/uploads/2026/10/Nick-Young-scaled.jpg" length="399355" type="image/jpeg" /><media:thumbnail url="https://fadeawayworld.net/wp-content/uploads/2026/10/Nick-Young-scaled.jpg" />	</item>
+		<item>
+		<title>DeMarcus Cousins Claims No White Player In NBA History Has Had Cooper Flagg&#8217;s Skill Set</title>
+		<link>https://fadeawayworld.net/nba/dallas-mavericks/demarcus-cousins-claims-no-white-player-in-nba-history-has-had-cooper-flaggs-skill-set</link>
+					<comments>https://fadeawayworld.net/nba/dallas-mavericks/demarcus-cousins-claims-no-white-player-in-nba-history-has-had-cooper-flaggs-skill-set#respond</comments>
+		
+		<dc:creator><![CDATA[Gautam Varier]]></dc:creator>
+		<pubDate>Wed, 14 Oct 2026 15:08:22 +0000</pubDate>
+				<category><![CDATA[Dallas Mavericks News & Analysis]]></category>
+		<category><![CDATA[Cooper Flagg]]></category>
+		<category><![CDATA[Demarcus Cousins]]></category>
+		<category><![CDATA[Giannis Antetokounmpo]]></category>
+		<category><![CDATA[Kevin Durant]]></category>
+		<category><![CDATA[LeBron James]]></category>
+		<guid isPermaLink="false">https://fadeawayworld.net/?p=206018</guid>
+
+					<description><![CDATA[<img width="1024" height="689" src="https://fadeawayworld.net/wp-content/uploads/2026/10/cooper-flagg-mavericks-lakers-nba-1024x689.jpg" class="attachment-large size-large wp-post-image" alt="Dallas, Texas, USA; Dallas Mavericks forward Cooper Flagg (32) shoots during the first half against the Los Angeles Lakers at American Airlines Center. Mandatory Credit: Kevin Jairaj-Imagn Images" style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" />DeMarcus Cousins believes Cooper Flagg is a mixture of Kevin Durant, LeBron James, and Giannis Antetokounmpo, but people can't see it because he's white.]]></description>
+										<content:encoded><![CDATA[<img width="1024" height="689" src="https://fadeawayworld.net/wp-content/uploads/2026/10/cooper-flagg-mavericks-lakers-nba-1024x689.jpg" class="attachment-large size-large wp-post-image" alt="Dallas, Texas, USA; Dallas Mavericks forward Cooper Flagg (32) shoots during the first half against the Los Angeles Lakers at American Airlines Center. Mandatory Credit: Kevin Jairaj-Imagn Images" style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" loading="lazy" /><p><a href="https://fadeawayworld.net/nba/dallas-mavericks" target="_blank" rel="noopener">Dallas Mavericks</a> forward <a href="https://fadeawayworld.net/tag/cooper-flagg" target="_blank" rel="noopener">Cooper Flagg</a> had a rookie season to remember, and he carried on from where he left off in preseason against the <a href="https://fadeawayworld.net/nba/houston-rockets" target="_blank" rel="noopener">Houston Rockets</a> in Macau. Flagg certainly made a strong impression on former NBA star <a href="https://fadeawayworld.net/tag/demarcus-cousins" target="_blank" rel="noopener">DeMarcus Cousins</a>, who couldn&#8217;t stop singing his praises on <a href="https://www.youtube.com/watch?v=YH1QiH2_6ZM&amp;t=4005s" target="_blank" rel="nofollow noopener"><em>Gil&#8217;s Arena</em></a>.</p>
+<p><em>&#8220;He the real deal,&#8221; Cousins said. &#8220;&#8230; He damn near like a mixture of [Kevin Durant], [LeBron James], and Giannis [Antetokounmpo] all in one player.&#8221;</em></p>
+<p>Cousins got some pushback for this from fellow former NBA player <a href="https://fadeawayworld.net/tag/iman-shumpert" target="_blank" rel="noopener">Iman Shumpert</a>, but he wasn&#8217;t backing down. The 36-year-old clarified he isn&#8217;t saying Flagg, who averaged 16.5 points, 5.0 rebounds, 5.0 assists, 1.5 steals, and 1.0 blocks per game against the Rockets, is as good as <a href="https://fadeawayworld.net/tag/kevin-durant" target="_blank" rel="noopener">Kevin Durant</a>, <a href="https://fadeawayworld.net/tag/lebron-james" target="_blank" rel="noopener">LeBron James</a>, or <a href="https://fadeawayworld.net/tag/giannis-antetokounmpo" target="_blank" rel="noopener">Giannis Antetokounmpo</a>, but he is a mixture of them.</p>
+<p><em>&#8220;He&#8217;s also a 6&#8217;11&#8221;, 7-foot big getting downhill, Giannis,&#8221; Cousins said. &#8220;He&#8217;s also able to pass, shoot, dribble, playmake, Bron. He&#8217;s also the tallest wing. He&#8217;s a tall wing. He&#8217;s a tall wing scorer that&#8217;s able to put the ball on the floor and get to spots and shoot over his defenders, Kevin Durant. So, like I said, he&#8217;s a mixture of all three.&#8221;</em></p>
+<p>Shumpert now understood the point Cousins was trying to make. He added, though, that Durant, James, and Antetokounmpo put together would look different.</p>
+<p><em>&#8220;It&#8217;s just white,&#8221; Cousins said. &#8220;That&#8217;s why it&#8217;s hard to see it.&#8221;</em></p>
+<p>Shumpert said Flagg being white isn&#8217;t the reason why. He appeared to be saying he&#8217;d have a similar reaction if three great white players were mentioned, but Cousins cut him off.</p>
+<p><em>&#8220;It ain&#8217;t no white boys doing that,&#8221; Cousins said. &#8220;&#8230; Not like that. Not doing everything like that.&#8221;</em></p>
+<p>Shumpert then brought up the likes of <a href="https://fadeawayworld.net/tag/larry-bird" target="_blank" rel="noopener">Larry Bird</a>, <a href="https://fadeawayworld.net/tag/toni-kukoc" target="_blank" rel="noopener">Toni Kukoc</a>, and <a href="https://fadeawayworld.net/tag/chris-mullin" target="_blank" rel="noopener">Chris Mullin</a>, and Cousins acknowledged they were great players. He made it clear, though, that they can&#8217;t do everything Flagg can. Bird is obviously the best of the bunch here, but Cousins feels he couldn&#8217;t get to the rim the way the 19-year-old can. Good luck trying to change his mind if you disagree.</p>
+<p>Flagg&#8217;s ceiling is certainly very high. He averaged 21.0 points, 6.7 rebounds, 4.5 assists, 1.2 steals, and 0.9 blocks per game in 2025-26 after the Mavericks selected him with the No. 1 pick in the 2025 NBA Draft.</p>
+<p>There was a lot of hype surrounding Flagg, and he lived up to it. He was named ROY after becoming the first rookie since <a href="https://fadeawayworld.net/tag/michael-jordan" target="_blank" rel="noopener">Michael Jordan</a> to lead his team in points, rebounds, assists, and steals.</p>
+<p>ESPN&#8217;s <a href="https://fadeawayworld.net/nba/dallas-mavericks/nba-insider-compares-cooper-flagg-to-lebron-james-says-hell-be-top-five-player-in-the-league-this-season" target="_blank" rel="noopener">Brian Windhorst also compared Flagg to LeBron James as a rookie</a>. Windhorst thinks the former Duke Blue Devil will become a top-five player in the NBA, but just isn&#8217;t sure how quickly that happens.</p>
+<p>This 2026-27 NBA season does seem a bit early for that for Flagg. It&#8217;d be shocking if he&#8217;s in the same conversation as <a href="https://fadeawayworld.net/tag/nikola-jokic" target="_blank" rel="noopener">Nikola Jokic</a>, <a href="https://fadeawayworld.net/tag/shai-gilgeous-alexander" target="_blank" rel="noopener">Shai Gilgeous-Alexander</a>, <a href="https://fadeawayworld.net/tag/victor-wembanyama" target="_blank" rel="noopener">Victor Wembanyama</a>, <a href="https://fadeawayworld.net/tag/luka-doncic" target="_blank" rel="noopener">Luka Doncic</a>, and <a href="https://fadeawayworld.net/tag/anthony-edwards" target="_blank" rel="noopener">Anthony Edwards</a> as a sophomore.</p>
+<p>Flagg should eventually be in that conversation, though. He is that good. The Mavericks weren&#8217;t supposed to get a generational talent this soon after stunningly trading Doncic to the <a href="https://fadeawayworld.net/nba/los-angeles-lakers" target="_blank" rel="noopener">Los Angeles Lakers</a> in February 2025, but they have.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://fadeawayworld.net/nba/dallas-mavericks/demarcus-cousins-claims-no-white-player-in-nba-history-has-had-cooper-flaggs-skill-set/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<media:content url="https://fadeawayworld.net/wp-content/uploads/2026/10/cooper-flagg-mavericks-lakers-nba-scaled.jpg" medium="image" type="image/jpeg"><media:title>DeMarcus Cousins Claims No White Player In NBA History Has Had Cooper Flagg&#8217;s Skill Set</media:title></media:content><enclosure url="https://fadeawayworld.net/wp-content/uploads/2026/10/cooper-flagg-mavericks-lakers-nba-scaled.jpg" length="368409" type="image/jpeg" /><media:thumbnail url="https://fadeawayworld.net/wp-content/uploads/2026/10/cooper-flagg-mavericks-lakers-nba-scaled.jpg" />	</item>
+		<item>
+		<title>Michael Carter-Williams Names His Lineup Of Former NBA Teammates</title>
+		<link>https://fadeawayworld.net/nba-media/michael-carter-williams-names-his-lineup-of-former-nba-teammates</link>
+					<comments>https://fadeawayworld.net/nba-media/michael-carter-williams-names-his-lineup-of-former-nba-teammates#respond</comments>
+		
+		<dc:creator><![CDATA[Siddhant Gupta]]></dc:creator>
+		<pubDate>Wed, 14 Oct 2026 14:13:38 +0000</pubDate>
+				<category><![CDATA[NBA News & Media]]></category>
+		<category><![CDATA[Chris Paul]]></category>
+		<category><![CDATA[Dwight Howard]]></category>
+		<category><![CDATA[Dwyane Wade]]></category>
+		<category><![CDATA[Giannis Antetokounmpo]]></category>
+		<category><![CDATA[James Harden]]></category>
+		<category><![CDATA[Jimmy Butler]]></category>
+		<guid isPermaLink="false">https://fadeawayworld.net/?p=206003</guid>
+
+					<description><![CDATA[<img width="1024" height="683" src="https://fadeawayworld.net/wp-content/uploads/2026/10/Michael-Carter-Williams-in-action-for-the-Orlando-Magic-1024x683.jpg" class="attachment-large size-large wp-post-image" alt="Feb 1, 2020; Orlando, Florida, USA; Orlando Magic guard Michael Carter-Williams (right) drives around Miami Heat guard Goran Dragic (left) during the second half at Amway Center. Mandatory Credit: Reinhold Matay-USA TODAY Sports" style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" loading="lazy" />Michael Carter-Williams' time in the NBA may have been short, but he certainly had the opportunity to play alongside some talented individuals.]]></description>
+										<content:encoded><![CDATA[<img width="1024" height="683" src="https://fadeawayworld.net/wp-content/uploads/2026/10/Michael-Carter-Williams-in-action-for-the-Orlando-Magic-1024x683.jpg" class="attachment-large size-large wp-post-image" alt="Feb 1, 2020; Orlando, Florida, USA; Orlando Magic guard Michael Carter-Williams (right) drives around Miami Heat guard Goran Dragic (left) during the second half at Amway Center. Mandatory Credit: Reinhold Matay-USA TODAY Sports" style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" loading="lazy" /><p>At the time he was drafted, Michael Carter-Williams was positioned to be a superstar in the NBA. As a bigger guard with phenomenal passing skills, the former ROTY was on track to be the face of the Philadelphia 76ers&#8217; franchise until injuries eventually derailed his career.</p>
+<p>As a result of recurring foot and knee injuries, primarily to the left side of his body, Michael Carter-Williams found himself bouncing around several teams in the league. While this led to his eventual exit from the NBA in 2023, like many other role players, this experience allowed him to play alongside some exceptionally talented individuals.</p>
+<p>This aspect of the journeyman&#8217;s career only came to light during his recent appearance on &#8220;<a href="https://www.instagram.com/p/Dd7mtc2mCy9/" target="_blank" rel="nofollow noopener">Run It Back</a>,&#8221; where Michael Carter-Williams was asked to create a starting lineup (with a sixth man) comprising his former NBA teammates. Needless to say, the former first-round pick&#8217;s answer surprised the panel, as he shared:</p>
+<p><em>&#8220;I think CP (Chris Paul) at the one. We&#8217;re talking prime, obviously? Yeah, CPs are in there. Dang. DWade, James Harden, Giannis, and Dwight.&#8221;</em></p>
+<p>A lineup consisting of <a href="https://fadeawayworld.net/tag/chris-paul" target="_blank" rel="noopener">Chris Paul</a>, <a href="https://fadeawayworld.net/tag/dwyane-wade" target="_blank" rel="noopener">Dwyane Wade</a>, <a href="https://fadeawayworld.net/tag/james-harden" target="_blank" rel="noopener">James Harden</a>, <a href="https://fadeawayworld.net/tag/giannis-antetokounmpo" target="_blank" rel="noopener">Giannis Antetokounmpo</a>, and <a href="https://fadeawayworld.net/tag/dwight-howard" target="_blank" rel="noopener">Dwight Howard</a> is intimidating enough. But when asked to include his sixth man, Michael Carter-Williams confidently named <a href="https://fadeawayworld.net/tag/jimmy-butler" target="_blank" rel="noopener">Jimmy Butler</a> to wrap up his rotation.</p>
+<p>Having played on six different teams over his nine years in the NBA, Carter-Williams caught each player at different points in their careers. But when only considering their primes, this lineup is nothing short of monstrous.</p>
+<p>At his peak, Chris Paul wasn&#8217;t just one of the best point guards in the NBA; he was <a href="https://fadeawayworld.net/nba/la-clippers/blake-griffin-calls-chris-paul-a-top-5-point-guard-of-all-time" target="_blank" rel="noopener">one of the best of all time</a>. While possessing nifty ball-handling skills and a reliable shot from mid-range, Paul was known for his phenomenal court vision and unparalleled basketball IQ.</p>
+<p>With averages of 19.8 points, 3.6 rebounds, 9.1 assists, and 2.5 steals (league-high) per game in the 2011-12 season, the year he finished third in MVP voting, Michael Carter-Williams couldn&#8217;t select a better player to be his point guard.</p>
+<p>At shooting guard, the former ROTY selected Dwyane Wade. Although Wade was entering the final years of his career when he was teammates with Carter-Williams on the <a href="https://fadeawayworld.net/nba/chicago-bulls" target="_blank" rel="noopener">Chicago Bulls</a>, during his prime, the two-time NBA champion was one of the league&#8217;s best shooting guards.</p>
+<p>Like several players on this list, it is challenging to zero in on Wade&#8217;s &#8220;peak.&#8221; However, when noting his performance in the 2008-09 season, where he averaged 30.2 points (league-high), 5.0 rebounds, 7.5 assists, 2.2 steals, and 1.3 blocks per game and finished third in MVP voting, <a href="https://fadeawayworld.net/nba-media/nba-legend-believes-dwyane-wade-better-than-lebron-james-primes" target="_blank" rel="noopener">Wade was unstoppable</a>.</p>
+<p>Interestingly, Michael Carter-Williams selects James Harden at the 3, an odd pick considering that Harden is a combo guard. However, since a 3-guard lineup seems to be the former NBA player&#8217;s approach, the 2017-18 MVP deserves a mention.</p>
+<p>Like Wade, simplifying Harden&#8217;s peak to just one season would be doing him a disservice. When gauging his dominance between 2017 and 2019, during which he averaged 33.7 points, 6.2 rebounds, and 7.9 assists per game while winning three scoring titles and one MVP award, Harden was in a league of his own.</p>
+<p>As formidable as Michael Carter-Williams&#8217; backcourt is, his frontcourt is equally noteworthy. By including Giannis Antetokounmpo and Dwight Howard, the former NBA player essentially added two former DPOYs to fill out his big man rotation.</p>
+<p>Giannis Antetokounmpo&#8217;s peak is difficult to gauge since he is only 31. However, when noting the 2019-20 season, a year before his title-winning campaign, where he was named MVP and DPOY after averaging 29.5 points, 13.6 rebounds, 5.6 assists, 1.0 steals, and 1.0 blocks per game, it is easy to see why Michael Carter-Williams selected him.</p>
+<p>Much like Giannis, Dwight Howard&#8217;s best years also came before he won the NBA title. Although he won his championship with the <a href="https://fadeawayworld.net/nba/los-angeles-lakers" target="_blank" rel="noopener">Lakers</a>, Howard was at the peak of his powers during his last four years with the Orlando Magic.</p>
+<p>With averages of 20.6 points, 13.8 rebounds, 1.2 steals, and 2.6 blocks per game, Howard amassed several accolades, including three consecutive DPOY awards and two block titles. As a dominant force down low, Howard single-handedly led the <a href="https://fadeawayworld.net/nba/orlando-magic" target="_blank" rel="noopener">Magic</a> to the NBA Finals in 2009. Even though he lost, his average of 15.3 rebounds in the playoffs is unreal.</p>
+<p>As impressive as Michael Carter-Williams&#8217; starting lineup is, his first man off the bench, Jimmy Butler, also deserves some attention. Aside from being a five-time All-NBA selection, Butler has been one of the NBA&#8217;s most consistent playoff performers in the last decade.</p>
+<p>Given his tendency to coast during the regular season, it is slightly difficult to narrow down his prime. However, during his stint with the <a href="https://fadeawayworld.net/nba/miami-heat" target="_blank" rel="noopener">Miami Heat</a>, which included two runs to the NBA Finals, Butler&#8217;s averages of 24.7 points, 6.8 rebounds, 5.7 assists, 1.9 steals, and 0.6 blocks per game showcase why he deserves a place on this list.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://fadeawayworld.net/nba-media/michael-carter-williams-names-his-lineup-of-former-nba-teammates/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<media:content url="https://fadeawayworld.net/wp-content/uploads/2026/10/Michael-Carter-Williams-in-action-for-the-Orlando-Magic-scaled.jpg" medium="image" type="image/jpeg"><media:title>Michael Carter-Williams Names His Lineup Of Former NBA Teammates</media:title></media:content><enclosure url="https://fadeawayworld.net/wp-content/uploads/2026/10/Michael-Carter-Williams-in-action-for-the-Orlando-Magic-scaled.jpg" length="425102" type="image/jpeg" /><media:thumbnail url="https://fadeawayworld.net/wp-content/uploads/2026/10/Michael-Carter-Williams-in-action-for-the-Orlando-Magic-scaled.jpg" />	</item>
+		<item>
+		<title>How Rob Dillingham Went From No. 8 Pick To Out Of The NBA</title>
+		<link>https://fadeawayworld.net/nba-media/how-rob-dillingham-went-from-no-8-pick-to-out-of-the-nba</link>
+					<comments>https://fadeawayworld.net/nba-media/how-rob-dillingham-went-from-no-8-pick-to-out-of-the-nba#respond</comments>
+		
+		<dc:creator><![CDATA[Vishwesha Kumar]]></dc:creator>
+		<pubDate>Wed, 14 Oct 2026 14:08:03 +0000</pubDate>
+				<category><![CDATA[NBA News & Media]]></category>
+		<guid isPermaLink="false">https://fadeawayworld.net/?p=206010</guid>
+
+					<description><![CDATA[<img width="1024" height="683" src="https://fadeawayworld.net/wp-content/uploads/2026/10/Rob-Dillingham.--1024x683.jpg" class="attachment-large size-large wp-post-image" alt="Chicago Bulls guard Rob Dillingham (7) gestures after scoring during the first half against the Los Angeles Clippers at Intuit Dome." style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" loading="lazy" />Just two years after becoming a lottery pick, Rob Dillingham is without an NBA contract following three stops.]]></description>
+										<content:encoded><![CDATA[<img width="1024" height="683" src="https://fadeawayworld.net/wp-content/uploads/2026/10/Rob-Dillingham.--1024x683.jpg" class="attachment-large size-large wp-post-image" alt="Chicago Bulls guard Rob Dillingham (7) gestures after scoring during the first half against the Los Angeles Clippers at Intuit Dome." style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" loading="lazy" /><p>Rob Dillingham was considered one of the most exciting prospects in the 2024 NBA Draft, with the <a href="https://fadeawayworld.net/nba/minnesota-timberwolves" target="_blank" rel="noopener">Minnesota Timberwolves</a> sacrificing future draft capital to acquire him with the eighth overall pick. But just two years later, the 21-year-old finds himself without an NBA contract after three franchises moved on from him.</p>
+<p>NBA draft analyst and scout Rafael Barlowe <a href="https://www.nbabigboard.com/p/did-the-nba-give-up-on-rob-dillingham" target="_blank" rel="nofollow noopener">recently examined Dillingham&#8217;s remarkable downfall</a>, and he questioned whether NBA teams have become impatient with young prospects or whether the original evaluations from scouts were really flawed.</p>
+<p><em>&#8220;During that draft process, I was completely sold on Rob Dillingham as a lottery pick. And when Minnesota made the move to acquire him on draft night, I initially thought he had landed in a good situation.&#8221;</em></p>
+<p><em>&#8220;He would have an opportunity to learn behind Mike Conley, a smaller point guard who had built a long and successful NBA career. I thought Conley would be the perfect veteran mentor for Dillingham, someone who could help him understand how to run an NBA offense, manage games and make the adjustments necessary to succeed at the next level.&#8221;</em></p>
+<p><em>&#8220;But looking back, I wonder if I underestimated just how difficult that situation would be.&#8221;</em></p>
+<p>The Wolves acquired Dillingham&#8217;s draft rights from the <a href="https://fadeawayworld.net/nba/san-antonio-spurs" target="_blank" rel="noopener">San Antonio Spurs</a> in exchange for a protected 2030 first-round pick swap and an unprotected 2031 first-round pick. But Dillingham failed to establish himself in Minnesota&#8217;s rotation before being traded to the <a href="https://fadeawayworld.net/nba/chicago-bulls" target="_blank" rel="noopener">Chicago Bulls</a> in February 2026.</p>
+<p>The Bulls eventually moved him to the <a href="https://fadeawayworld.net/nba/charlotte-hornets" target="_blank" rel="noopener">Charlotte Hornets</a>, who <a href="https://fadeawayworld.net/nba/charlotte-hornets/rob-dillingham-gets-brutal-rejection-from-tatiana-chanell-after-hornets-exit" target="_blank" rel="noopener">waived him in September</a> without giving him a chance to play. His struggles are particularly surprising considering how he played in college.</p>
+<p>At Kentucky, Dillingham averaged 15.2 points, 3.9 assists, and 2.9 rebounds while shooting 47.5% from the field and 44.4% from three-point range. His creativity, ball-handling, and scoring instincts had convinced Barlowe and scouts like him that he possessed lottery-level talent.</p>
+<p>But Barlowe acknowledged that <a href="https://www.nbabigboard.com/p/rob-dillingham-the-disconnect-between" target="_blank" rel="nofollow noopener">he underestimated how difficult the transition to the NBA</a> would be for Rob Dillingham.</p>
+<p><em>&#8220;I knew Dillingham was undersized. I knew there would be defensive challenges. But I was so impressed with his offensive talent that I may have underestimated just how exceptional he would need to be offensively to overcome those limitations.&#8221;</em></p>
+<p><em>&#8220;Because there’s a difference between being a gifted offensive player and being so dynamic that an NBA team is willing to live with everything you give up on the defensive end.&#8221;</em></p>
+<p>Standing approximately 6-foot-2 and weighing 170 pounds, Dillingham struggles against bigger and stronger NBA guards. His offensive production has not compensated for his defensive disadvantages.</p>
+<p>Across his first 114 NBA appearances, Dillingham shot approximately 32.4% from three-point range. He averaged 9.6 points and 2.8 assists in 30 games with the Chicago Bulls, shooting around 30.0% from beyond the arc.</p>
+<p>Barlowe also recalled a veteran NBA scout repeatedly warning him about Dillingham&#8217;s limitations before the draft.</p>
+<p><em>&#8220;Throughout the 2024 draft process, almost every time I wrote an article praising Dillingham, a friend of mine who is a veteran NBA scout would push back. And his message was always the same.&#8221;</em></p>
+<p><em>&#8220;&#8216;Unless he’s Trae Young, he’s not going to make it.'&#8221;</em></p>
+<p><em>&#8220;He would explain that even Trae, despite being one of the most dynamic offensive guards in basketball, has struggled defensively because of his size. But Trae is such an exceptional offensive player that teams are willing to live with those limitations. His point was simple: Rob Dillingham wasn’t Trae Young.</em></p>
+<p><em>&#8220;And unless Dillingham could become that type of offensive force, he didn’t think Rob would survive in the NBA.&#8221;</em></p>
+<p>The scout&#8217;s argument was that undersized guards must have extraordinary offensive talent to justify their defensive issues.</p>
+<p>But Barlowe&#8217;s subsequent conversations with NBA player development coaches revealed another possible explanation.</p>
+<p>One coach did suggest that Dillingham&#8217;s unconventional scoring style required an environment that allowed him to play more freely.</p>
+<p><em>&#8220;Rob needs freedom. He needs a system that allows him to be creative and maybe carve out his own role as a misfit small scoring guard who maybe doesn’t play every night but can change a game in January with his elite speed and burst of scoring.&#8221;</em></p>
+<p><em>&#8220;And because a role like that currently doesn’t exist on most teams, he may never fit.&#8221;</em></p>
+<p>With Minnesota competing for a title, those opportunities were difficult to come by, as head coach Chris Finch prioritized immediate victories over development chances.</p>
+<p>Another development coach questioned whether organizations are sufficiently prepared to develop players whose strengths don&#8217;t fit traditional NBA roles.</p>
+<p><em>&#8220;Does Rob have to adjust and conform to what the NBA wants him to be, a run-your-team, low-turnover, high-assist, high-three-point-percentage efficient guard who picks up 94 feet to combat his lack of size? Absolutely.&#8221;</em></p>
+<p><em>&#8220;But if you scouted Rob and watched him since high school and college, and you know those aren’t his strengths, instead of boxing him into someone he isn’t, why not create an environment for him that will help him succeed?&#8221;</em></p>
+<p><em>&#8220;Allow him to create his own lane and provide a structure where, yes, he can grow into what makes sense for the organization, but also allow him to be himself to an extent that doesn’t require overhauling what you do team wise.&#8221;</em></p>
+<p><em>&#8220;I feel like that’s the responsibility of the organization when you draft a kid top 10 or so.”</em></p>
+<p>Barlowe thinks both the player and his former organization deserve some blame. Dillingham must improve his shooting, decision-making, and defensive effectiveness, but the Timberwolves also invested a substantial amount of draft capital in a prospect who clearly needed time.</p>
+<p>The analyst additionally acknowledged that Kentucky head coach John Calipari might have maximized Dillingham&#8217;s strengths by using him as a sixth man without necessarily preparing him to become a traditional NBA point guard.</p>
+<p>That distinction could explain why his impressive college production hasn&#8217;t translated into professional success. Nevertheless, Barlowe remains hopeful that Dillingham can revive his career.</p>
+<p>At 21, he still has a lot of the creativity and scoring ability that made him a lottery prospect, but his next opportunity will depend on finding an organization willing to develop those strengths while helping him address his weaknesses.</p>
+<p>If he does not get a chance in the NBA in the near future, he might have to look overseas, maybe to Europe or China, to develop and improve his stock before he gets another NBA chance.</p>
+<p>But for now, his journey serves as a reminder that identifying NBA talent and successfully developing it are two very different and difficult challenges.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://fadeawayworld.net/nba-media/how-rob-dillingham-went-from-no-8-pick-to-out-of-the-nba/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<media:content url="https://fadeawayworld.net/wp-content/uploads/2026/10/Rob-Dillingham.--scaled.jpg" medium="image" type="image/jpeg"><media:title>How Rob Dillingham Went From No. 8 Pick To Out Of The NBA</media:title></media:content><enclosure url="https://fadeawayworld.net/wp-content/uploads/2026/10/Rob-Dillingham.--scaled.jpg" length="489428" type="image/jpeg" /><media:thumbnail url="https://fadeawayworld.net/wp-content/uploads/2026/10/Rob-Dillingham.--scaled.jpg" />	</item>
+		<item>
+		<title>Nick Young Says Today&#8217;s NBA Stars Could Score 50 Points On Michael Jordan</title>
+		<link>https://fadeawayworld.net/nba-media/nick-young-says-todays-nba-stars-could-score-50-points-michael-jordan</link>
+					<comments>https://fadeawayworld.net/nba-media/nick-young-says-todays-nba-stars-could-score-50-points-michael-jordan#respond</comments>
+		
+		<dc:creator><![CDATA[Gautam Varier]]></dc:creator>
+		<pubDate>Wed, 14 Oct 2026 13:54:21 +0000</pubDate>
+				<category><![CDATA[NBA News & Media]]></category>
+		<category><![CDATA[Michael Jordan]]></category>
+		<category><![CDATA[Nick Young]]></category>
+		<guid isPermaLink="false">https://fadeawayworld.net/?p=205988</guid>
+
+					<description><![CDATA[<img width="1024" height="683" src="https://fadeawayworld.net/wp-content/uploads/2026/10/nick-young-warriors-mavericks-nba-1024x683.jpg" class="attachment-large size-large wp-post-image" alt="Dallas, TX, USA; Golden State Warriors guard Nick Young (6) during the game against the Dallas Mavericks at the American Airlines Center. The Warriors defeat the Mavericks 133-103. Mandatory Credit: Jerome Miron-USA TODAY Sports" style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" loading="lazy" />Nick Young believes Michael Jordan might average about 40 points a night in today's NBA, but the stars could put 50 points on him.]]></description>
+										<content:encoded><![CDATA[<img width="1024" height="683" src="https://fadeawayworld.net/wp-content/uploads/2026/10/nick-young-warriors-mavericks-nba-1024x683.jpg" class="attachment-large size-large wp-post-image" alt="Dallas, TX, USA; Golden State Warriors guard Nick Young (6) during the game against the Dallas Mavericks at the American Airlines Center. The Warriors defeat the Mavericks 133-103. Mandatory Credit: Jerome Miron-USA TODAY Sports" style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" loading="lazy" /><p>Hall of Famer <a href="https://fadeawayworld.net/tag/michael-jordan" target="_blank" rel="noopener">Michael Jordan</a> is generally regarded as the greatest player of all time, and if you ask his peers how he&#8217;d fare in today&#8217;s NBA, most would tell you he&#8217;d crush the competition. Fellow Hall of Famer <a href="https://fadeawayworld.net/nba-media/vlade-divac-says-michael-jordan-would-average-50-ppg-magic-johnson-30-apg-todays-nba" target="_blank" rel="noopener">Vlade Divac has claimed Jordan would average 50 points a game</a>, but former NBA player <a href="https://fadeawayworld.net/tag/nick-young" target="_blank" rel="noopener">Nick Young</a> believes it&#8217;d be the other way around.</p>
+<p>Young recently appeared on the <a href="https://www.youtube.com/watch?v=2i3tLbO0LYA&amp;t=2551s" target="_blank" rel="nofollow noopener"><em>Club Shay Shay</em></a> podcast, where he was asked if he thinks Jordan could average 50 points in today&#8217;s era.</p>
+<p><em>&#8220;I think Jordan could get 50 scored on him in this era for sure,&#8221; Young said. &#8220;&#8230; I think he could average about 40, but people going to be killing [Jordan] every night.&#8221;</em></p>
+<p>Host <a href="https://fadeawayworld.net/tag/shannon-sharpe" target="_blank" rel="noopener">Shannon Sharpe</a> felt today&#8217;s stars would go at Jordan, and Young agreed.</p>
+<p><em>&#8220;He ain&#8217;t going up against the Mark Prices and Elu, Igloo whatever,&#8221; Young said.</em></p>
+<p>Young, who spent 12 seasons in the NBA, was referring to Craig Ehlo there. Jordan, of course, famously hit a game-winner over Ehlo in a do-or-die Game 5 in the first-round series between his <a href="https://fadeawayworld.net/nba/chicago-bulls" target="_blank" rel="noopener">Chicago Bulls</a> and the <a href="https://fadeawayworld.net/nba/cleveland-cavaliers" target="_blank" rel="noopener">Cleveland Cavaliers</a> in 1989.</p>
+<p>Young believes there are supremely talented scorers in the NBA today who wouldn&#8217;t be in awe of Jordan the way his peers were.</p>
+<p><em>&#8220;You got [Anthony Edwards], the next night Luka [Doncic],&#8221; Young said. &#8220;&#8230; You hear how [former players] talk about Black Cat, the Black Jesus. They was scared to guard him. Yeah, that&#8217;s crazy. I think these guys are going at him&#8230; That&#8217;s why I feel like it&#8217;d be a rougher time for him.&#8221;</em></p>
+<p><a href="https://fadeawayworld.net/nba-media/nick-young-ranks-michael-jordan-3rd-on-his-goat-list-behind-lebron-james-and-kobe-bryant" target="_blank" rel="noopener">Young also ranked Jordan third behind LeBron James and Kobe Bryant in his GOAT rankings</a> in this episode. The 41-year-old clearly isn&#8217;t enamored with the Bulls icon like so many others are.</p>
+<p>Now, to be fair to former players, they started talking about Jordan in such glowing terms after he obliterated them on the court. Hall of Famer <a href="https://fadeawayworld.net/reggie-miller-on-how-michael-jordan-outscored-him-40-2-after-he-trash-talked-the-goat-be-sure-and-be-careful-you-never-talk-to-black-jesus-like-that" target="_blank" rel="noopener">Reggie Miller once talked trash to him and then got outscored 40-2</a>.</p>
+<p>They had no choice but to respect Jordan after he constantly got the better of them on the court. <a href="https://fadeawayworld.net/michael-jordan-outscored-268-out-of-269-opposing-players-in-his-nba-career-terry-cummings-is-the-only-player-to-ever-outscore-michael-jordan-in-a-playoff-series" target="_blank" rel="noopener">Of the 269 players he faced in the postseason, he outscored 268</a>. Terry Cummings is the only player to outscore Jordan in a playoff series, and he did it in the first round of the 1985 playoffs. The difference was negligible, as a rookie Jordan averaged 29.3 points per game and Cummings 29.5.</p>
+<p>As for the regular season, <a href="https://fadeawayworld.net/tag/allen-iverson" target="_blank" rel="noopener">Allen Iverson</a> is the only player to average more points than Jordan in head-to-head meetings during the latter&#8217;s time with the Bulls. Iverson averaged 27.1 points per game, and he was at 24.4.</p>
+<p>Jordan certainly deserves more respect than Young gave him. We focused on the offensive end there, but we&#8217;re also talking about someone who won DPOY in 1988 and made nine All-Defensive teams. Jordan was capable of locking people down, and scoring 50 points against him would need a Herculean effort.</p>
+<p>Only two players actually managed to do that: <a href="https://fadeawayworld.net/tag/dominique-wilkins" target="_blank" rel="noopener">Dominique Wilkins</a> (57) in 1986 and <a href="https://fadeawayworld.net/tag/kobe-bryant" target="_blank" rel="noopener">Bryant</a> (55) in 2003. The second time it happened was in Jordan&#8217;s final season with the <a href="https://fadeawayworld.net/nba/washington-wizards" target="_blank" rel="noopener">Washington Wizards</a> when he was 40 years old and far from his best.</p>
+<p>So, it&#8217;s safe to assume Jordan in his prime wouldn&#8217;t get 50 points routinely scored on him by today&#8217;s stars. On the flip side, those who believe he would put up 50 are probably getting carried away, too. Jordan, who won a record 10 scoring titles, would have dominated today, and while he might have touched 40, he wasn&#8217;t getting to 50.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://fadeawayworld.net/nba-media/nick-young-says-todays-nba-stars-could-score-50-points-michael-jordan/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<media:content url="https://fadeawayworld.net/wp-content/uploads/2026/10/nick-young-warriors-mavericks-nba-scaled.jpg" medium="image" type="image/jpeg"><media:title>Nick Young Says Today&#8217;s NBA Stars Could Score 50 Points On Michael Jordan</media:title></media:content><enclosure url="https://fadeawayworld.net/wp-content/uploads/2026/10/nick-young-warriors-mavericks-nba-scaled.jpg" length="483202" type="image/jpeg" /><media:thumbnail url="https://fadeawayworld.net/wp-content/uploads/2026/10/nick-young-warriors-mavericks-nba-scaled.jpg" />	</item>
+		<item>
+		<title>NBA Insider Predicts Rudy Gobert Will 100% Get Traded This Season</title>
+		<link>https://fadeawayworld.net/nba/minnesota-timberwolves/nba-insider-predicts-rudy-gobert-will-100-get-traded-this-season</link>
+					<comments>https://fadeawayworld.net/nba/minnesota-timberwolves/nba-insider-predicts-rudy-gobert-will-100-get-traded-this-season#respond</comments>
+		
+		<dc:creator><![CDATA[Vishwesha Kumar]]></dc:creator>
+		<pubDate>Wed, 14 Oct 2026 13:18:43 +0000</pubDate>
+				<category><![CDATA[Minnesota Timberwolves News & Analysis]]></category>
+		<category><![CDATA[Minnesota Timberwolves Archive]]></category>
+		<category><![CDATA[Rudy Gobert]]></category>
+		<guid isPermaLink="false">https://fadeawayworld.net/?p=205978</guid>
+
+					<description><![CDATA[<img width="735" height="490" src="https://fadeawayworld.net/wp-content/uploads/2026/02/rudy-gobert-timberwolves-hornets-nba.jpg" class="attachment-large size-large wp-post-image" alt="Charlotte, North Carolina, USA; Minnesota Timberwolves center Rudy Gobert (27) sets the play against the Charlotte Hornets during the second half at Spectrum Center. Mandatory Credit: Jim Dedmon-Imagn Images" style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" loading="lazy" />With extension talks showing little progress, Chris Vernon predicts Minnesota will trade Rudy Gobert rather than invest long-term.]]></description>
+										<content:encoded><![CDATA[<img width="735" height="490" src="https://fadeawayworld.net/wp-content/uploads/2026/02/rudy-gobert-timberwolves-hornets-nba.jpg" class="attachment-large size-large wp-post-image" alt="Charlotte, North Carolina, USA; Minnesota Timberwolves center Rudy Gobert (27) sets the play against the Charlotte Hornets during the second half at Spectrum Center. Mandatory Credit: Jim Dedmon-Imagn Images" style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" loading="lazy" /><p><a href="https://fadeawayworld.net/tag/rudy-gobert" target="_blank" rel="noopener">Rudy Gobert&#8217;s</a> future with the <a href="https://fadeawayworld.net/nba/minnesota-timberwolves" target="_blank" rel="noopener">Minnesota Timberwolves</a> has become a big talking point ahead of the 2026-27 NBA season, and NBA analyst Chris Vernon predicts the four-time Defensive Player of the Year is guaranteed to be traded before the season ends.</p>
+<p><a href="https://x.com/KevinOConnor/status/2110056330677432531?s=20" target="_blank" rel="nofollow noopener">Speaking on The Chris Vernon Show</a>, he confidently predicted that the Timberwolves will move on from Gobert rather than commit significant money to the veteran center as the franchise continues to reshape its roster around <a href="https://fadeawayworld.net/tag/anthony-edwards" target="_blank" rel="noopener">Anthony Edwards</a> and <a href="https://fadeawayworld.net/tag/lamelo-ball" target="_blank" rel="noopener">LaMelo Ball</a>.</p>
+<p><em>&#8220;Gobert is getting traded this year. That&#8217;s a hundred percent. It&#8217;s a contract year. You think they&#8217;re gonna bring him back long-term? They ain&#8217;t trying to spend. You think A-Rod&#8217;s spending the money on him? No way.&#8221;</em></p>
+<p><em>&#8220;You get the value now, and there will be teams, especially, look, there&#8217;s gonna be an arms race. There&#8217;s gonna be an arms race, and people are gonna look like, &#8216;All right, we&#8217;d like to have Gobert to go up against Wembanyama.'&#8221;</em></p>
+<p><em>&#8220;And I just don&#8217;t think he fits. You&#8217;re gonna have to decide, are we doing the Ant-LaMelo thing? Is that what we&#8217;re doing? &#8216;Cause Gobert does not fit with them.&#8221;</em></p>
+<p>Vernon thinks the Timberwolves would be better off exploring Gobert&#8217;s trade value now, particularly with other Western Conference contenders needing defensive reinforcements. This prediction comes at a time when Gobert&#8217;s future remains uncertain.</p>
+<p>The 35-year-old signed a three-year, $109.5 million contract extension in 2024, accepting a lower annual salary than he could have earned under his previous agreement. He&#8217;s set to earn approximately $36.5 million this season and also has a $38 million player option for 2027-28.</p>
+<p>The player option means Gobert isn&#8217;t necessarily entering unrestricted free agency next summer, although the Timberwolves must still decide whether extending him makes financial sense.</p>
+<p>According to The Athletic&#8217;s Jon Krawczynski, there <a href="https://fadeawayworld.net/nba-trade-rumors/minnesota-timberwolves/rudy-goberts-timberwolves-future-in-question-amid-lack-of-extension-talks" target="_blank" rel="noopener">has been little indication that an extension is coming anytime soon</a>.</p>
+<p><em>&#8220;He is eligible for an extension. So far, I have not heard any sort of real momentum toward that happening immediately here. I think it is something that the team will explore, that maybe Rudy would look at as well, as he gets a little, you know, as he gets older.&#8217;</em></p>
+<p><em>&#8220;We saw his last extension; he brought his number down a little bit more to make it more manageable to have a good team around him. I would imagine that if there was something to be done, it would be another scenario like that where his number, I think, is at 31 or 33 million now, maybe comes down annually, but he gets a little bit more long-term security with a multi-year extension.&#8221;</em></p>
+<p>That uncertainty becomes particularly important considering the Timberwolves&#8217; offseason transformation. The Wolves moved on from <a href="https://fadeawayworld.net/tag/julius-randle" target="_blank" rel="noopener">Julius Randle</a> and <a href="https://fadeawayworld.net/tag/naz-reid" target="_blank" rel="noopener">Naz Reid</a> while acquiring LaMelo Ball and <a href="https://fadeawayworld.net/tag/jonathan-kuminga" target="_blank" rel="noopener">Jonathan Kuminga</a>, which shifted them toward a younger and more dynamic roster around Edwards.</p>
+<p>Gobert remains an outstanding defensive anchor, but his offensive limitations could complicate the new era. The veteran averaged 10.9 points, 7.5 rebounds, and 1.6 blocks during the 2025-26 season. His rim protection, rebounding, and ability to organize a defense remain valuable, especially against teams with dominant interior scorers.</p>
+<p>That is where Vernon&#8217;s argument about <a href="https://fadeawayworld.net/tag/victor-wembanyama" target="_blank" rel="noopener">Victor Wembanyama</a> becomes particularly interesting.</p>
+<p>The <a href="https://fadeawayworld.net/nba/san-antonio-spurs" target="_blank" rel="noopener">San Antonio Spurs</a> reached the NBA Finals last season behind Wembanyama&#8217;s extraordinary two-way impact, establishing themselves as serious contenders in the Western Conference. Teams hoping to challenge the Spurs could view Gobert as an experienced defensive specialist capable of making life hell for the Spurs superstar.</p>
+<p>But acquiring him would also require a big financial commitment, and his age could also discourage teams from giving up too many assets. The Wolves also have a potential consideration in young center Joan Beringer, whose development could easily reduce the franchise&#8217;s dependence on Gobert.</p>
+<p>Nevertheless, trading the French center could carry a big risk. Gobert has been instrumental in establishing Minnesota&#8217;s defensive identity, and replacing him would not be that easy. The Timberwolves would need to determine whether improved offensive spacing and financial flexibility could make up for the loss of one of the league&#8217;s best rim protectors.</p>
+<p>Most importantly, Vernon&#8217;s comments could represent a confident prediction rather than confirmation that the Wolves are actively looking for a trade.</p>
+<p>There is no current indication that a deal is imminent, but extension talks are still showing little progress, and the Timberwolves are moving toward an Edwards-Ball partnership, which makes Gobert&#8217;s long-term future very uncertain.</p>
+<p>Whether the Timberwolves actually trade him or attempt to negotiate another team-friendly extension could be one of the most important decisions of their season.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://fadeawayworld.net/nba/minnesota-timberwolves/nba-insider-predicts-rudy-gobert-will-100-get-traded-this-season/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<media:content url="https://fadeawayworld.net/wp-content/uploads/2026/02/rudy-gobert-timberwolves-hornets-nba.jpg" medium="image" type="image/jpeg"><media:title>NBA Insider Predicts Rudy Gobert Will 100% Get Traded This Season</media:title></media:content><enclosure url="https://fadeawayworld.net/wp-content/uploads/2026/02/rudy-gobert-timberwolves-hornets-nba.jpg" length="28854" type="image/jpeg" /><media:thumbnail url="https://fadeawayworld.net/wp-content/uploads/2026/02/rudy-gobert-timberwolves-hornets-nba.jpg" />	</item>
+		<item>
+		<title>Indiana Pacers Should Target Veteran Sharpshooter To Strengthen Roster Depth</title>
+		<link>https://fadeawayworld.net/nba-trade-rumors/indiana-pacers/indiana-pacers-should-target-veteran-sharpshooter-to-strengthen-roster-depth</link>
+					<comments>https://fadeawayworld.net/nba-trade-rumors/indiana-pacers/indiana-pacers-should-target-veteran-sharpshooter-to-strengthen-roster-depth#respond</comments>
+		
+		<dc:creator><![CDATA[Siddhant Gupta]]></dc:creator>
+		<pubDate>Wed, 14 Oct 2026 13:08:08 +0000</pubDate>
+				<category><![CDATA[Indiana Pacers Trade Rumors]]></category>
+		<category><![CDATA[Detroit Pistons Archive]]></category>
+		<category><![CDATA[Duncan Robinson]]></category>
+		<category><![CDATA[Indiana Pacers Archive]]></category>
+		<category><![CDATA[Obi Toppin]]></category>
+		<guid isPermaLink="false">https://fadeawayworld.net/?p=205975</guid>
+
+					<description><![CDATA[<img width="1024" height="683" src="https://fadeawayworld.net/wp-content/uploads/2026/10/Tyrese-Haliburton-in-action-for-the-Indiana-Pacers-1024x683.jpg" class="attachment-large size-large wp-post-image" alt="Oct 13, 2026; Oklahoma City, Oklahoma, USA; Indiana Pacers guard Tyrese Haliburton (0) drives past Oklahoma City Thunder guard Shai Gilgeous-Alexander (2) during the second quarter at Paycom Center. Mandatory Credit: Alonzo Adams-Imagn Images" style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" loading="lazy" />As the Indiana Pacers eye a return to the NBA Finals, we explore a trade idea that could help them boost their roster depth even further.]]></description>
+										<content:encoded><![CDATA[<img width="1024" height="683" src="https://fadeawayworld.net/wp-content/uploads/2026/10/Tyrese-Haliburton-in-action-for-the-Indiana-Pacers-1024x683.jpg" class="attachment-large size-large wp-post-image" alt="Oct 13, 2026; Oklahoma City, Oklahoma, USA; Indiana Pacers guard Tyrese Haliburton (0) drives past Oklahoma City Thunder guard Shai Gilgeous-Alexander (2) during the second quarter at Paycom Center. Mandatory Credit: Alonzo Adams-Imagn Images" style="display:block; max-width:100%; height:auto; margin:0 0 1em 0;" decoding="async" loading="lazy" /><p>The Eastern Conference is going to be a bloodbath in the upcoming season. Aside from the <a href="https://fadeawayworld.net/nba/new-york-knicks" target="_blank" rel="noopener">New York Knicks</a>, who reign atop the league as the champions, teams such as the <a href="https://fadeawayworld.net/nba/philadelphia-76ers" target="_blank" rel="noopener">Philadelphia 76ers</a>, the <a href="https://fadeawayworld.net/nba/boston-celtics" target="_blank" rel="noopener">Boston Celtics</a>, and the <a href="https://fadeawayworld.net/nba/miami-heat" target="_blank" rel="noopener">Miami Heat</a> will all be vying for the same title. However, among these, the <a href="https://fadeawayworld.net/nba-trade-rumors/indiana-pacers" target="_blank" rel="noopener">Indiana Pacers</a> aren&#8217;t drawing as much attention as potential contenders.</p>
+<p>Last season, the Pacers ended the campaign among the worst teams in the East, finishing with a 19-63 record. In all fairness, this record isn&#8217;t indicative of Indiana&#8217;s true potential, as the team was riddled with several injuries, with <a href="https://fadeawayworld.net/tag/tyrese-haliburton" target="_blank" rel="noopener">Tyrese Haliburton</a>&#8216;s Achilles rupture being the most significant one of the lot.</p>
+<p>While missing out on the playoffs last season was inevitable, it may not be the case this year. <a href="https://fadeawayworld.net/nba/indiana-pacers/tyrese-haliburton-addresses-pacers-fans-ahead-of-his-return-to-action" target="_blank" rel="noopener">Aside from Haliburton&#8217;s return</a>, the Pacers have also bolstered their roster, adding pieces like <a href="https://fadeawayworld.net/tag/ivica-zubac" target="_blank" rel="noopener">Ivica Zubac</a> to emerge as a more competitive unit. Despite this, Indiana is being overlooked.</p>
+<p>On paper, the Pacers lack the star power to stack up against the giants in the East. However, when considering that they went to the NBA Finals in 2025 without relying on a clear-cut superstar, <a href="https://fadeawayworld.net/nba/indiana-pacers/lebron-james-explains-why-pacers-are-a-problem-with-tyrese-haliburton-back-in-the-lineup" target="_blank" rel="noopener">Indiana clearly has more layers</a>. Hence, to bolster the team&#8217;s squad depth and inspire more confidence as a contender, we explore a potential trade idea to land veteran sharpshooter <a href="https://fadeawayworld.net/tag/duncan-robinson" target="_blank" rel="noopener">Duncan Robinson</a> from the <a href="https://fadeawayworld.net/nba-trade-rumors/detroit-pistons" target="_blank" rel="noopener">Detroit Pistons</a>. Here is the potential trade package:</p>
+<p><strong>Proposed Trade Details</strong></p>
+<p><strong>Indiana Pacers Receive: Duncan Robinson</strong></p>
+<p><strong>Detroit Pistons Receive: Obi Toppin, 2028 second-round pick (CHA/LAC)</strong></p>
+<p>As a unit, the Indiana Pacers are formidable. Making any changes to the core would have a drastic effect on their structure and performance. Thus, when it comes to improving their overall strength, smaller tweaks like these would be far more impactful.</p>
+<p>For all intents and purposes, adding a seasoned veteran like Duncan Robinson could be immensely beneficial for Indiana. But before we can examine how Robinson&#8217;s arrival would impact the Pacers, we explore the financial aspects of this trade.</p>
+<p>&nbsp;</p>
+<h2 style="text-align: center;">Financial Outlook</h2>
+<p>From a financial perspective, this trade is quite feasible. Given that there aren&#8217;t many assets moving hands, the fiscal implications aren&#8217;t drastic either.</p>
+<p>On Indiana&#8217;s side of the deal, absorbing Duncan Robinson&#8217;s $15.9 million cap hit is plausible, especially if it entails parting with <a href="https://fadeawayworld.net/tag/obi-toppin" target="_blank" rel="noopener">Obi Toppin</a>&#8216;s $15.0 milli

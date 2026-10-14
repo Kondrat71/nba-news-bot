@@ -1,0 +1,1039 @@
+<rss version="2.0" 
+xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+xmlns:wfw="http://wellformedweb.org/CommentAPI/" 
+xmlns:dc="http://purl.org/dc/elements/1.1/" 
+xmlns:atom="http://www.w3.org/2005/Atom" 
+xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" 
+xmlns:slash="http://purl.org/rss/1.0/modules/slash/" 
+xmlns:media="http://search.yahoo.com/mrss/" 
+>	<channel>
+	<title>Sportsnet.ca</title>
+	<atom:link href="http://sportsnet.ca/basketball/nba/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sportsnet.ca/basketball/nba/feed/</link>
+	<description><![CDATA[Sports News: World and National Sports Headlines, Score Updates, Highlights, Stats &amp; Results]]></description>
+	<lastBuildDate>Wed, 14 Oct 2026 15:55:28 EDT</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+
+	<item  importance="normal">
+		<title>NBA Featured</title>
+		<headline><![CDATA[ ]]></headline>
+		<link><![CDATA[ https://www.sportsnet.ca/?sn-collection=nba-top-collection-july-7 ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/?sn-collection=nba-top-collection-july-7/#comments ]]></comments>
+		<pubDate>Mon, 07 Jul 2025 11:32:51 EDT</pubDate>
+		<modifiedDate>Mon, 01 Sep 2025 14:29:54 EDT</modifiedDate >
+		<dc:creator>Mike Koreen</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-collection&#038;p=6360212&#038;oc=-1]]></guid>
+		<description><![CDATA[]]></description>
+		<sports/>		<leagues/>
+		<teams/>		<contentTags>
+<![CDATA[ |sportsnet.ca|na|na|sports|na|na ]]>		</contentTags>
+<collection id="6360212" /><newsItemLayout>four_cols_meta</newsItemLayout>		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-collection</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406814811112.jpg">
+<media:title>17919436316722832</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406814811112.jpg" length="3593" type="image/jpeg" />
+</media:content>		<title>Best moments from Kawhi Leonard&#8217;s pre-season debut</title>
+		<headline><![CDATA[Best moments from Kawhi Leonard's pre-season debut]]></headline>
+		<collectionId>6360212</collectionId>
+		<newsItemLayout>four_cols</newsItemLayout>
+		<imageLabel><![CDATA[]]></imageLabel>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/video/best-moments-from-kawhi-leonards-pre-season-debut/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/video/best-moments-from-kawhi-leonards-pre-season-debut//#comments ]]></comments>
+		<pubDate>Tue, 13 Oct 2026 22:08:12 EDT</pubDate>
+		<modifiedDate>Tue, 13 Oct 2026 22:08:12 EDT</modifiedDate >
+		<dc:creator>Sportsnet Video</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=bc-video&#038;p=6722832&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>Check out all the top plays from Kawhi Leonard&#8217;s return to the court for the Toronto Raptors, as he tallies 21 points in pre-season action against the New York Knicks.</p>
+]]></description>
+		<content:encoded><![CDATA[ 
+    <div id="video_container-245901" class="sn-video-container "><div class="bc_shortcode_placeholder"></div></div> 
+    <script class="bc-embed-script" type="text/javascript">
+        var adServerUrl = "";
+        var $el = $( "#video_container-245901" );
+        var permalink = $el.closest('.snet-single-article').data('permalink');
+
+        $el.after( unescape("%3Cscript src=\"" + (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js\" %3E%3C/script%3E") );
+
+        $( document ).one( 'ready', function() {
+            $( "#video_container-245901" ).SNPlayer( {
+                bc_account_id: "1704050871",
+                bc_player_id: "JCdte3tMv",
+                //autoplay: false, 
+                //is_has_autoplay_switch: false,
+                bc_videos: 6406814811112, 
+                is_has_continuous_play: "false",
+                section: "",
+                thumbnail: "https://www.sportsnet.ca/wp-content/uploads/2026/10/6406814811112-1024x576.jpg",
+                direct_url: "https://www.sportsnet.ca/nba/video/best-moments-from-kawhi-leonards-pre-season-debut/"
+            });
+        });
+    </script>
+
+    
+ ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1197">TOR</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|toronto raptors|na ]]>		</contentTags>
+<type>video</type><strip catid="13375"><![CDATA[ NBA ]]></strip><strip catid="20160"><![CDATA[ NBA Top Plays ]]></strip><strip catid="13561"><![CDATA[ Top Videos ]]></strip><content duration="68870" url="https://www.sportsnet.ca/nba/video/best-moments-from-kawhi-leonards-pre-season-debut/" height="" width=""/><brightcove id="6406814811112"/><image>https://cf-images.us-east-1.prod.boltdns.net/v1/static/1704050871/6a65d465-f5e6-4c0a-8b6a-7cee15932607/f8b9dd57-7281-453d-9f48-3be393c67233/160x90/match/image.jpg</image><authors><author id="712">Sportsnet Video</author></authors>		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>bc-video</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/10/Toronto-Raptors-forward-Kawhi-Leonard.jpg">
+<media:credit>Nathan Denette/CP</media:credit>
+<media:title>Toronto Raptors forward Kawhi Leonard</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/10/Toronto-Raptors-forward-Kawhi-Leonard.jpg" length="3653" type="image/jpeg" />
+</media:content>		<title>Raptors&#8217; Kawhi Leonard makes worthwhile pre-season debut</title>
+		<headline><![CDATA[Raptors' Leonard makes worthwhile pre-season debut]]></headline>
+		<collectionId>6360212</collectionId>
+		<newsItemLayout>four_cols</newsItemLayout>
+		<imageLabel />
+		<link><![CDATA[ https://www.sportsnet.ca/nba/article/raptors-kawhi-leonard-makes-worthwhile-pre-season-debut/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/article/raptors-kawhi-leonard-makes-worthwhile-pre-season-debut//#comments ]]></comments>
+		<pubDate>Tue, 13 Oct 2026 23:46:10 EDT</pubDate>
+		<modifiedDate>Wed, 14 Oct 2026 01:47:50 EDT</modifiedDate >
+		<dc:creator>Michael Grange</dc:creator>
+		<category><![CDATA[Game coverage - recap]]></category>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-article&#038;p=6722912&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>Kawhi Leonard was finally back on the court as part of the Raptors. And the wait was worth it.</p>
+<p>Michael Grange breaks down the star&#8217;s reintroduction in Toronto&#8217;s pre-season win.</p>
+]]></description>
+		<content:encoded><![CDATA[ Kawhi Leonard was finally back on the court as part of the Raptors. And the wait was worth it.
+
+Michael Grange breaks down the star's reintroduction in Toronto's pre-season win. ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1189">NY</team>
+			<team id="1197">TOR</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|new york knicks ; toronto raptors|na ]]>		</contentTags>
+		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-article</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2025/06/AKT.jpg">
+<media:credit>Frank Franklin II/AP</media:credit>
+<media:title>AKT</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2025/06/AKT.jpg" length="3469" type="image/jpeg" />
+</media:content>		<title>Karl-Anthony Towns &#8216;very disappointed&#8217; in Knicks&#8217; decision to table talks</title>
+		<headline><![CDATA[Towns 'disappointed' Knicks tabling talks]]></headline>
+		<collectionId>6360212</collectionId>
+		<newsItemLayout>four_cols</newsItemLayout>
+		<imageLabel />
+		<link><![CDATA[ https://www.sportsnet.ca/nba/article/karl-anthony-towns-very-disappointed-in-knicks-decision-to-table-talks/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/article/karl-anthony-towns-very-disappointed-in-knicks-decision-to-table-talks//#comments ]]></comments>
+		<pubDate>Sun, 11 Oct 2026 14:47:48 EDT</pubDate>
+		<modifiedDate>Sun, 11 Oct 2026 14:47:56 EDT</modifiedDate >
+		<dc:creator>Sportsnet Staff</dc:creator>
+		<category><![CDATA[news]]></category>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-article&#038;p=6721202&#038;oc=-1]]></guid>
+		<description><![CDATA[]]></description>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1189">NY</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|new york knicks|na ]]>		</contentTags>
+		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-article</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406858057112.jpg">
+<media:title>17919919886723243</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406858057112.jpg" length="2957" type="image/jpeg" />
+</media:content>		<title>Biggest takeaways from Leonard&#8217;s debut, Raptors&#8217; dominant pre-season win</title>
+		<headline><![CDATA[Biggest takeaways from Leonard's debut, Raptors' dominant pre-season win]]></headline>
+		<collectionId>6360212</collectionId>
+		<newsItemLayout>four_cols</newsItemLayout>
+		<imageLabel />
+		<link><![CDATA[ https://www.sportsnet.ca/nba/video/biggest-takeaways-from-leonards-debut-raptors-dominant-pre-season-win/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/video/biggest-takeaways-from-leonards-debut-raptors-dominant-pre-season-win//#comments ]]></comments>
+		<pubDate>Wed, 14 Oct 2026 11:38:42 EDT</pubDate>
+		<modifiedDate>Wed, 14 Oct 2026 11:38:42 EDT</modifiedDate >
+		<dc:creator>Sportsnet Video</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=bc-video&#038;p=6723243&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>The Raptors Show&#8217;s Blake Murphy and Matt Bonner break down Kawhi Leonard&#8217;s pre-season debut and the Toronto Raptors&#8217; dominant win over the New York Knicks backups.</p>
+]]></description>
+		<content:encoded><![CDATA[ <p>
+    <div id="video_container-289598" class="sn-video-container "><div class="bc_shortcode_placeholder"></div></div> 
+    <script class="bc-embed-script" type="text/javascript">
+        var adServerUrl = "";
+        var $el = $( "#video_container-289598" );
+        var permalink = $el.closest('.snet-single-article').data('permalink');
+
+        $el.after( unescape("%3Cscript src=\"" + (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js\" %3E%3C/script%3E") );
+
+        $( document ).one( 'ready', function() {
+            $( "#video_container-289598" ).SNPlayer( {
+                bc_account_id: "1704050871",
+                bc_player_id: "JCdte3tMv",
+                //autoplay: false, 
+                //is_has_autoplay_switch: false,
+                bc_videos: 6406858057112, 
+                is_has_continuous_play: "false",
+                section: "",
+                thumbnail: "https://www.sportsnet.ca/wp-content/uploads/2026/10/6406858057112-1024x576.jpg",
+                direct_url: "https://www.sportsnet.ca/nba/video/biggest-takeaways-from-leonards-debut-raptors-dominant-pre-season-win/"
+            });
+        });
+    </script>
+
+    </p>
+ ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1189">NY</team>
+			<team id="1197">TOR</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|new york knicks ; toronto raptors|na ]]>		</contentTags>
+<type>video</type><strip catid="13461"><![CDATA[ Basketball News ]]></strip><strip catid="13375"><![CDATA[ NBA ]]></strip><strip catid="13563"><![CDATA[ Raptors News ]]></strip><strip catid="20443"><![CDATA[ Raptors Show ]]></strip><strip catid="13413"><![CDATA[ Toronto Raptors ]]></strip><content duration="266091" url="https://www.sportsnet.ca/nba/video/biggest-takeaways-from-leonards-debut-raptors-dominant-pre-season-win/" height="" width=""/><brightcove id="6406858057112"/><image>https://cf-images.us-east-1.prod.boltdns.net/v1/static/1704050871/4d4b8ab4-c789-4c90-b71b-017649deb91d/df895859-d8f3-4651-b2c9-7d4076cf1865/160x90/match/image.jpg</image><authors><author id="105">Sportsnet Video</author></authors>		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>bc-video</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+		<title>NBA Featured 2 Items</title>
+		<headline><![CDATA[ ]]></headline>
+		<link><![CDATA[ https://www.sportsnet.ca/?sn-collection=nba-featured-2-items ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/?sn-collection=nba-featured-2-items/#comments ]]></comments>
+		<pubDate>Wed, 01 Jul 2026 08:39:33 EDT</pubDate>
+		<modifiedDate>Wed, 01 Jul 2026 08:39:33 EDT</modifiedDate >
+		<dc:creator>Josh Beneteau</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-collection&#038;p=6656297&#038;oc=-1]]></guid>
+		<description><![CDATA[]]></description>
+		<sports/>		<leagues/>
+		<teams/>		<contentTags>
+<![CDATA[ |sportsnet.ca|na|na|sports|na|na ]]>		</contentTags>
+<collection id="6656297" /><newsItemLayout>two_cols_meta</newsItemLayout>		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-collection</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/06/allen-graves.jpg">
+<media:title>allen graves</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/06/allen-graves.jpg" length="6392" type="image/jpeg" />
+</media:content>		<title>How rookie Allen Graves fits in as Raptors&#8217; contention window opens</title>
+		<headline><![CDATA[How rookie Allen Graves fits in as Raptors' contention window opens]]></headline>
+		<collectionId>6656297</collectionId>
+		<newsItemLayout>two_cols</newsItemLayout>
+		<imageLabel />
+		<link><![CDATA[ https://www.sportsnet.ca/nba/article/how-rookie-allen-graves-fits-in-as-raptors-contention-window-opens/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/article/how-rookie-allen-graves-fits-in-as-raptors-contention-window-opens//#comments ]]></comments>
+		<pubDate>Fri, 09 Oct 2026 20:32:13 EDT</pubDate>
+		<modifiedDate>Fri, 09 Oct 2026 20:33:00 EDT</modifiedDate >
+		<dc:creator>Michael Grange</dc:creator>
+		<category><![CDATA[Analysis]]></category>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-article&#038;p=6720079&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>There is more that goes into building a team that wins than handing the ball to Kawhi Leonard.</p>
+<p>Which is where rookie Allen Graves fits into the picture. </p>
+]]></description>
+		<content:encoded><![CDATA[ There is more that goes into building a team that wins than handing the ball to Kawhi Leonard.
+
+Which is where rookie Allen Graves fits into the picture.  ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1197">TOR</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|toronto raptors|na ]]>		</contentTags>
+		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-article</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/03/anderson_kyle1280.jpg">
+<media:credit>Brandon Dill/AP</media:credit>
+<media:title>anderson_kyle1280</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/03/anderson_kyle1280.jpg" length="3270" type="image/jpeg" />
+</media:content>		<title>Why Raptors acquired Kyle Anderson, and where he sees himself fitting in</title>
+		<headline><![CDATA[Why Raptors acquired Kyle Anderson, and where he sees himself fitting in]]></headline>
+		<collectionId>6656297</collectionId>
+		<newsItemLayout>two_cols</newsItemLayout>
+		<imageLabel />
+		<link><![CDATA[ https://www.sportsnet.ca/nba/article/why-raptors-acquired-kyle-anderson-and-where-he-sees-himself-fitting-in/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/article/why-raptors-acquired-kyle-anderson-and-where-he-sees-himself-fitting-in//#comments ]]></comments>
+		<pubDate>Wed, 07 Oct 2026 17:41:47 EDT</pubDate>
+		<modifiedDate>Wed, 07 Oct 2026 17:43:24 EDT</modifiedDate >
+		<dc:creator>Michael Grange</dc:creator>
+		<category><![CDATA[Feature]]></category>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-article&#038;p=6718449&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>The Raptors&#8217; relative youth means they need someone with a veteran presence to be a mentor. And that&#8217;s what Kyle Anderson is determined to provide, writes Michael Grange.</p>
+]]></description>
+		<content:encoded><![CDATA[ The Raptors' relative youth means they need someone with a veteran presence to be a mentor. And that's what Kyle Anderson is determined to provide, writes Michael Grange. ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1197">TOR</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|toronto raptors|na ]]>		</contentTags>
+		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-article</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+		<title>NBA Headlines</title>
+		<headline><![CDATA[ ]]></headline>
+		<link><![CDATA[ https://www.sportsnet.ca/?sn-collection=nba-visual-headlines ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/?sn-collection=nba-visual-headlines/#comments ]]></comments>
+		<pubDate>Fri, 15 Dec 2023 15:20:30 EST</pubDate>
+		<modifiedDate>Tue, 22 Jul 2025 12:26:59 EDT</modifiedDate >
+		<dc:creator>Josh Beneteau</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-collection&#038;p=5831758&#038;oc=-1]]></guid>
+		<description><![CDATA[]]></description>
+		<sports/>		<leagues/>
+		<teams/>		<contentTags>
+<![CDATA[ |sportsnet.ca|na|na|sports|na|na ]]>		</contentTags>
+<collection id="5831758" /><newsItemLayout>headlines_meta</newsItemLayout>		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-collection</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/10/2026_nbacup1280.jpg">
+<media:credit>Graphic courtesy of the NBA</media:credit>
+<media:title>2026_nbacup1280</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/10/2026_nbacup1280.jpg" length="5369" type="image/jpeg" />
+</media:content>		<title>NBA unveils court designs for 2026 NBA Cup; Raptors court will be grey</title>
+		<headline><![CDATA[NBA unveils court designs for 2026 NBA Cup]]></headline>
+		<collectionId>5831758</collectionId>
+		<newsItemLayout>headlines</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/article/nba-unveils-court-designs-for-2026-nba-cup-raptors-court-will-be-grey/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/article/nba-unveils-court-designs-for-2026-nba-cup-raptors-court-will-be-grey//#comments ]]></comments>
+		<pubDate>Tue, 13 Oct 2026 12:52:44 EDT</pubDate>
+		<modifiedDate>Tue, 13 Oct 2026 12:53:23 EDT</modifiedDate >
+		<dc:creator>Sportsnet Staff</dc:creator>
+		<category><![CDATA[news]]></category>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-article&#038;p=6722471&#038;oc=-1]]></guid>
+		<description><![CDATA[]]></description>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+
+		<teams/>		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|na|na ]]>		</contentTags>
+		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-article</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2025/03/Payton-Pritchard.jpg">
+<media:credit>Charles Krupa/AP</media:credit>
+<media:title>Payton Pritchard</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2025/03/Payton-Pritchard.jpg" length="3419" type="image/jpeg" />
+</media:content>		<title>Report: Celtics sign Payton Pritchard to two-year, $44.2M extension</title>
+		<headline><![CDATA[Report: Celtics ink Pritchard to extension]]></headline>
+		<collectionId>5831758</collectionId>
+		<newsItemLayout>headlines</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/article/report-celtics-sign-payton-pritchard-to-two-year-44-2m-extension/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/article/report-celtics-sign-payton-pritchard-to-two-year-44-2m-extension//#comments ]]></comments>
+		<pubDate>Tue, 13 Oct 2026 16:12:15 EDT</pubDate>
+		<modifiedDate>Tue, 13 Oct 2026 16:12:47 EDT</modifiedDate >
+		<dc:creator>Sportsnet Staff</dc:creator>
+		<category><![CDATA[news]]></category>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-article&#038;p=6722591&#038;oc=-1]]></guid>
+		<description><![CDATA[]]></description>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1171">BOS</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|boston celtics|na ]]>		</contentTags>
+		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-article</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2025/09/Melo.jpg">
+<media:credit>Jessica Hill/AP</media:credit>
+<media:title>Melo</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2025/09/Melo.jpg" length="3630" type="image/jpeg" />
+</media:content>		<title>Carmelo Anthony thinks Knicks right to halt contract talks to focus on basketball</title>
+		<headline><![CDATA[Melo agrees with Knicks halting negotiations]]></headline>
+		<collectionId>5831758</collectionId>
+		<newsItemLayout>headlines</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/article/carmelo-anthony-thinks-knicks-right-to-halt-contract-talks-to-focus-on-basketball/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/article/carmelo-anthony-thinks-knicks-right-to-halt-contract-talks-to-focus-on-basketball//#comments ]]></comments>
+		<pubDate>Mon, 12 Oct 2026 19:54:19 EDT</pubDate>
+		<modifiedDate>Mon, 12 Oct 2026 19:54:21 EDT</modifiedDate >
+		<dc:creator>Associated Press</dc:creator>
+		<category><![CDATA[news]]></category>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-article&#038;p=6722073&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>Carmelo Anthony believes the New York Knicks made the right decision in halting contract negotiations with some of their players to focus solely on basketball.</p>
+]]></description>
+		<content:encoded><![CDATA[ Carmelo Anthony believes the New York Knicks made the right decision in halting contract negotiations with some of their players to focus solely on basketball. ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1189">NY</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|new york knicks|na ]]>		</contentTags>
+		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-article</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/07/Jamarion-Sharp.jpg">
+<media:credit>Gareth Patterson/AP</media:credit>
+<media:title>Jamarion Sharp</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/07/Jamarion-Sharp.jpg" length="2723" type="image/jpeg" />
+</media:content>		<title>Raptors bring centre Jamarion Sharp into camp, waive guard Chucky Hepburn</title>
+		<headline><![CDATA[Raptors Sharp into camp, waive Hepburn]]></headline>
+		<collectionId>5831758</collectionId>
+		<newsItemLayout>headlines</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/article/raptors-bring-seven-foot-five-centre-jamarion-sharp-into-camp/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/article/raptors-bring-seven-foot-five-centre-jamarion-sharp-into-camp//#comments ]]></comments>
+		<pubDate>Mon, 12 Oct 2026 11:55:33 EDT</pubDate>
+		<modifiedDate>Mon, 12 Oct 2026 17:37:46 EDT</modifiedDate >
+		<dc:creator>Sportsnet Staff</dc:creator>
+		<category><![CDATA[news]]></category>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-article&#038;p=6721759&#038;oc=-1]]></guid>
+		<description><![CDATA[]]></description>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1197">TOR</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|toronto raptors|na ]]>		</contentTags>
+		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-article</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/10/Untitled-design-1-39.jpg">
+<media:title>heat</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/10/Untitled-design-1-39.jpg" length="7696" type="image/jpeg" />
+</media:content>		<title>Erik Spoelstra sees possibilities of what new-look Heat can be</title>
+		<headline><![CDATA[Spoelstra sees potential for new-look Heat]]></headline>
+		<collectionId>5831758</collectionId>
+		<newsItemLayout>headlines</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/article/erik-spoelstra-sees-possibilities-of-what-new-look-heat-can-be/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/article/erik-spoelstra-sees-possibilities-of-what-new-look-heat-can-be//#comments ]]></comments>
+		<pubDate>Mon, 12 Oct 2026 11:04:46 EDT</pubDate>
+		<modifiedDate>Mon, 12 Oct 2026 11:04:54 EDT</modifiedDate >
+		<dc:creator>Associated Press</dc:creator>
+		<category><![CDATA[news]]></category>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-article&#038;p=6721741&#038;oc=-1]]></guid>
+		<description><![CDATA[]]></description>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1185">MIA</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|miami heat|na ]]>		</contentTags>
+		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-article</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2020/05/Michael-Jordan-Chicago-Bulls-Flu-Game-The-Last-Dance.jpg">
+<media:credit>Beth A. Keiser/AP</media:credit>
+<media:title>Michael Jordan Chicago Bulls Flu Game The Last Dance</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2020/05/Michael-Jordan-Chicago-Bulls-Flu-Game-The-Last-Dance.jpg" length="" type="" />
+</media:content>		<title>Michael Jordan jersey sells for record $14 million at auction</title>
+		<headline><![CDATA[Jordan jersey sells for record price]]></headline>
+		<collectionId>5831758</collectionId>
+		<newsItemLayout>headlines</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/article/michael-jordan-jersey-sells-for-record-14-million-at-auction/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/article/michael-jordan-jersey-sells-for-record-14-million-at-auction//#comments ]]></comments>
+		<pubDate>Mon, 12 Oct 2026 10:16:34 EDT</pubDate>
+		<modifiedDate>Mon, 12 Oct 2026 12:43:30 EDT</modifiedDate >
+		<dc:creator>Associated Press</dc:creator>
+		<category><![CDATA[news]]></category>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-article&#038;p=6721719&#038;oc=-1]]></guid>
+		<description><![CDATA[]]></description>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1174">CHI</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|chicago bulls|na ]]>		</contentTags>
+		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-article</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2025/01/Kyrie-Irving.jpg">
+<media:title>Kyrie Irving</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2025/01/Kyrie-Irving.jpg" length="3198" type="image/jpeg" />
+</media:content>		<title>Kyrie Irving scores 17 for Mavs in China, his return game after 2025 knee injury</title>
+		<headline><![CDATA[Mavs' Irving makes return from ACL injury]]></headline>
+		<collectionId>5831758</collectionId>
+		<newsItemLayout>headlines</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/article/kyrie-irving-scores-17-for-mavs-in-china-his-return-game-after-2025-knee-injury/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/article/kyrie-irving-scores-17-for-mavs-in-china-his-return-game-after-2025-knee-injury//#comments ]]></comments>
+		<pubDate>Sun, 11 Oct 2026 12:52:16 EDT</pubDate>
+		<modifiedDate>Sun, 11 Oct 2026 23:43:27 EDT</modifiedDate >
+		<dc:creator>Associated Press</dc:creator>
+		<category><![CDATA[news]]></category>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-article&#038;p=6721147&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>Kyrie Irving waited nearly 600 days for his return to the NBA. The Dallas Mavericks didn&#8217;t keep him waiting any longer for his welcome-back basket.</p>
+]]></description>
+		<content:encoded><![CDATA[ Kyrie Irving waited nearly 600 days for his return to the NBA. The Dallas Mavericks didn't keep him waiting any longer for his welcome-back basket. ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1176">DAL</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|dallas mavericks|na ]]>		</contentTags>
+		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-article</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/10/Lebron-James-1.jpg">
+<media:credit>Pamela Smith/AP</media:credit>
+<media:title>Lebron James</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/10/Lebron-James-1.jpg" length="3780" type="image/jpeg" />
+</media:content>		<title>LeBron James has strong first half in 76ers pre-season debut</title>
+		<headline><![CDATA[LeBron has strong half in 76ers debut]]></headline>
+		<collectionId>5831758</collectionId>
+		<newsItemLayout>headlines</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/article/lebron-james-making-76ers-debut-in-pre-season-game-vs-nets/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/article/lebron-james-making-76ers-debut-in-pre-season-game-vs-nets//#comments ]]></comments>
+		<pubDate>Thu, 08 Oct 2026 19:24:19 EDT</pubDate>
+		<modifiedDate>Thu, 08 Oct 2026 23:57:03 EDT</modifiedDate >
+		<dc:creator>Associated Press</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-article&#038;p=6719331&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>LeBron James is playing for the first time with the Philadelphia 76ers, getting started on the expected final stop in his NBA career.</p>
+]]></description>
+		<content:encoded><![CDATA[ LeBron James is playing for the first time with the Philadelphia 76ers, getting started on the expected final stop in his NBA career. ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1192">PHI</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|philadelphia 76ers|na ]]>		</contentTags>
+		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-article</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+		<title>NBA Top Videos</title>
+		<headline><![CDATA[Top Videos ]]></headline>
+		<link><![CDATA[ https://www.sportsnet.ca/?sn-collection=nba-top-videos-2 ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/?sn-collection=nba-top-videos-2/#comments ]]></comments>
+		<pubDate>Fri, 26 Sep 2025 13:25:25 EDT</pubDate>
+		<modifiedDate>Fri, 26 Sep 2025 13:27:50 EDT</modifiedDate >
+		<dc:creator>Josh Beneteau</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=sn-collection&#038;p=6414058&#038;oc=-1]]></guid>
+		<description><![CDATA[]]></description>
+		<sports/>		<leagues/>
+		<teams/>		<contentTags>
+<![CDATA[ |sportsnet.ca|na|na|sports|na|na ]]>		</contentTags>
+<collection id="6414058" /><newsItemLayout>carousel_meta</newsItemLayout>		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>sn-collection</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406855982112.jpg">
+<media:title>17919921096723245</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406855982112.jpg" length="3471" type="image/jpeg" />
+</media:content>		<title>How Kawhi Leonard can improve Raptors&#8217; efficiency in transition</title>
+		<headline><![CDATA[How Kawhi Leonard can improve Raptors' efficiency in transition]]></headline>
+		<collectionId>6414058</collectionId>
+		<newsItemLayout>carousel</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/video/how-kawhi-leonard-can-improve-raptors-efficiency-in-transition/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/video/how-kawhi-leonard-can-improve-raptors-efficiency-in-transition//#comments ]]></comments>
+		<pubDate>Wed, 14 Oct 2026 11:39:53 EDT</pubDate>
+		<modifiedDate>Wed, 14 Oct 2026 11:39:53 EDT</modifiedDate >
+		<dc:creator>Sportsnet Video</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=bc-video&#038;p=6723245&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>The Raptors Show&#8217;s Blake Murphy and Matt Bonner discuss Kawhi Leonard&#8217;s impact on the Toronto Raptors transition offence, saying Leonard and the Los Angeles Clippers were a very efficient offence in transition and that affect should translate.</p>
+]]></description>
+		<content:encoded><![CDATA[ <p>
+    <div id="video_container-809672" class="sn-video-container "><div class="bc_shortcode_placeholder"></div></div> 
+    <script class="bc-embed-script" type="text/javascript">
+        var adServerUrl = "";
+        var $el = $( "#video_container-809672" );
+        var permalink = $el.closest('.snet-single-article').data('permalink');
+
+        $el.after( unescape("%3Cscript src=\"" + (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js\" %3E%3C/script%3E") );
+
+        $( document ).one( 'ready', function() {
+            $( "#video_container-809672" ).SNPlayer( {
+                bc_account_id: "1704050871",
+                bc_player_id: "JCdte3tMv",
+                //autoplay: false, 
+                //is_has_autoplay_switch: false,
+                bc_videos: 6406855982112, 
+                is_has_continuous_play: "false",
+                section: "",
+                thumbnail: "https://www.sportsnet.ca/wp-content/uploads/2026/10/6406855982112-1024x576.jpg",
+                direct_url: "https://www.sportsnet.ca/nba/video/how-kawhi-leonard-can-improve-raptors-efficiency-in-transition/"
+            });
+        });
+    </script>
+
+    </p>
+ ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1197">TOR</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|toronto raptors|na ]]>		</contentTags>
+<type>video</type><strip catid="13461"><![CDATA[ Basketball News ]]></strip><strip catid="13375"><![CDATA[ NBA ]]></strip><strip catid="13563"><![CDATA[ Raptors News ]]></strip><strip catid="20443"><![CDATA[ Raptors Show ]]></strip><strip catid="13413"><![CDATA[ Toronto Raptors ]]></strip><content duration="166848" url="https://www.sportsnet.ca/nba/video/how-kawhi-leonard-can-improve-raptors-efficiency-in-transition/" height="" width=""/><brightcove id="6406855982112"/><image>https://cf-images.us-east-1.prod.boltdns.net/v1/static/1704050871/cf3c1836-cc7f-4f0e-b7d3-779d8d26a125/e2f7e977-0149-4cf3-8888-e78b03d4ccab/160x90/match/image.jpg</image><authors><author id="105">Sportsnet Video</author></authors>		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>bc-video</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406807808112.jpg">
+<media:title>17919406306722776</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406807808112.jpg" length="3240" type="image/jpeg" />
+</media:content>		<title>Raptors&#8217; Murray-Boyles blows past Wiseman to throw down filthy slam</title>
+		<headline><![CDATA[Raptors' Murray-Boyles blows past Wiseman to throw down filthy slam]]></headline>
+		<collectionId>6414058</collectionId>
+		<newsItemLayout>carousel</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/video/raptors-murray-boyles-blows-past-wiseman-to-throw-down-filthy-slam/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/video/raptors-murray-boyles-blows-past-wiseman-to-throw-down-filthy-slam//#comments ]]></comments>
+		<pubDate>Tue, 13 Oct 2026 21:18:20 EDT</pubDate>
+		<modifiedDate>Tue, 13 Oct 2026 21:18:20 EDT</modifiedDate >
+		<dc:creator>Sportsnet Video</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=bc-video&#038;p=6722776&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>Watch as Collin Murray-Boyles blows past James Wiseman and throws down the filthy one-handed slam.</p>
+]]></description>
+		<content:encoded><![CDATA[ <p>
+    <div id="video_container-704060" class="sn-video-container "><div class="bc_shortcode_placeholder"></div></div> 
+    <script class="bc-embed-script" type="text/javascript">
+        var adServerUrl = "";
+        var $el = $( "#video_container-704060" );
+        var permalink = $el.closest('.snet-single-article').data('permalink');
+
+        $el.after( unescape("%3Cscript src=\"" + (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js\" %3E%3C/script%3E") );
+
+        $( document ).one( 'ready', function() {
+            $( "#video_container-704060" ).SNPlayer( {
+                bc_account_id: "1704050871",
+                bc_player_id: "JCdte3tMv",
+                //autoplay: false, 
+                //is_has_autoplay_switch: false,
+                bc_videos: 6406807808112, 
+                is_has_continuous_play: "false",
+                section: "",
+                thumbnail: "https://www.sportsnet.ca/wp-content/uploads/2026/10/6406807808112-1024x576.jpg",
+                direct_url: "https://www.sportsnet.ca/nba/video/raptors-murray-boyles-blows-past-wiseman-to-throw-down-filthy-slam/"
+            });
+        });
+    </script>
+
+    </p>
+ ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1189">NY</team>
+			<team id="1197">TOR</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|new york knicks ; toronto raptors|na ]]>		</contentTags>
+<type>video</type><strip catid="13375"><![CDATA[ NBA ]]></strip><strip catid="20160"><![CDATA[ NBA Top Plays ]]></strip><strip catid="21417"><![CDATA[ Raptors top plays ]]></strip><strip catid="13561"><![CDATA[ Top Videos ]]></strip><strip catid="13413"><![CDATA[ Toronto Raptors ]]></strip><content duration="34598" url="https://www.sportsnet.ca/nba/video/raptors-murray-boyles-blows-past-wiseman-to-throw-down-filthy-slam/" height="" width=""/><brightcove id="6406807808112"/><image>https://cf-images.us-east-1.prod.boltdns.net/v1/static/1704050871/0ce90eb3-77cd-4d73-a0f4-27f8245ea806/7945ce8e-6add-44c5-be4b-eb112739eae8/160x90/match/image.jpg</image><authors><author id="687">Sportsnet Video</author></authors>		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>bc-video</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406799974112.jpg">
+<media:title>17919345086722692</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406799974112.jpg" length="2924" type="image/jpeg" />
+</media:content>		<title>Leonard drills three to cap off mini-run for Raptors</title>
+		<headline><![CDATA[Leonard drills three to cap off mini-run for Raptors]]></headline>
+		<collectionId>6414058</collectionId>
+		<newsItemLayout>carousel</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/video/leonard-drills-three-to-cap-off-mini-run-for-raptors/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/video/leonard-drills-three-to-cap-off-mini-run-for-raptors//#comments ]]></comments>
+		<pubDate>Tue, 13 Oct 2026 19:37:40 EDT</pubDate>
+		<modifiedDate>Tue, 13 Oct 2026 19:37:40 EDT</modifiedDate >
+		<dc:creator>Sportsnet Video</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=bc-video&#038;p=6722692&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>Watch as Toronto Raptors&#8217; Kawhi Leonard drills a three-point bucket from the top of the key to cap off an 8-0 run against the New York Knicks.</p>
+]]></description>
+		<content:encoded><![CDATA[ <p>
+    <div id="video_container-130377" class="sn-video-container "><div class="bc_shortcode_placeholder"></div></div> 
+    <script class="bc-embed-script" type="text/javascript">
+        var adServerUrl = "";
+        var $el = $( "#video_container-130377" );
+        var permalink = $el.closest('.snet-single-article').data('permalink');
+
+        $el.after( unescape("%3Cscript src=\"" + (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js\" %3E%3C/script%3E") );
+
+        $( document ).one( 'ready', function() {
+            $( "#video_container-130377" ).SNPlayer( {
+                bc_account_id: "1704050871",
+                bc_player_id: "JCdte3tMv",
+                //autoplay: false, 
+                //is_has_autoplay_switch: false,
+                bc_videos: 6406799974112, 
+                is_has_continuous_play: "false",
+                section: "",
+                thumbnail: "https://www.sportsnet.ca/wp-content/uploads/2026/10/6406799974112-1024x576.jpg",
+                direct_url: "https://www.sportsnet.ca/nba/video/leonard-drills-three-to-cap-off-mini-run-for-raptors/"
+            });
+        });
+    </script>
+
+    </p>
+ ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1189">NY</team>
+			<team id="1197">TOR</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|new york knicks ; toronto raptors|na ]]>		</contentTags>
+<type>video</type><strip catid="13375"><![CDATA[ NBA ]]></strip><strip catid="20160"><![CDATA[ NBA Top Plays ]]></strip><strip catid="21417"><![CDATA[ Raptors top plays ]]></strip><strip catid="13413"><![CDATA[ Toronto Raptors ]]></strip><content duration="25365" url="https://www.sportsnet.ca/nba/video/leonard-drills-three-to-cap-off-mini-run-for-raptors/" height="" width=""/><brightcove id="6406799974112"/><image>https://cf-images.us-east-1.prod.boltdns.net/v1/static/1704050871/d7bea3a0-eba4-418f-84ea-bdab16ac2a7f/9a55896d-2a2e-45cc-9d8c-1eceb0fe2f6f/160x90/match/image.jpg</image><authors><author id="698">Sportsnet Video</author></authors>		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>bc-video</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406812225112.jpg">
+<media:title>17919426696722809</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406812225112.jpg" length="2694" type="image/jpeg" />
+</media:content>		<title>Jackson-Davis delivers monster dunk and block against Knicks</title>
+		<headline><![CDATA[Jackson-Davis delivers monster dunk and block against Knicks]]></headline>
+		<collectionId>6414058</collectionId>
+		<newsItemLayout>carousel</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/video/jackson-davis-delivers-monster-dunk-and-block-against-knicks/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/video/jackson-davis-delivers-monster-dunk-and-block-against-knicks//#comments ]]></comments>
+		<pubDate>Tue, 13 Oct 2026 21:53:21 EDT</pubDate>
+		<modifiedDate>Tue, 13 Oct 2026 21:53:21 EDT</modifiedDate >
+		<dc:creator>Sportsnet Video</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=bc-video&#038;p=6722809&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>Watch as Toronto Raptors&#8217; Trayce Jackson-Davis delivers a thunderous dunk followed by a huge block against the New York Knicks in pre-season action.</p>
+]]></description>
+		<content:encoded><![CDATA[ <p>
+    <div id="video_container-324596" class="sn-video-container "><div class="bc_shortcode_placeholder"></div></div> 
+    <script class="bc-embed-script" type="text/javascript">
+        var adServerUrl = "";
+        var $el = $( "#video_container-324596" );
+        var permalink = $el.closest('.snet-single-article').data('permalink');
+
+        $el.after( unescape("%3Cscript src=\"" + (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js\" %3E%3C/script%3E") );
+
+        $( document ).one( 'ready', function() {
+            $( "#video_container-324596" ).SNPlayer( {
+                bc_account_id: "1704050871",
+                bc_player_id: "JCdte3tMv",
+                //autoplay: false, 
+                //is_has_autoplay_switch: false,
+                bc_videos: 6406812225112, 
+                is_has_continuous_play: "false",
+                section: "",
+                thumbnail: "https://www.sportsnet.ca/wp-content/uploads/2026/10/6406812225112-1024x576.jpg",
+                direct_url: "https://www.sportsnet.ca/nba/video/jackson-davis-delivers-monster-dunk-and-block-against-knicks/"
+            });
+        });
+    </script>
+
+    </p>
+ ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1189">NY</team>
+			<team id="1197">TOR</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|new york knicks ; toronto raptors|na ]]>		</contentTags>
+<type>video</type><strip catid="13375"><![CDATA[ NBA ]]></strip><strip catid="20160"><![CDATA[ NBA Top Plays ]]></strip><strip catid="21417"><![CDATA[ Raptors top plays ]]></strip><strip catid="13413"><![CDATA[ Toronto Raptors ]]></strip><content duration="42934" url="https://www.sportsnet.ca/nba/video/jackson-davis-delivers-monster-dunk-and-block-against-knicks/" height="" width=""/><brightcove id="6406812225112"/><image>https://cf-images.us-east-1.prod.boltdns.net/v1/static/1704050871/280a8b7d-cc2e-48e9-95e7-c47bc2c2b41b/af55dbc7-6b76-4327-bde9-ab9c85caba52/160x90/match/image.jpg</image><authors><author id="839">Sportsnet Video</author></authors>		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>bc-video</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406803435112.jpg">
+<media:title>17919377486722738</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406803435112.jpg" length="3550" type="image/jpeg" />
+</media:content>		<title>Raptors&#8217; Murray-Boyles gets up for vicious putback dunk</title>
+		<headline><![CDATA[Raptors' Murray-Boyles gets up for vicious putback dunk]]></headline>
+		<collectionId>6414058</collectionId>
+		<newsItemLayout>carousel</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/video/raptors-murray-boyles-gets-up-for-vicious-putback-dunk/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/video/raptors-murray-boyles-gets-up-for-vicious-putback-dunk//#comments ]]></comments>
+		<pubDate>Tue, 13 Oct 2026 20:29:57 EDT</pubDate>
+		<modifiedDate>Tue, 13 Oct 2026 20:29:57 EDT</modifiedDate >
+		<dc:creator>Sportsnet Video</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=bc-video&#038;p=6722738&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>Watch as Toronto Raptors forward Collin Murray-Boyles shows off some of his trademark hard-nosed play, getting way up to finish off a Scottie Barnes miss with a big dunk over multiple New York Knicks.</p>
+]]></description>
+		<content:encoded><![CDATA[ <p>
+    <div id="video_container-384886" class="sn-video-container "><div class="bc_shortcode_placeholder"></div></div> 
+    <script class="bc-embed-script" type="text/javascript">
+        var adServerUrl = "";
+        var $el = $( "#video_container-384886" );
+        var permalink = $el.closest('.snet-single-article').data('permalink');
+
+        $el.after( unescape("%3Cscript src=\"" + (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js\" %3E%3C/script%3E") );
+
+        $( document ).one( 'ready', function() {
+            $( "#video_container-384886" ).SNPlayer( {
+                bc_account_id: "1704050871",
+                bc_player_id: "JCdte3tMv",
+                //autoplay: false, 
+                //is_has_autoplay_switch: false,
+                bc_videos: 6406803435112, 
+                is_has_continuous_play: "false",
+                section: "",
+                thumbnail: "https://www.sportsnet.ca/wp-content/uploads/2026/10/6406803435112-1024x576.jpg",
+                direct_url: "https://www.sportsnet.ca/nba/video/raptors-murray-boyles-gets-up-for-vicious-putback-dunk/"
+            });
+        });
+    </script>
+
+    </p>
+ ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1189">NY</team>
+			<team id="1197">TOR</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|new york knicks ; toronto raptors|na ]]>		</contentTags>
+<type>video</type><strip catid="13375"><![CDATA[ NBA ]]></strip><strip catid="20160"><![CDATA[ NBA Top Plays ]]></strip><content duration="44931" url="https://www.sportsnet.ca/nba/video/raptors-murray-boyles-gets-up-for-vicious-putback-dunk/" height="" width=""/><brightcove id="6406803435112"/><image>https://cf-images.us-east-1.prod.boltdns.net/v1/static/1704050871/0bf0221f-4ce1-4ee4-aa79-95b19f85ae6c/cc79bf3f-1878-473e-9bfc-70b6db15c070/160x90/match/image.jpg</image><authors><author id="712">Sportsnet Video</author></authors>		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>bc-video</post_type>
+		<sponsorshipMatched></sponsorshipMatched>
+		<blackoutGame></blackoutGame>
+	</item>
+
+	<item  importance="normal">
+
+<media:content medium="image" width="600" height="338" url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406761162112.jpg">
+<media:title>17919061886722439</media:title>
+<enclosure url="https://www.sportsnet.ca/wp-content/uploads/2026/10/6406761162112.jpg" length="2513" type="image/jpeg" />
+</media:content>		<title>How the Raptors&#8217; improved roster will benefit lead guard Quickley</title>
+		<headline><![CDATA[How the Raptors' improved roster will benefit lead guard Quickley]]></headline>
+		<collectionId>6414058</collectionId>
+		<newsItemLayout>carousel</newsItemLayout>
+		<link><![CDATA[ https://www.sportsnet.ca/nba/video/how-the-raptors-improved-roster-will-benefit-lead-guard-quickley/ ]]></link>
+		<comments><![CDATA[ https://www.sportsnet.ca/nba/video/how-the-raptors-improved-roster-will-benefit-lead-guard-quickley//#comments ]]></comments>
+		<pubDate>Tue, 13 Oct 2026 11:46:49 EDT</pubDate>
+		<modifiedDate>Tue, 13 Oct 2026 11:46:49 EDT</modifiedDate >
+		<dc:creator>Sportsnet Video</dc:creator>
+		<guid isPermaLink="false"><![CDATA[https://www.sportsnet.ca/?post_type=bc-video&#038;p=6722439&#038;oc=-1]]></guid>
+		<description><![CDATA[<p>The Raptors Show&#8217;s Blake Murphy and Matt Bonner discuss guard Immanuel Quickley&#8217;s production so far in the pre-season, and how he will benefit from an improved and more talented roster in 2026-27.</p>
+]]></description>
+		<content:encoded><![CDATA[ <p>
+    <div id="video_container-365201" class="sn-video-container "><div class="bc_shortcode_placeholder"></div></div> 
+    <script class="bc-embed-script" type="text/javascript">
+        var adServerUrl = "";
+        var $el = $( "#video_container-365201" );
+        var permalink = $el.closest('.snet-single-article').data('permalink');
+
+        $el.after( unescape("%3Cscript src=\"" + (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js\" %3E%3C/script%3E") );
+
+        $( document ).one( 'ready', function() {
+            $( "#video_container-365201" ).SNPlayer( {
+                bc_account_id: "1704050871",
+                bc_player_id: "JCdte3tMv",
+                //autoplay: false, 
+                //is_has_autoplay_switch: false,
+                bc_videos: 6406761162112, 
+                is_has_continuous_play: "false",
+                section: "",
+                thumbnail: "https://www.sportsnet.ca/wp-content/uploads/2026/10/6406761162112-1024x576.jpg",
+                direct_url: "https://www.sportsnet.ca/nba/video/how-the-raptors-improved-roster-will-benefit-lead-guard-quickley/"
+            });
+        });
+    </script>
+
+    </p>
+ ]]></content:encoded>
+		<sports>
+			<sport id="1166" url="https://www.sportsnet.ca/basketball/">Basketball</sport>
+		</sports>
+		<leagues>
+			<league id="1167" url="https://www.sportsnet.ca/basketball/nba/">NBA</league>
+		</leagues>
+		<teams>
+			<team id="1197">TOR</team>
+		</teams>
+		<contentTags>
+<![CDATA[ |sportsnet.ca|basketball|nba|sports|toronto raptors|na ]]>		</contentTags>
+<type>video</type><strip catid="13375"><![CDATA[ NBA ]]></strip><strip catid="13607"><![CDATA[ Our Shows ]]></strip><strip catid="20443"><![CDATA[ Raptors Show ]]></strip><strip catid="13413"><![CDATA[ Toronto Raptors ]]></strip><content duration="224560" url="https://www.sportsnet.ca/nba/video/how-the-raptors-improved-roster-will-benefit-lead-guard-quickley/" height="" width=""/><brightcove id="6406761162112"/><image>https://cf-images.us-east-1.prod.boltdns.net/v1/static/1704050871/0da89e07-e26c-4d49-8e25-63e7f6935d0e/24a04b36-6898-443a-9824-79aec1bb584a/160x90/match/image.jpg</image><authors><author id="844">Sportsnet Video</author></authors>		<link type="app-deep-link-field"></link>
+				<gameCard/>
+		<post_type>bc-video</post_type>
+		<sponso

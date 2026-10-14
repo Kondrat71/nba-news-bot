@@ -1,25 +1,34 @@
-# Источники новостей. Каждый проверяется каждые `interval` секунд.
-# type: rss  — обычная RSS-лента
-# type: html — разбор страницы новостей (у сайта нет RSS)
-# league: NBA или GLEAGUE — какой хэштег ставить
-# url_must_contain — пропускать ссылки, где нет этой подстроки (отсекает NFL/MLB у мультиспортивных лент)
-# exclude_categories — пропускать записи RSS с такими категориями
+# Источники. Все опрашиваются раз в минуту.
+# type: rss | html (parser) | espn_news | scores | injuries
+# official: true — официальный источник лиги (такие новости не помечаются как слухи)
+# only_categories — брать из источника только эти темы: injury, trade, signing, conflict, rumor
+# exclude_publishers — пропускать материалы этих изданий (для лент-агрегаторов)
 
 sources:
+  # --- Срочное: список травм и итоги матчей ---
+  - name: ESPN Injuries
+    type: injuries
+    url: https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries
+    league: NBA
+
+  - name: Результаты матчей
+    type: scores
+    url: https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard
+    league: NBA
+
   # --- Официальные источники лиги ---
   - name: NBA.com
     type: html
     parser: nba_com
     url: https://www.nba.com/news
     league: NBA
-    interval: 60
+    official: true
 
   - name: NBA Communications
     type: rss
     url: https://pr.nba.com/feed/
     league: NBA
-    interval: 60
-    # пресс-служба НБА публикует ещё WNBA и BAL — их отсекаем
+    official: true
     exclude_categories: [WNBA, "NBA Africa", "Basketball Africa League", BAL]
 
   - name: NBA G League
@@ -27,36 +36,40 @@ sources:
     parser: gleague
     url: https://gleague.nba.com/news
     league: GLEAGUE
-    interval: 60
+    official: true
 
-  # --- Результаты матчей (табло ESPN): пост с карточкой счёта после финальной сирены ---
-  - name: Результаты матчей
-    type: scores
-    url: https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard
+  # --- Крупные американские СМИ ---
+  - name: ESPN News
+    type: espn_news
+    url: https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news?limit=50
     league: NBA
-    interval: 60
-
-  # --- Крупные американские спортивные СМИ ---
-  # ESPN закрыл RSS-ленту НБА (отдаёт пустой список) — отключено
-  - name: ESPN
-    type: rss
-    url: https://www.espn.com/espn/rss/nba/news
-    league: NBA
-    interval: 60
-    enabled: false
 
   - name: CBS Sports
     type: rss
     url: https://www.cbssports.com/rss/headlines/nba/
     league: NBA
-    interval: 60
     url_must_contain: /nba/
 
-  # Yahoo Sports: много материалов фан-блогов SB Nation, поэтому выключено.
-  # Поставьте enabled: true, если нужен больший поток.
+  # --- Инсайды, слухи, конфликты ---
+  - name: RealGM Wiretap        # быстрая лента: сделки, травмы, инсайды
+    type: rss
+    url: https://basketball.realgm.com/rss/wiretap/0/0.xml
+    league: NBA
+
+  - name: Sportsnet
+    type: rss
+    url: https://www.sportsnet.ca/basketball/nba/feed/
+    league: NBA
+
+  - name: Fadeaway World         # таблоид: берём только слухи, конфликты и сделки
+    type: rss
+    url: https://www.fadeawayworld.net/feed
+    league: NBA
+    only_categories: [rumor, conflict, trade]
+
   - name: Yahoo Sports
     type: rss
     url: https://sports.yahoo.com/nba/rss.xml
     league: NBA
-    interval: 90
-    enabled: false
+    exclude_publishers: ["SB Nation"]     # фан-блоги
+    only_categories: [rumor, conflict, trade, injury, signing]

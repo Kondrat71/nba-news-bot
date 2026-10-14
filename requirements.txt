@@ -3,6 +3,5 @@ feedparser>=6.0
 beautifulsoup4>=4.12
 PyYAML>=6.0
 python-dotenv>=1.0
-deep-translator>=1.11
 curl_cffi>=0.7
 Pillow>=10.1

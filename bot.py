@@ -1,21 +1,25 @@
 """
 NBA + G League -> Telegram channel news bot.
 
-Опрашивает несколько источников (RSS и страницы новостей), находит новые
-материалы и сразу публикует их в Telegram-канал. Дубли между источниками
-отсекаются по ссылке и по похожести заголовка.
+Каждую минуту опрашивает источники (официальные сайты лиги, СМИ, инсайдерские ленты,
+список травм и табло матчей) и сразу публикует новое в Telegram-канал:
+новости — по-русски с картинкой и рубрикой, травмы — срочной карточкой,
+матчи — итоговой карточкой со статистикой.
 """
 from __future__ import annotations
 
 import asyncio
 import difflib
 import html
+import json
 import logging
 import os
 import re
 import sqlite3
+import sys
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
 
@@ -25,35 +29,34 @@ import yaml
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 
+load_dotenv()
+
+import nba_cards  # noqa: E402
+import nba_classify  # noqa: E402
+import nba_games  # noqa: E402
+import nba_injuries  # noqa: E402
+import nba_translate as tr  # noqa: E402
+
 try:  # браузерный отпечаток для сайтов с защитой от ботов (nba.com)
     from curl_cffi.requests import AsyncSession as CurlSession
 except ImportError:
     CurlSession = None
 
-load_dotenv()
-
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-CHANNEL_ID = os.environ.get("TELEGRAM_CHANNEL_ID", "")  # @my_channel или -100...
-TRANSLATE_TO = os.environ.get("TRANSLATE_TO", "ru").strip()  # "" = без перевода
-SHOW_ORIGINAL = os.environ.get("SHOW_ORIGINAL", "0") == "1"
+CHANNEL_ID = os.environ.get("TELEGRAM_CHANNEL_ID", "")
 POST_ON_FIRST_RUN = os.environ.get("POST_ON_FIRST_RUN", "0") == "1"
 DB_PATH = os.environ.get("DB_PATH", "data/seen.db")
 SOURCES_FILE = os.environ.get("SOURCES_FILE", str(Path(__file__).with_name("sources.yaml")))
 LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
+WAIT_FOR_TRANSLATION_MIN = float(os.environ.get("WAIT_FOR_TRANSLATION_MIN", "30"))
+POST_INJURY_CHANGES = os.environ.get("POST_INJURY_CHANGES", "1") == "1"
 
-USER_AGENT = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/129.0 Safari/537.36"
-)
-TITLE_SIMILARITY = 0.82  # порог «это та же новость из другого источника»
-
+USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+              "(KHTML, like Gecko) Chrome/129.0 Safari/537.36")
 log = logging.getLogger("nba-bot")
 
-G_LEAGUE_HINTS = re.compile(
-    r"g league|g-league|two-way|two way|gleague|affiliate|call-up|call up|"
-    r"returning (player )?rights",
-    re.I,
-)
+G_LEAGUE_HINTS = re.compile(r"g league|g-league|gleague|two-way|two way|returning (player )?rights", re.I)
+BAD_IMAGE = re.compile(r"logo|default|placeholder|fallback|favicon|sprite|blank|share-image|og-image", re.I)
 
 
 # ---------------------------------------------------------------- data model
@@ -64,10 +67,12 @@ class Item:
     title: str
     url: str
     summary: str = ""
-    image: str = ""            # URL картинки (если известен заранее)
-    caption: str = ""          # готовый текст поста (результаты матчей)
-    photo: bytes | None = None  # готовая картинка (карточка матча)
-    uid: str = ""              # ключ вместо ссылки (матчи)
+    image: str = ""
+    uid: str = ""
+    kind: str = "news"          # news | game | injury
+    official: bool = False
+    priority: int = 5           # 0 — срочно (травмы), 1 — матчи, 5 — обычные новости
+    data: dict = field(default_factory=dict)
 
     @property
     def key(self) -> str:
@@ -76,22 +81,27 @@ class Item:
 
 def normalize_url(url: str) -> str:
     p = urlsplit(url.strip())
-    path = p.path.rstrip("/")
-    return urlunsplit((p.scheme.lower() or "https", p.netloc.lower(), path, "", ""))
+    return urlunsplit((p.scheme.lower() or "https", p.netloc.lower(), p.path.rstrip("/"), "", ""))
 
 
 def normalize_title(t: str) -> str:
-    t = re.sub(r"^(the athletic|report|sources?):\s*", "", t.strip(), flags=re.I)
+    t = re.sub(r"^(the athletic|report|reports|sources?):\s*", "", t.strip(), flags=re.I)
     return re.sub(r"[^a-z0-9 ]+", "", t.lower())
 
 
-def clean_text(s: str, limit: int = 400) -> str:
+STOP = set("the and for with from that this his her their after before over into will has have are was were "
+           "not but per out vs about its new nba season game games team says said report reports".split())
+
+
+def title_tokens(t: str) -> set[str]:
+    return {w for w in normalize_title(t).split() if len(w) >= 3 and w not in STOP}
+
+
+def clean_text(s: str, limit: int = 3000) -> str:
     s = BeautifulSoup(s or "", "html.parser").get_text(" ", strip=True)
     s = re.sub(r"The post .* appeared first on .*$", "", s).strip()
     s = re.sub(r"\s+", " ", s)
-    if len(s) > limit:
-        s = s[:limit].rsplit(" ", 1)[0] + "…"
-    return s
+    return s[:limit]
 
 
 # ---------------------------------------------------------------- storage
@@ -99,43 +109,35 @@ class Store:
     def __init__(self, path: str):
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         self.db = sqlite3.connect(path)
-        self.db.execute(
-            "CREATE TABLE IF NOT EXISTS seen ("
-            " key TEXT PRIMARY KEY, title TEXT, source TEXT, posted INTEGER, ts REAL)"
-        )
-        self.db.execute(
-            "CREATE TABLE IF NOT EXISTS primed (source TEXT PRIMARY KEY)"
-        )
-        self.db.execute(
-            "CREATE TABLE IF NOT EXISTS pending (key TEXT PRIMARY KEY, since REAL)"
-        )
+        self.db.execute("CREATE TABLE IF NOT EXISTS seen (key TEXT PRIMARY KEY, title TEXT, source TEXT, "
+                        "posted INTEGER, ts REAL)")
+        self.db.execute("CREATE TABLE IF NOT EXISTS primed (source TEXT PRIMARY KEY)")
+        self.db.execute("CREATE TABLE IF NOT EXISTS pending (key TEXT PRIMARY KEY, since REAL)")
+        self.db.execute("CREATE TABLE IF NOT EXISTS kv (k TEXT PRIMARY KEY, v TEXT)")
         self.db.commit()
 
+    def seen(self, key: str) -> bool:
+        return self.db.execute("SELECT 1 FROM seen WHERE key=?", (key,)).fetchone() is not None
+
+    def add(self, item: Item, posted: bool) -> None:
+        self.db.execute("INSERT OR IGNORE INTO seen VALUES (?,?,?,?,?)",
+                        (item.key, normalize_title(item.title) if item.kind == "news" else "",
+                         item.source, int(posted), time.time()))
+        self.db.execute("DELETE FROM pending WHERE key=?", (item.key,))
+        self.db.commit()
+
+    def recent_titles(self, hours: int = 36) -> list[str]:
+        rows = self.db.execute("SELECT title FROM seen WHERE posted=1 AND title!='' AND ts>?",
+                               (time.time() - hours * 3600,)).fetchall()
+        return [r[0] for r in rows]
+
     def waiting_since(self, key: str) -> float:
-        """Сколько секунд новость ждёт перевода (первый раз — 0)."""
         row = self.db.execute("SELECT since FROM pending WHERE key=?", (key,)).fetchone()
         if row is None:
             self.db.execute("INSERT INTO pending VALUES (?,?)", (key, time.time()))
             self.db.commit()
             return 0.0
         return time.time() - row[0]
-
-    def seen(self, key: str) -> bool:
-        return self.db.execute("SELECT 1 FROM seen WHERE key=?", (key,)).fetchone() is not None
-
-    def add(self, item: Item, posted: bool) -> None:
-        self.db.execute(
-            "INSERT OR IGNORE INTO seen VALUES (?,?,?,?,?)",
-            (item.key, normalize_title(item.title), item.source, int(posted), time.time()),
-        )
-        self.db.commit()
-
-    def recent_titles(self, hours: int = 48) -> list[str]:
-        since = time.time() - hours * 3600
-        rows = self.db.execute(
-            "SELECT title FROM seen WHERE posted=1 AND ts>?", (since,)
-        ).fetchall()
-        return [r[0] for r in rows]
 
     def is_primed(self, source: str) -> bool:
         return self.db.execute("SELECT 1 FROM primed WHERE source=?", (source,)).fetchone() is not None
@@ -144,39 +146,53 @@ class Store:
         self.db.execute("INSERT OR IGNORE INTO primed VALUES (?)", (source,))
         self.db.commit()
 
+    def get(self, k: str, default=None):
+        row = self.db.execute("SELECT v FROM kv WHERE k=?", (k,)).fetchone()
+        return json.loads(row[0]) if row else default
+
+    def put(self, k: str, v) -> None:
+        self.db.execute("INSERT OR REPLACE INTO kv VALUES (?,?)", (k, json.dumps(v, ensure_ascii=False)))
+        self.db.commit()
+
+    def cleanup(self, days: int = 45) -> None:
+        self.db.execute("DELETE FROM seen WHERE ts<?", (time.time() - days * 86400,))
+        self.db.commit()
+
 
 # ---------------------------------------------------------------- parsers
+def _first_image(e) -> str:
+    for enc in list(e.get("enclosures", [])) + list(e.get("media_content", [])) + list(e.get("media_thumbnail", [])):
+        url = enc.get("href") or enc.get("url")
+        if url and str(enc.get("type", "image")).startswith("image"):
+            return url
+    blob = e.get("content", [{}])[0].get("value", "") if e.get("content") else e.get("summary", "")
+    m = re.search(r'<img[^>]+src="([^"]+)"', blob or "")
+    return m.group(1) if m else ""
+
+
 def parse_rss(text: str, src: dict) -> list[Item]:
     feed = feedparser.parse(text)
     excl = {c.lower() for c in src.get("exclude_categories", [])}
+    excl_pub = {p.lower() for p in src.get("exclude_publishers", [])}
     must = src.get("url_must_contain")
     items = []
     for e in feed.entries:
-        link = e.get("link", "").strip()
+        link = (e.get("link") or "").strip()
         title = clean_text(e.get("title", ""), 300)
-        if not link or not title:
+        if not link or not title or (must and must not in link):
             continue
-        if must and must not in link:
+        if excl and {t.get("term", "").lower() for t in e.get("tags", [])} & excl:
             continue
-        cats = {t.get("term", "").lower() for t in e.get("tags", [])}
-        if excl and cats & excl:
+        pub = (e.get("publisher") or (e.get("source") or {}).get("title") or "").lower()
+        if excl_pub and pub in excl_pub:
             continue
-        image = ""
-        for enc in e.get("enclosures", []) + e.get("media_content", []):
-            if str(enc.get("type", "image")).startswith("image") and enc.get("href", enc.get("url")):
-                image = enc.get("href") or enc.get("url")
-                break
-        if not image:
-            m = re.search(r'<img[^>]+src="([^"]+)"', e.get("content", [{}])[0].get("value", "") if e.get("content") else e.get("summary", ""))
-            image = m.group(1) if m else ""
-        items.append(Item(src["name"], src["league"], title, link, clean_text(e.get("summary", "")), image=image))
+        body = e.get("content", [{}])[0].get("value", "") if e.get("content") else e.get("summary", "")
+        items.append(Item(src["name"], src["league"], title, link, clean_text(body),
+                          image=_first_image(e), official=src.get("official", False)))
     return items
 
 
-NBA_SKIP = re.compile(
-    r"/news/(category|key-dates|writers-archive|nba-guide|.*trade-tracker|.*pronunciation)",
-    re.I,
-)
+NBA_SKIP = re.compile(r"/news/(category|key-dates|writers-archive|nba-guide|.*trade-tracker|.*pronunciation)", re.I)
 
 
 def parse_nba_com(text: str, src: dict) -> list[Item]:
@@ -187,16 +203,12 @@ def parse_nba_com(text: str, src: dict) -> list[Item]:
         if not re.match(r"https://www\.nba\.com/news/[a-z0-9-]+/?$", href) or NBA_SKIP.search(href):
             continue
         key = normalize_url(href)
-        if key in seen:
-            continue
-        title = (a.get("title") or "").removeprefix("Article link for ").strip()
-        if not title:
-            title = a.get_text(" ", strip=True)
-        title = html.unescape(title)
-        if len(title) < 15 or title.startswith("/news/"):
+        title = html.unescape((a.get("title") or "").removeprefix("Article link for ").strip()
+                              or a.get_text(" ", strip=True))
+        if key in seen or len(title) < 15 or title.startswith("/news/"):
             continue
         seen.add(key)
-        items.append(Item(src["name"], src["league"], title, href))
+        items.append(Item(src["name"], src["league"], title, href, official=src.get("official", False)))
     return items
 
 
@@ -205,129 +217,51 @@ def parse_gleague(text: str, src: dict) -> list[Item]:
     items, seen = [], set()
     for a in soup.select("h1 a[href], h2 a[href], h3 a[href], h4 a[href]"):
         href = urljoin("https://gleague.nba.com", a["href"])
-        if "/news/" not in href:
-            continue
-        key = normalize_url(href)
         title = a.get_text(" ", strip=True)
-        if key in seen or len(title) < 10:
+        key = normalize_url(href)
+        if "/news/" not in href or key in seen or len(title) < 10:
             continue
         seen.add(key)
-        items.append(Item(src["name"], src["league"], title, href))
+        items.append(Item(src["name"], src["league"], title, href, official=src.get("official", False)))
     return items
 
 
-PARSERS = {"nba_com": parse_nba_com, "gleague": parse_gleague}
-
-
-# ---------------------------------------------------------------- game results
-TEAMS_RU = {
-    "ATL": "Атланта", "BOS": "Бостон", "BKN": "Бруклин", "CHA": "Шарлотт", "CHI": "Чикаго",
-    "CLE": "Кливленд", "DAL": "Даллас", "DEN": "Денвер", "DET": "Детройт", "GS": "Голден Стэйт",
-    "GSW": "Голден Стэйт", "HOU": "Хьюстон", "IND": "Индиана", "LAC": "Клипперс", "LAL": "Лейкерс",
-    "MEM": "Мемфис", "MIA": "Майами", "MIL": "Милуоки", "MIN": "Миннесота", "NO": "Нью-Орлеан",
-    "NOP": "Нью-Орлеан", "NY": "Нью-Йорк", "NYK": "Нью-Йорк", "OKC": "Оклахома-Сити",
-    "ORL": "Орландо", "PHI": "Филадельфия", "PHX": "Финикс", "POR": "Портленд",
-    "SAC": "Сакраменто", "SA": "Сан-Антонио", "SAS": "Сан-Антонио", "TOR": "Торонто",
-    "UTAH": "Юта", "UTA": "Юта", "WSH": "Вашингтон", "WAS": "Вашингтон",
-}
-
-
-def team_ru(team: dict) -> str:
-    return TEAMS_RU.get(team.get("abbreviation", ""), team.get("displayName", "?"))
+def parse_espn_news(text: str, src: dict) -> list[Item]:
+    items = []
+    for a in json.loads(text).get("articles", []):
+        if a.get("type") not in ("Story", "HeadlineNews", "Recap"):
+            continue
+        cats = " ".join(c.get("description", "") for c in a.get("categories", [])).lower()
+        if "fantasy" in cats or "betting" in cats:
+            continue
+        link = ((a.get("links") or {}).get("web") or {}).get("href", "")
+        img = next((i.get("url") for i in a.get("images", []) if i.get("url")), "")
+        if link and a.get("headline"):
+            items.append(Item(src["name"], src["league"], a["headline"], link,
+                              a.get("description", ""), image=img))
+    return items
 
 
 def parse_scores(text: str, src: dict) -> list[Item]:
-    """Завершённые матчи из табло ESPN -> посты с карточкой результата."""
-    import json
-    data = json.loads(text)
     items = []
-    for ev in data.get("events", []):
+    for ev in json.loads(text).get("events", []):
         comp = (ev.get("competitions") or [{}])[0]
         if not comp.get("status", ev.get("status", {})).get("type", {}).get("completed"):
             continue
-        teams = {c["homeAway"]: c for c in comp.get("competitors", [])}
-        if "home" not in teams or "away" not in teams:
-            continue
-        home, away = teams["home"], teams["away"]
-        stage = {1: "Предсезонка", 2: "Регулярный сезон", 3: "Плей-офф"}.get(
-            (ev.get("season") or {}).get("type"), "")
-        hs, as_ = int(home.get("score", 0)), int(away.get("score", 0))
-        winner, loser = (home, away) if hs > as_ else (away, home)
-        lines = [f"🏁 <b>{html.escape(team_ru(away['team']))} {as_} : {hs} {html.escape(team_ru(home['team']))}</b>"]
-        if stage:
-            lines.append(f"<i>{stage}. Победа — {html.escape(team_ru(winner['team']))}</i>")
-        lines.append("")
-        for c in (away, home):
-            for cat in c.get("leaders", []):
-                if cat.get("name") == "points" and cat.get("leaders"):
-                    ld = cat["leaders"][0]
-                    who = ld.get("athlete", {}).get("displayName", "")
-                    lines.append(f"⭐ {html.escape(team_ru(c['team']))}: {html.escape(who)} — {ld.get('displayValue', '')} очк.")
         link = next((l.get("href") for l in ev.get("links", []) if "summary" in l.get("rel", [])), "")
-        if link:
-            lines.append(f'\n🔗 <a href="{html.escape(link, quote=True)}">Протокол матча</a>  #NBA #результаты')
-        else:
-            lines.append("\n#NBA #результаты")
-        items.append(Item(
-            src["name"], "NBA", ev.get("name", "game"), link or ev.get("id", ""),
-            caption="\n".join(lines), uid=f"game:{ev.get('id')}",
-            image=json.dumps({  # данные для карточки, рисуется при публикации
-                "away": [team_ru(away["team"]), as_, away["team"].get("logo", "")],
-                "home": [team_ru(home["team"]), hs, home["team"].get("logo", "")],
-                "stage": stage,
-            }, ensure_ascii=False),
-        ))
+        items.append(Item(src["name"], "NBA", ev.get("name", "game"), link or ev.get("id", ""),
+                          uid=f"game:{ev.get('id')}", kind="game", priority=1, data={"event": ev.get("id")}))
     return items
 
 
-def _font(size: int):
-    from PIL import ImageFont
-    for path in ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-                 "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf"):
-        if Path(path).exists():
-            return ImageFont.truetype(path, size)
-    return ImageFont.load_default(size=size)
+PARSERS = {"nba_com": parse_nba_com, "gleague": parse_gleague, "espn_news": parse_espn_news}
 
-
-async def render_game_card(client: httpx.AsyncClient, spec: dict) -> bytes | None:
-    """Карточка результата 1280x720: логотипы, счёт, стадия."""
-    try:
-        import io
-        from PIL import Image, ImageDraw
-        W, H = 1280, 720
-        img = Image.new("RGB", (W, H), (17, 24, 39))
-        d = ImageDraw.Draw(img)
-        d.rectangle([0, 0, W, 8], fill=(234, 88, 12))
-        d.text((W // 2, 60), "ФИНАЛ", font=_font(44), fill=(234, 88, 12), anchor="mm")
-        if spec.get("stage"):
-            d.text((W // 2, 112), spec["stage"].upper(), font=_font(26), fill=(156, 163, 175), anchor="mm")
-        for (name, score, logo), cx in ((spec["away"], 300), (spec["home"], 980)):
-            if logo:
-                try:
-                    r = await client.get(logo, timeout=15)
-                    lg = Image.open(io.BytesIO(r.content)).convert("RGBA")
-                    lg.thumbnail((260, 260))
-                    img.paste(lg, (cx - lg.width // 2, 300 - lg.height // 2), lg)
-                except Exception:
-                    pass
-            d.text((cx, 480), name, font=_font(40), fill=(229, 231, 235), anchor="mm")
-            win = score == max(spec["away"][1], spec["home"][1])
-            d.text((cx, 580), str(score), font=_font(110),
-                   fill=(255, 255, 255) if win else (107, 114, 128), anchor="mm")
-        d.text((W // 2, 580), ":", font=_font(90), fill=(107, 114, 128), anchor="mm")
-        buf = io.BytesIO()
-        img.save(buf, "PNG")
-        return buf.getvalue()
-    except Exception as exc:
-        log.warning("card render failed: %s", exc)
-        return None
-
-
+ARTICLE_JUNK = re.compile(r"getty images|copyright|all rights reserved|sign up|subscribe|newsletter|cookie|"
+                          r"photo by|click here|download the|follow us|^advertisement|terms of use|privacy policy",
+                          re.I)
 OG_IMAGE = re.compile(
     r'<meta[^>]+(?:property|name)=["\'](?:og:image|twitter:image)(?::src)?["\'][^>]*content=["\']([^"\']+)'
-    r'|<meta[^>]+content=["\']([^"\']+)["\'][^>]*(?:property|name)=["\'](?:og:image|twitter:image)',
-    re.I,
-)
+    r'|<meta[^>]+content=["\']([^"\']+)["\'][^>]*(?:property|name)=["\'](?:og:image|twitter:image)', re.I)
 
 
 def find_og_image(page: str) -> str:
@@ -335,142 +269,7 @@ def find_og_image(page: str) -> str:
     return html.unescape(m.group(1) or m.group(2)) if m else ""
 
 
-# ---------------------------------------------------------------- translation
-# Порядок: переводчики по ключу (если ключ задан в секретах) -> бесплатные.
-# С серверов GitHub бесплатный Google почти всегда отвечает 429, рабочий бесплатный — MyMemory.
-DEEPL_API_KEY = os.environ.get("DEEPL_API_KEY", "").strip()
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash").strip()
-MYMEMORY_EMAIL = os.environ.get("MYMEMORY_EMAIL", "").strip()  # с e-mail лимит 50 000 симв./день
-WAIT_FOR_TRANSLATION_MIN = float(os.environ.get("WAIT_FOR_TRANSLATION_MIN", "30"))
-
-_translator = None
-_dead: set[str] = set()  # переводчики, исчерпавшие лимит в этом запуске
-
-
-class TranslationError(Exception):
-    pass
-
-
-def _http() -> httpx.Client:
-    return httpx.Client(headers={"User-Agent": USER_AGENT}, timeout=30)
-
-
-def _translate_deepl(text: str) -> str:
-    if not DEEPL_API_KEY:
-        raise RuntimeError("no key")
-    host = "api-free.deepl.com" if DEEPL_API_KEY.endswith(":fx") else "api.deepl.com"
-    with _http() as c:
-        r = c.post(f"https://{host}/v2/translate",
-                   headers={"Authorization": f"DeepL-Auth-Key {DEEPL_API_KEY}"},
-                   data={"text": text, "target_lang": TRANSLATE_TO.upper()})
-    r.raise_for_status()
-    return r.json()["translations"][0]["text"]
-
-
-def _translate_gemini(text: str) -> str:
-    if not GEMINI_API_KEY:
-        raise RuntimeError("no key")
-    prompt = (
-        "Переведи на русский язык новость о баскетболе (НБА). Сохрани абзацы, "
-        "имена игроков пиши в принятой русской транскрипции, названия команд — "
-        "как принято в русскоязычных СМИ. Верни только перевод, без комментариев.\n\n" + text
-    )
-    with _http() as c:
-        r = c.post(
-            f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent",
-            params={"key": GEMINI_API_KEY},
-            json={"contents": [{"parts": [{"text": prompt}]}]},
-        )
-    r.raise_for_status()
-    return r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
-
-
-def _translate_gtx(text: str) -> str:
-    with _http() as c:
-        r = c.post("https://translate.googleapis.com/translate_a/single",
-                   params={"client": "gtx", "sl": "auto", "tl": TRANSLATE_TO, "dt": "t"},
-                   data={"q": text})
-    r.raise_for_status()
-    return "".join(seg[0] for seg in r.json()[0] if seg and seg[0])
-
-
-def _translate_deep(text: str) -> str:
-    global _translator
-    if _translator is None:
-        from deep_translator import GoogleTranslator
-        _translator = GoogleTranslator(source="auto", target=TRANSLATE_TO)
-    return _translator.translate(text) or ""
-
-
-def _chunks(text: str, size: int = 450) -> list[str]:
-    """Разбить по предложениям на куски до `size` символов (лимит MyMemory — 500 байт)."""
-    out, cur = [], ""
-    for sent in re.split(r"(?<=[.!?])\s+|\n+", text):
-        if not sent:
-            continue
-        while len(sent) > size:
-            out.append(sent[:size]); sent = sent[size:]
-        if len(cur) + len(sent) + 1 > size:
-            out.append(cur); cur = sent
-        else:
-            cur = f"{cur} {sent}".strip()
-    if cur:
-        out.append(cur)
-    return out
-
-
-def _translate_mymemory(text: str) -> str:
-    parts = []
-    with _http() as c:
-        for chunk in _chunks(text):
-            params = {"q": chunk, "langpair": f"en|{TRANSLATE_TO}"}
-            if MYMEMORY_EMAIL:
-                params["de"] = MYMEMORY_EMAIL
-            r = c.get("https://api.mymemory.translated.net/get", params=params)
-            r.raise_for_status()
-            d = r.json()
-            if d.get("responseStatus") != 200 or d.get("quotaFinished"):
-                raise RuntimeError(f"mymemory: {d.get('responseDetails')}")
-            parts.append(html.unescape(d["responseData"]["translatedText"]))
-    return " ".join(parts)
-
-
-TRANSLATORS = [_translate_deepl, _translate_gemini, _translate_gtx, _translate_deep, _translate_mymemory]
-
-
-def translate(text: str) -> str:
-    """Перевести или бросить TranslationError (тогда пост подождёт следующей попытки)."""
-    if not TRANSLATE_TO or not text:
-        return text
-    errors = []
-    for fn in TRANSLATORS:
-        if fn.__name__ in _dead:
-            continue
-        try:
-            out = fn(text)
-            if out and out.strip() != text.strip():
-                return out
-        except Exception as exc:
-            if "no key" in str(exc):
-                _dead.add(fn.__name__)
-                continue
-            if "429" in str(exc) or "TooManyRequests" in repr(exc) or "quota" in str(exc).lower():
-                _dead.add(fn.__name__)  # лимит — больше не дёргаем в этом запуске
-            errors.append(f"{fn.__name__}: {exc!r}"[:200])
-    raise TranslationError("; ".join(errors) or "all translators unavailable")
-
-
-# ---------------------------------------------------------------- telegram
-ARTICLE_JUNK = re.compile(
-    r"getty images|copyright|all rights reserved|sign up|subscribe|newsletter|cookie|"
-    r"photo by|click here|download the|follow us|^advertisement|terms of use|privacy policy",
-    re.I,
-)
-
-
-def extract_article(page: str, limit: int = 1600) -> str:
-    """Первые абзацы текста статьи (для описания поста)."""
+def extract_article(page: str, limit: int = 2500) -> str:
     soup = BeautifulSoup(page, "html.parser")
     for tag in soup(["script", "style", "nav", "header", "footer", "aside", "figure", "figcaption"]):
         tag.decompose()
@@ -488,7 +287,6 @@ def extract_article(page: str, limit: int = 1600) -> str:
 
 
 def trim_text(text: str, budget: int) -> str:
-    """Обрезать по границе предложения, чтобы влезть в лимит Telegram."""
     if len(text) <= budget:
         return text
     cut = text[: max(0, budget - 1)]
@@ -498,70 +296,22 @@ def trim_text(text: str, budget: int) -> str:
     return cut.rsplit(" ", 1)[0] + "…"
 
 
-def format_post(item: Item, limit: int = 1024, translated: bool = True) -> str:
-    """Заголовок и описание на русском, ссылка на источник. Не длиннее подписи к фото (1024)."""
-    league = item.league
-    if league == "NBA" and G_LEAGUE_HINTS.search(item.title + " " + item.summary):
-        league = "GLEAGUE"
-    tag = "#GLeague" if league == "GLEAGUE" else "#NBA"
-    icon = "🟠" if league == "GLEAGUE" else "🏀"
-
-    desc_src = trim_text(item.summary, 900) if item.summary else ""  # экономим лимиты переводчика
-    if translated and TRANSLATE_TO:
-        title = translate(item.title)
-        desc = translate(desc_src) if desc_src else ""
-    else:
-        title, desc = item.title, desc_src
-    original = item.title if SHOW_ORIGINAL and TRANSLATE_TO and title != item.title else ""
-
-    head = f"{icon} {title}"
-    foot = f"🔗 {item.source}  {tag}"
-    budget = limit - len(head) - len(foot) - len(original) - 8
-    desc = trim_text(desc, budget) if desc else ""
-
-    parts = [f"{icon} <b>{html.escape(title)}</b>"]
-    if original:
-        parts.append(f"<i>{html.escape(original)}</i>")
-    if desc:
-        parts.append("\n" + html.escape(desc))
-    parts.append(f'\n🔗 <a href="{html.escape(item.url, quote=True)}">{html.escape(item.source)}</a>  {tag}')
-    return "\n".join(parts)
+# ---------------------------------------------------------------- telegram
+def visible_len(text: str) -> int:
+    return len(html.unescape(re.sub(r"<[^>]+>", "", text)))
 
 
 def fit_caption(text: str, limit: int = 1024) -> str:
-    """Страховка: видимый текст подписи к фото не длиннее 1024 символов."""
-    visible = re.sub(r"<[^>]+>", "", text)
-    if len(html.unescape(visible)) <= limit:
+    if visible_len(text) <= limit:
         return text
-    plain = html.unescape(visible)
-    return html.escape(trim_text(plain, limit))
-
-
-async def send_telegram(client: httpx.AsyncClient, text: str,
-                        photo_url: str = "", photo: bytes | None = None) -> bool:
-    """Пост с картинкой (sendPhoto), а если картинки нет или Telegram её не принял — текстом."""
-    if photo or photo_url:
-        data = {"chat_id": CHANNEL_ID, "caption": fit_caption(text), "parse_mode": "HTML"}
-        if photo:
-            ok = await _tg_call(client, "sendPhoto", data=data, files={"photo": ("card.png", photo, "image/png")})
-        else:
-            ok = await _tg_call(client, "sendPhoto", json={**data, "photo": photo_url})
-        if ok:
-            return True
-        log.warning("photo failed (%s), sending as text", photo_url or "card")
-    return await _tg_call(client, "sendMessage", json={
-        "chat_id": CHANNEL_ID,
-        "text": text,
-        "parse_mode": "HTML",
-        "link_preview_options": {"is_disabled": False, "prefer_large_media": True},
-    })
+    return html.escape(trim_text(html.unescape(re.sub(r"<[^>]+>", "", text)), limit))
 
 
 async def _tg_call(client: httpx.AsyncClient, method: str, **kwargs) -> bool:
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/{method}"
     for attempt in range(5):
         try:
-            r = await client.post(url, timeout=30, **kwargs)
+            r = await client.post(url, timeout=60, **kwargs)
         except httpx.HTTPError as exc:
             log.warning("telegram network error: %s", exc)
             await asyncio.sleep(3 * (attempt + 1))
@@ -569,46 +319,75 @@ async def _tg_call(client: httpx.AsyncClient, method: str, **kwargs) -> bool:
         if r.status_code == 200:
             return True
         if r.status_code == 429:
-            wait = r.json().get("parameters", {}).get("retry_after", 5)
-            log.info("telegram rate limit, waiting %ss", wait)
-            await asyncio.sleep(wait + 1)
+            await asyncio.sleep(r.json().get("parameters", {}).get("retry_after", 5) + 1)
             continue
         log.error("telegram %s error %s: %s", method, r.status_code, r.text[:300])
         return False
     return False
 
 
-# ---------------------------------------------------------------- main loop
+async def send_telegram(client: httpx.AsyncClient, text: str, photo_url: str = "",
+                        photo: bytes | None = None, fallback_photo: bytes | None = None) -> bool:
+    """Пост с картинкой. Если Telegram не принял картинку по ссылке — запасная карточка, потом текст."""
+    data = {"chat_id": CHANNEL_ID, "caption": fit_caption(text), "parse_mode": "HTML"}
+    if photo_url:
+        if await _tg_call(client, "sendPhoto", json={**data, "photo": photo_url}):
+            return True
+        log.warning("photo by url failed (%s)", photo_url)
+        photo = photo or fallback_photo
+    if photo:
+        if await _tg_call(client, "sendPhoto", data=data, files={"photo": ("card.jpg", photo, "image/jpeg")}):
+            return True
+    return await _tg_call(client, "sendMessage", json={
+        "chat_id": CHANNEL_ID, "text": text, "parse_mode": "HTML",
+        "link_preview_options": {"is_disabled": False, "prefer_large_media": True}})
+
+
+# ---------------------------------------------------------------- bot
 class Bot:
     def __init__(self, sources: list[dict]):
         self.sources = [s for s in sources if s.get("enabled", True)]
         self.store = Store(DB_PATH)
-        self.queue: asyncio.Queue[Item] = asyncio.Queue()
         self.etags: dict[str, dict] = {}
         self.curl = None
 
-    async def get(self, client: httpx.AsyncClient, url: str, headers: dict):
-        """Запрос к источнику. Через curl_cffi (отпечаток Chrome, проходит защиту
-        Akamai на nba.com), если библиотека установлена; иначе через httpx."""
+    @staticmethod
+    def http_client() -> httpx.AsyncClient:
+        transport = httpx.AsyncHTTPTransport(local_address="0.0.0.0", retries=2)  # только IPv4
+        return httpx.AsyncClient(transport=transport, headers={"User-Agent": USER_AGENT})
+
+    async def get(self, client: httpx.AsyncClient, url: str, headers: dict | None = None, binary: bool = False):
+        headers = headers or {}
         if CurlSession is not None:
             if self.curl is None:
                 self.curl = CurlSession(impersonate="chrome")
-            r = await self.curl.get(url, headers=headers, timeout=20, allow_redirects=True)
-            return r.status_code, r.text, r.headers
-        r = await client.get(url, headers=headers, timeout=20, follow_redirects=True)
-        return r.status_code, r.text, r.headers
+            r = await self.curl.get(url, headers=headers, timeout=25, allow_redirects=True)
+            return r.status_code, (r.content if binary else r.text), r.headers
+        r = await client.get(url, headers=headers, timeout=25, follow_redirects=True)
+        return r.status_code, (r.content if binary else r.text), r.headers
 
+    async def get_bytes(self, client, url: str) -> bytes | None:
+        if not url:
+            return None
+        try:
+            status, body, _ = await self.get(client, url, binary=True)
+            return body if status < 400 else None
+        except Exception:
+            return None
+
+    # ---- опрос источников
     async def fetch(self, client: httpx.AsyncClient, src: dict, use_cache: bool = True) -> list[Item]:
         if src["type"] == "scores":
-            from datetime import datetime, timedelta, timezone
             now_us = datetime.now(timezone(timedelta(hours=-5)))
             items = []
             for day in (now_us - timedelta(days=1), now_us):
-                status, text, _ = await self.get(client, f"{src['url']}?dates={day:%Y%m%d}", {})
+                status, text, _ = await self.get(client, f"{src['url']}?dates={day:%Y%m%d}")
                 if status >= 400:
                     raise RuntimeError(f"HTTP {status}")
                 items += parse_scores(text, src)
             return items
+        if src["type"] == "injuries":
+            return await self.fetch_injuries(client, src)
         headers = {}
         cache = self.etags.get(src["name"], {}) if use_cache else {}
         if cache.get("etag"):
@@ -620,106 +399,111 @@ class Bot:
             return []
         if status >= 400:
             raise RuntimeError(f"HTTP {status}")
-        self.etags[src["name"]] = {
-            "etag": resp_headers.get("ETag"),
-            "modified": resp_headers.get("Last-Modified"),
-        }
+        self.etags[src["name"]] = {"etag": resp_headers.get("ETag"), "modified": resp_headers.get("Last-Modified")}
         if src["type"] == "rss":
             return parse_rss(text, src)
         return PARSERS[src["parser"]](text, src)
 
-    async def check(self) -> None:
-        """python bot.py --check : проверить все источники и Telegram, ничего не публикуя."""
-        print(f"curl_cffi: {'да' if CurlSession else 'НЕТ (pip install curl_cffi)'}")
-        async with self.http_client() as client:
-            for src in self.sources:
-                try:
-                    items = await self.fetch(client, src, use_cache=False)
-                    first = items[0].title[:70] if items else "—"
-                    print(f"OK    {src['name']:<20} {len(items):>3} новостей | {first}")
-                except Exception as exc:
-                    print(f"FAIL  {src['name']:<20} {exc}")
-            if BOT_TOKEN and "..." not in BOT_TOKEN:
-                try:
-                    r = await client.get(f"https://api.telegram.org/bot{BOT_TOKEN}/getMe", timeout=15)
-                    ok = r.json().get("ok")
-                    print(f"{'OK  ' if ok else 'FAIL'}  Telegram бот: {r.json().get('result', {}).get('username', r.text[:100])}")
-                except Exception as exc:
-                    print(f"FAIL  Telegram: {exc}")
-            else:
-                print("--    Telegram: токен ещё не вписан в .env")
+    async def fetch_injuries(self, client, src: dict) -> list[Item]:
+        status, text, _ = await self.get(client, src["url"])
+        if status >= 400:
+            raise RuntimeError(f"HTTP {status}")
+        cur = nba_injuries.parse_injuries(json.loads(text))
+        if len(cur) < 15:  # подозрительно пустой список — пропускаем, чтобы не объявить всех здоровыми
+            raise RuntimeError(f"injury list too short ({len(cur)})")
+        prev = self.store.get("injuries")
+        self.store.put("injuries", cur)
+        if prev is None:
+            log.info("injuries: primed with %d players", len(cur))
+            return []
+        items = []
+        for ev in nba_injuries.diff(prev, cur):
+            if ev["kind"] == "change" and not POST_INJURY_CHANGES:
+                continue
+            uid = f"inj:{ev['pid']}:{ev['kind']}:{ev.get('status')}:{ev.get('type')}:{ev.get('date', '')[:10]}"
+            items.append(Item(src["name"], "NBA", f"{ev['name']} {ev['kind']}", ev.get("url", ""),
+                              uid=uid, kind="injury", priority=0, data=ev))
+        return items
 
-    @staticmethod
-    def http_client() -> httpx.AsyncClient:
-        # local_address="0.0.0.0" — только IPv4: на многих VPS нет IPv6-маршрута
-        transport = httpx.AsyncHTTPTransport(local_address="0.0.0.0", retries=2)
-        return httpx.AsyncClient(transport=transport, headers={"User-Agent": USER_AGENT})
-
-    def is_duplicate_title(self, title: str) -> bool:
-        t = normalize_title(title)
+    def is_duplicate(self, item: Item) -> bool:
+        if item.kind != "news":
+            return False
+        t = normalize_title(item.title)
+        tok = title_tokens(item.title)
         for other in self.store.recent_titles():
-            if difflib.SequenceMatcher(None, t, other).ratio() >= TITLE_SIMILARITY:
+            if difflib.SequenceMatcher(None, t, other).ratio() >= 0.82:
+                return True
+            ot = {w for w in other.split() if len(w) >= 3 and w not in STOP}
+            common = tok & ot
+            if len(common) >= 4 and len(common) / max(1, len(tok | ot)) >= 0.5:
                 return True
         return False
 
-    async def poll_source(self, client: httpx.AsyncClient, src: dict) -> None:
-        """Один опрос источника: новые материалы кладутся в очередь публикации."""
+    async def poll_source(self, client: httpx.AsyncClient, src: dict) -> list[Item]:
         name = src["name"]
         try:
             items = await self.fetch(client, src)
-            first_time = not self.store.is_primed(name)
-            new = [i for i in items if not self.store.seen(i.key)]
-            if first_time and not POST_ON_FIRST_RUN:
-                # при первом запуске запоминаем текущие новости, а не заваливаем канал
-                for i in new:
-                    self.store.add(i, posted=False)
-                log.info("%s: primed with %d existing items", name, len(new))
-            else:
-                # старые сверху -> публикуем в хронологическом порядке
-                for i in reversed(new):
-                    await self.queue.put(i)
-                if new:
-                    log.info("%s: %d new", name, len(new))
-            self.store.set_primed(name)
         except Exception as exc:
-            log.warning("%s: fetch failed: %s", name, exc)
+            log.info("%s: fetch failed: %s", name, exc)
+            return []
+        if src["type"] == "injuries":
+            return items
+        new = [i for i in items if not self.store.seen(i.key)]
+        if not self.store.is_primed(name) and not POST_ON_FIRST_RUN:
+            for i in new:  # первый запуск: запоминаем текущие новости, не заваливаем канал
+                self.store.add(i, posted=False)
+            self.store.set_primed(name)
+            log.info("%s: primed with %d items", name, len(new))
+            return []
+        self.store.set_primed(name)
+        out = []
+        only = set(src.get("only_categories", []))
+        for i in new:
+            if i.kind == "news":
+                cat, rumor, skip = nba_classify.classify(i.title, i.summary, i.official)
+                if skip or (only and cat not in only and not (rumor and "rumor" in only)):
+                    self.store.add(i, posted=False)
+                    continue
+                i.priority = {"injury": 0, "trade": 1, "conflict": 2, "signing": 2}.get(cat, 5)
+                i.data.update(category=cat, rumor=rumor)
+            out.append(i)
+        if out:
+            log.info("%s: %d new", name, len(out))
+        return out
 
-    async def watch(self, client: httpx.AsyncClient, src: dict) -> None:
-        while True:
-            await self.poll_source(client, src)
-            await asyncio.sleep(int(src.get("interval", 60)))
+    # ---- подготовка постов
+    async def prepare_game(self, client, item: Item):
+        status, text, _ = await self.get(
+            client, f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={item.data['event']}")
+        if status >= 400:
+            raise RuntimeError(f"summary HTTP {status}")
+        g = nba_games.build_game(json.loads(text))
+        names = [p["en"] for plist in g["players"].values() for p in plist]
+        nba_games.apply_names(g, await asyncio.to_thread(tr.names_ru, names))
+        logos = {t["abbr"]: await self.get_bytes(client, t["logo"]) for t in g["teams"]}
+        card = await asyncio.to_thread(nba_cards.game_card, g, logos)
+        return nba_games.caption(g, item.url if item.url.startswith("http") else ""), "", card
 
-    async def publish_one(self, client: httpx.AsyncClient, item: Item) -> None:
-        if self.store.seen(item.key):
-            return
-        if self.is_duplicate_title(item.title):
-            log.info("skip duplicate: %s", item.title)
-            self.store.add(item, posted=False)
-            return
-        try:
-            text, photo_url, photo = await self.prepare(client, item)
-        except TranslationError as exc:
-            waited = self.store.waiting_since(item.key)
-            if waited < WAIT_FOR_TRANSLATION_MIN * 60:
-                log.warning("translation unavailable, will retry: %s | %s", item.title, exc)
-                return  # не запоминаем — попробуем на следующем круге
-            log.warning("no translation for %d min, posting original: %s", waited // 60, item.title)
-            text, photo_url, photo = await self.prepare(client, item, translated=False)
-        ok = await send_telegram(client, text, photo_url, photo)
-        if ok:  # неудачную отправку не запоминаем — повторим в следующий раз
-            self.store.add(item, posted=True)
-        log.info("%s [%s] %s", "posted" if ok else "FAILED", item.source, item.title)
-        await asyncio.sleep(3)  # Telegram: не чаще ~20 сообщений в минуту в канал
+    async def prepare_injury(self, client, item: Item):
+        ev = item.data
+        info = nba_injuries.describe(ev)
+        name_ru = (await asyncio.to_thread(tr.names_ru, [ev["name"]])).get(ev["name"], ev["name"])
+        info["name"] = name_ru
+        comment = ""
+        if ev["kind"] != "return" and ev.get("comment"):
+            try:
+                comment = await asyncio.to_thread(tr.translate_text, ev["comment"])
+            except tr.TranslationError:
+                comment = ""  # травма — срочно: публикуем без комментария, но не ждём
+        headshot = await self.get_bytes(client, ev.get("headshot"))
+        logo = await self.get_bytes(client, ev.get("logo"))
+        card = await asyncio.to_thread(nba_cards.injury_card, info, headshot, logo)
+        return nba_injuries.caption(ev, info, name_ru, comment), "", card
 
-    async def prepare(self, client: httpx.AsyncClient, item: Item, translated: bool = True):
-        """Текст поста и картинка: карточка для матча, иначе картинка статьи (og:image)."""
-        if item.caption:  # результат матча
-            import json
-            photo = await render_game_card(client, json.loads(item.image)) if item.image else None
-            return item.caption, "", photo
+    async def prepare_news(self, client, item: Item, translated: bool = True):
         image = item.image
-        try:  # страница статьи: картинка и текст для описания
-            status, page, _ = await self.get(client, item.url, {})
+        try:
+            status, page, _ = await self.get(client, item.url)
             if status < 400:
                 image = image or find_og_image(page[:300_000])
                 body = extract_article(page)
@@ -727,62 +511,153 @@ class Bot:
                     item.summary = body
         except Exception as exc:
             log.info("article fetch failed %s: %s", item.url, exc)
-        text = await asyncio.to_thread(format_post, item, 1024, translated)
-        if image:
-            image = urljoin(item.url, image)
-        return text, image, None
+        if image and BAD_IMAGE.search(image):
+            image = ""
+        text_src = trim_text(item.summary, 2500)
+        if translated:
+            res = await asyncio.to_thread(tr.rewrite_news, item.title, text_src, item.source)
+        else:
+            res = {"title": item.title, "text": trim_text(text_src, 600), "category": "", "rumor": False, "skip": False}
+        if res.get("skip"):
+            return None
+        cat = res.get("category") or item.data.get("category", "other")
+        rumor = (res.get("rumor") if tr.llm_available() else item.data.get("rumor")) and not item.official
+        if cat == "rumor":
+            rumor = False  # рубрика и так «Слухи»
+        if item.official and cat == "other":
+            cat = "official"
+        icon, label, tag = nba_classify.rubric(cat, bool(rumor))
+        league_tag = "#GLeague" if (item.league == "GLEAGUE" or G_LEAGUE_HINTS.search(item.title)) else "#NBA"
 
-    async def post_latest(self) -> None:
-        """Опубликовать самую свежую новость NBA.com (для проверки внешнего вида)."""
+        head = f"{icon} <b>{label}</b>\n\n" if label else ""
+        title = res["title"]
+        foot = f'\n\n🔗 <a href="{html.escape(item.url, quote=True)}">{html.escape(item.source)}</a>  {league_tag} {tag}'.rstrip()
+        budget = 1024 - visible_len(head) - len(title) - visible_len(foot) - 4
+        body = trim_text(res.get("text", ""), max(0, budget))
+        caption = f"{head}<b>{html.escape(title)}</b>" + (f"\n\n{html.escape(body)}" if body else "") + foot
+        card = await asyncio.to_thread(nba_cards.news_card, title, label or "НОВОСТЬ", cat, item.source)
+        if image:
+            return caption, urljoin(item.url, image), None, card
+        return caption, "", card, None
+
+    async def publish_one(self, client: httpx.AsyncClient, item: Item) -> bool:
+        if self.store.seen(item.key):
+            return False
+        if self.is_duplicate(item):
+            log.info("skip duplicate: %s", item.title)
+            self.store.add(item, posted=False)
+            return False
+        fallback = None
+        try:
+            if item.kind == "game":
+                text, url, photo = await self.prepare_game(client, item)
+            elif item.kind == "injury":
+                text, url, photo = await self.prepare_injury(client, item)
+            else:
+                res = await self.prepare_news(client, item)
+                if res is None:
+                    log.info("skip (not relevant): %s", item.title)
+                    self.store.add(item, posted=False)
+                    return False
+                text, url, photo, fallback = res
+        except tr.TranslationError as exc:
+            waited = self.store.waiting_since(item.key)
+            if waited < WAIT_FOR_TRANSLATION_MIN * 60:
+                log.warning("translation unavailable, will retry: %s | %s", item.title, exc)
+                return False
+            log.warning("no translation for %d min, posting original: %s", waited // 60, item.title)
+            text, url, photo, fallback = await self.prepare_news(client, item, translated=False)
+        except Exception as exc:
+            log.warning("prepare failed for %s: %r", item.title, exc)
+            return False
+        ok = await send_telegram(client, text, url, photo, fallback)
+        if ok:
+            self.store.add(item, posted=True)
+        log.info("%s [%s] %s", "posted" if ok else "FAILED", item.source, item.title)
+        await asyncio.sleep(3)
+        return ok
+
+    async def cycle(self, client) -> None:
+        batches = await asyncio.gather(*(self.poll_source(client, s) for s in self.sources))
+        items = sorted((i for b in batches for i in b), key=lambda i: i.priority)
+        for i in items:
+            await self.publish_one(client, i)
+
+    async def run_for(self, minutes: float, interval: int = 60) -> None:
+        deadline = time.monotonic() + minutes * 60
+        log.info("translation: %s", tr.status())
+        async with self.http_client() as client:
+            while True:
+                started = time.monotonic()
+                await self.cycle(client)
+                if time.monotonic() + interval > deadline:
+                    break
+                await asyncio.sleep(max(5, interval - (time.monotonic() - started)))
+        self.store.cleanup()
+
+    async def run(self) -> None:
+        await self.run_for(10 ** 9)
+
+    # ---- проверки и демонстрация
+    async def check(self) -> None:
+        print(f"curl_cffi: {'да' if CurlSession else 'НЕТ'}; перевод: {tr.status()}")
         async with self.http_client() as client:
             for src in self.sources:
-                if src["type"] == "scores":
+                try:
+                    if src["type"] == "injuries":
+                        status, text, _ = await self.get(client, src["url"])
+                        n = len(nba_injuries.parse_injuries(json.loads(text)))
+                        print(f"OK    {src['name']:<22} {n} игроков в списке травм")
+                        continue
+                    items = await self.fetch(client, src, use_cache=False)
+                    print(f"OK    {src['name']:<22} {len(items):>3} | {items[0].title[:70] if items else '—'}")
+                except Exception as exc:
+                    print(f"FAIL  {src['name']:<22} {exc}")
+
+    async def demo(self) -> None:
+        """Опубликовать по одному примеру: итог матча, травма, слух/конфликт."""
+        async with self.http_client() as client:
+            # 1. последний завершённый матч
+            scores = next((s for s in self.sources if s["type"] == "scores"), None)
+            if scores:
+                games = await self.fetch(client, scores)
+                if not games:
+                    for back in range(2, 6):
+                        day = datetime.now(timezone(timedelta(hours=-5))) - timedelta(days=back)
+                        _, text, _ = await self.get(client, f"{scores['url']}?dates={day:%Y%m%d}")
+                        games = parse_scores(text, scores)
+                        if games:
+                            break
+                if games:
+                    t, u, p = await self.prepare_game(client, games[-1])
+                    print("game:", await send_telegram(client, t, u, p))
+            # 2. самая свежая травма из списка
+            inj = next((s for s in self.sources if s["type"] == "injuries"), None)
+            if inj:
+                _, text, _ = await self.get(client, inj["url"])
+                cur = sorted(nba_injuries.parse_injuries(json.loads(text)).values(),
+                             key=lambda x: x.get("date", ""), reverse=True)
+                pick = next((x for x in cur if x.get("status", "").lower() == "out"), cur[0] if cur else None)
+                if pick:
+                    it = Item(inj["name"], "NBA", pick["name"], pick["url"], kind="injury", data={"kind": "new", **pick})
+                    t, u, p = await self.prepare_injury(client, it)
+                    print("injury:", await send_telegram(client, t, u, p))
+            # 3. свежий слух / конфликт
+            for src in self.sources:
+                if src["type"] not in ("rss",) or src["name"] not in ("RealGM Wiretap", "Sportsnet", "Fadeaway World"):
                     continue
                 try:
                     items = await self.fetch(client, src, use_cache=False)
-                except Exception as exc:
-                    log.warning("%s: %s", src["name"], exc)
+                except Exception:
                     continue
-                if items:
-                    item = items[0]
-                    try:
-                        text, photo_url, photo = await self.prepare(client, item)
-                    except TranslationError as exc:
-                        print(f"Перевод недоступен, не публикую: {exc}")
-                        raise SystemExit(1)
-                    log.info("image: %s", photo_url or ("card" if photo else "none"))
-                    ok = await send_telegram(client, text, photo_url, photo)
-                    if ok:
-                        self.store.add(item, posted=True)
-                    print(("Опубликовано: " if ok else "Не удалось: ") + item.title)
-                    if not ok:
-                        raise SystemExit(1)
-                    return
-
-    async def publisher(self, client: httpx.AsyncClient) -> None:
-        while True:
-            await self.publish_one(client, await self.queue.get())
-
-    async def run(self) -> None:
-        """Постоянная работа (свой сервер)."""
-        async with self.http_client() as client:
-            tasks = [asyncio.create_task(self.watch(client, s)) for s in self.sources]
-            tasks.append(asyncio.create_task(self.publisher(client)))
-            log.info("watching %d sources", len(self.sources))
-            await asyncio.gather(*tasks)
-
-    async def run_for(self, minutes: float, interval: int = 60) -> None:
-        """Работа ограниченное время (GitHub Actions): опрос всех источников
-        раз в `interval` секунд, пока не выйдет время."""
-        deadline = time.monotonic() + minutes * 60
-        async with self.http_client() as client:
-            while True:
-                await asyncio.gather(*(self.poll_source(client, s) for s in self.sources))
-                while not self.queue.empty():
-                    await self.publish_one(client, self.queue.get_nowait())
-                if time.monotonic() + interval > deadline:
-                    break
-                await asyncio.sleep(interval)
+                for it in items:
+                    cat, rumor, skip = nba_classify.classify(it.title, it.summary)
+                    if not skip and (rumor or cat == "conflict"):
+                        it.data.update(category=cat, rumor=rumor)
+                        res = await self.prepare_news(client, it)
+                        if res:
+                            print("rumor:", await send_telegram(client, *res))
+                            return
 
 
 class GitHubAnnotations(logging.Handler):
@@ -794,9 +669,8 @@ class GitHubAnnotations(logging.Handler):
 
 
 def main() -> None:
-    logging.basicConfig(
-        level=LOG_LEVEL, format="%(asctime)s %(levelname)s %(message)s", datefmt="%H:%M:%S"
-    )
+    logging.basicConfig(level=LOG_LEVEL, format="%(asctime)s %(levelname)s %(message)s", datefmt="%H:%M:%S")
+    logging.getLogger("httpx").setLevel(logging.WARNING)
     if os.environ.get("GITHUB_ACTIONS"):
         h = GitHubAnnotations(level=logging.WARNING)
         h.setFormatter(logging.Formatter("%(message)s"))
@@ -812,37 +686,25 @@ def main() -> None:
 
 
 def _main() -> None:
-    import sys
     with open(SOURCES_FILE, encoding="utf-8") as f:
         sources = yaml.safe_load(f)["sources"]
     if "--check" in sys.argv:
         asyncio.run(Bot(sources).check())
         return
     if not BOT_TOKEN or not CHANNEL_ID or "..." in BOT_TOKEN:
-        raise SystemExit("Заполните TELEGRAM_BOT_TOKEN и TELEGRAM_CHANNEL_ID в файле .env")
-    if "--test" in sys.argv:  # тестовое сообщение в канал
+        raise SystemExit("Заполните TELEGRAM_BOT_TOKEN и TELEGRAM_CHANNEL_ID")
+    if "--test" in sys.argv:
         async def _test():
             async with Bot.http_client() as client:
-                ok = await send_telegram(client, "✅ Бот новостей NBA и G League подключён к каналу.")
-                print("Тестовое сообщение отправлено" if ok else "Не удалось отправить — см. ошибку выше")
-                if not ok:
+                if not await send_telegram(client, "✅ Бот новостей NBA и G League подключён к каналу."):
                     raise SystemExit(1)
         asyncio.run(_test())
         return
-    if "--translate-test" in sys.argv:  # диагностика переводчиков, в канал ничего не идёт
-        sample = "LeBron James had a strong first half in his preseason debut with the 76ers."
-        for fn in TRANSLATORS:
-            try:
-                log.warning("%s OK: %s", fn.__name__, fn(sample))
-            except Exception as exc:
-                log.warning("%s FAIL: %r", fn.__name__, exc)
+    if "--demo" in sys.argv:
+        asyncio.run(Bot(sources).demo())
         return
-    if "--post-latest" in sys.argv:
-        asyncio.run(Bot(sources).post_latest())
-        return
-    if "--minutes" in sys.argv:  # режим GitHub Actions
-        minutes = float(sys.argv[sys.argv.index("--minutes") + 1])
-        asyncio.run(Bot(sources).run_for(minutes))
+    if "--minutes" in sys.argv:
+        asyncio.run(Bot(sources).run_for(float(sys.argv[sys.argv.index("--minutes") + 1])))
         return
     asyncio.run(Bot(sources).run())
 

@@ -1,41 +1,44 @@
 name: NBA news to Telegram
 
+# Бот работает почти круглосуточно: один запуск длится ~5,5 часа (опрос раз в минуту),
+# в конце сам запускает следующий. Расписание раз в час — подстраховка, если цепочка оборвалась.
 on:
   schedule:
-    - cron: "*/10 * * * *"   # каждые 10 минут запускается сеанс на ~9 минут
-  workflow_dispatch:          # кнопка «Run workflow» для ручного запуска
+    - cron: "17 * * * *"
+  workflow_dispatch:
     inputs:
-      test:
-        description: "Только отправить тестовое сообщение в канал"
-        type: boolean
-        default: false
-  push:                       # изменение этого файла: "test" = тестовое сообщение, "latest" = свежая новость
+      mode:
+        description: "run — обычная работа; demo — примеры постов в канал; test — тестовое сообщение; check — проверка источников"
+        default: run
+  push:                       # служебный запуск: режим берётся из файла .github/test-request
     paths: [".github/test-request"]
 
-# не запускать два сеанса одновременно: следующий ждёт окончания предыдущего
 concurrency:
-  group: nba-news
+  group: ${{ (github.event_name == 'push' || (inputs.mode != '' && inputs.mode != 'run')) && 'nba-service' || 'nba-main' }}
   cancel-in-progress: false
 
 permissions:
-  contents: write   # чтобы сохранять data/seen.db (какие новости уже опубликованы)
-  models: read      # бесплатные нейросети GitHub Models для перевода
-  actions: write    # чтобы бот сам перезапускал себя для круглосуточной работы
+  contents: write   # служебные отчёты (debug/)
+  actions: write    # бот сам запускает следующую смену
+
+env:
+  MAIN: ${{ github.event_name != 'push' && (inputs.mode == '' || inputs.mode == 'run') }}
 
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 358
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
       TRANSLATE_TO: ru
-      SHOW_ORIGINAL: "0"
       POST_ON_FIRST_RUN: "0"
-      # необязательные ключи переводчиков (лучше качество и без лимитов бесплатного режима)
-      DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+      # ключи переводчиков: GEMINI_API_KEY — лучший вариант (бесплатно на aistudio.google.com)
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
       MYMEMORY_EMAIL: ${{ secrets.MYMEMORY_EMAIL }}
     steps:
       - uses: actions/checkout@v4
@@ -47,29 +50,71 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Test message
-        if: ${{ inputs.test || github.event_name == 'push' }}
-        run: |
-          MODE=--test
-          grep -qi latest .github/test-request && MODE=--post-latest
-          grep -qi translate .github/test-request && MODE=--translate-test
-          if grep -qi probe .github/test-request; then
-            PROBE_ONLY="$(sed -n 2p .github/test-request)" python tools/probe.py
-            git config user.name "nba-news-bot"; git config user.email "nba-news-bot@users.noreply.github.com"
-            git add -f debug && git commit -qm "debug: probe" && git pull -q --rebase -X theirs origin main && git push -q
-            exit 0
-          fi
-          python bot.py $MODE
+      - name: Restore state
+        uses: actions/cache/restore@v4
+        with:
+          path: data
+          key: nba-state-${{ github.run_id }}
+          restore-keys: nba-state-
 
-      - name: Poll sources and post news
-        if: ${{ !inputs.test && github.event_name != 'push' }}
-        # опрос всех источников раз в минуту в течение 9 минут
-        run: python bot.py --minutes 9
-
-      - name: Save state
-        if: ${{ always() && !inputs.test }}
+      - name: Service mode
+        if: env.MAIN != 'true'
         run: |
-          git config user.name "nba-news-bot"
-          git config user.email "nba-news-bot@users.noreply.github.com"
-          git add data/seen.db
-          git diff --cached --quiet || (git commit -m "state: update seen news" && git pull --rebase -X theirs origin main && git push)
+          MODE="${{ inputs.mode }}"
+          [ -z "$MODE" ] && MODE=$(head -1 .github/test-request | awk '{print $1}')
+          case "$MODE" in
+            demo)  python bot.py --demo ;;
+            check) python bot.py --check ;;
+            probe)
+              PROBE_ONLY="$(sed -n 2p .github/test-request)" python tools/probe.py
+              git config user.name "nba-news-bot"; git config user.email "nba-news-bot@users.noreply.github.com"
+              git add -f debug && git commit -qm "debug: probe" && git pull -q --rebase origin main && git push -q ;;
+            *)     python bot.py --test ;;
+          esac
+
+      # пять смен по 65 минут; после каждой состояние сохраняется (на случай сбоя)
+      - name: Watch news (1/5)
+        if: env.MAIN == 'true'
+        run: python bot.py --minutes 65 || true
+      - name: Save state (1/5)
+        if: env.MAIN == 'true' && always()
+        uses: actions/cache/save@v4
+        with: { path: data, key: "nba-state-${{ github.run_id }}-${{ github.run_attempt }}-1" }
+
+      - name: Watch news (2/5)
+        if: env.MAIN == 'true'
+        run: python bot.py --minutes 65 || true
+      - name: Save state (2/5)
+        if: env.MAIN == 'true' && always()
+        uses: actions/cache/save@v4
+        with: { path: data, key: "nba-state-${{ github.run_id }}-${{ github.run_attempt }}-2" }
+
+      - name: Watch news (3/5)
+        if: env.MAIN == 'true'
+        run: python bot.py --minutes 65 || true
+      - name: Save state (3/5)
+        if: env.MAIN == 'true' && always()
+        uses: actions/cache/save@v4
+        with: { path: data, key: "nba-state-${{ github.run_id }}-${{ github.run_attempt }}-3" }
+
+      - name: Watch news (4/5)
+        if: env.MAIN == 'true'
+        run: python bot.py --minutes 65 || true
+      - name: Save state (4/5)
+        if: env.MAIN == 'true' && always()
+        uses: actions/cache/save@v4
+        with: { path: data, key: "nba-state-${{ github.run_id }}-${{ github.run_attempt }}-4" }
+
+      - name: Watch news (5/5)
+        if: env.MAIN == 'true'
+        run: python bot.py --minutes 60 || true
+      - name: Save state (5/5)
+        if: env.MAIN == 'true' && always()
+        uses: actions/cache/save@v4
+        with: { path: data, key: "nba-state-${{ github.run_id }}-${{ github.run_attempt }}-5" }
+
+      - name: Start next shift
+        if: env.MAIN == 'true' && !cancelled()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run news.yml --ref "${{ github.ref_name }}" -f mode=run

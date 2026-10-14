@@ -1,132 +1,42 @@
 {
- "hoopshype_rumors": {
-  "status": 404,
-  "len": 21186,
-  "titles": []
- },
- "hoopshype_all": {
-  "status": 404,
-  "len": 109615,
-  "titles": [
-   "Page Not Found (404) | HoopsHype"
-  ]
- },
- "realgm_wiretap": {
-  "status": 200,
-  "len": 47778,
-  "titles": [
-   "RealGM Basketball Wiretap",
-   "Payton Pritchard, Celtics Agree To Two-Year, $44.2M Extension",
-   "Giannis Antetokounmpo Now Eligible For Extension, Waiting Until January Adds $82M",
-   "Dream To Host WNBA Finals Games 3 And 4 At State Farm Arena",
-   "Optimizing NBA Betting Strategy With BetQL&apos;s Predictive Analytics",
-   "Brad Jones Hired As General Manager Of 76ers&apos; G League Team",
-   "Dylan Cardwell Out At Least 2 Weeks With Calf Injury",
-   "Raptors Waive Chucky Hepburn From Two-Way Deal; Sign Jamarion Sharp To Camp Contract"
-  ]
- },
- "reddit_nba_new": {
-  "status": 403,
-  "len": 189906,
-  "titles": []
- },
- "rotowire_nba": {
-  "status": 200,
-  "len": 3311,
-  "titles": [
-   "RotoWire.com Latest NBA News",
-   "RotoWire.com Fantasy Sports",
-   "Deni Avdija: Efficient in limited run",
-   "Yaxel Lendeborg: Solid showing despite ankle scare",
-   "Austin Reaves: Pours in 28 points",
-   "Tyrese Haliburton: Plays well against Thunder",
-   "Jared McCain: Strikes for 20 points Tuesday"
-  ]
- },
- "yahoo_nba": {
-  "status": 200,
-  "len": 375677,
-  "titles": [
-   "",
-   "NBA Cup 2026: League releases all 30 new team court designs for midseason tournament",
-   "Payton Pritchard’s big contract is years in the making",
-   "Which Dallas Mavericks player has surprised you so far?",
-   "MMBets: The Houston Rockets need to make a decision",
-   "Can Adem Bona make the most of increased opportunity with the Sixers?",
-   "2026-27 NBA Championship predictions roundtable: Can Knicks repeat? Is this Wemby and the Spurs’ year?",
-   "Top 5 Iowa Wolves of All-Time"
-  ]
- },
- "nbcs_pbt": {
-  "status": 404,
-  "len": 478356,
-  "titles": [
-   "Page Not Found - NBC Sports"
-  ]
- },
- "bleacher_nba": {
-  "status": 404,
-  "len": 556222,
-  "titles": [
-   "Bleacher Report | Sports. Highlights. News. Now."
-  ]
- },
- "sportsnet_nba": {
-  "status": 200,
-  "len": 165396,
-  "titles": [
-   "Sportsnet.ca",
-   "NBA Featured",
-   "Best moments from Kawhi Leonard&#8217;s pre-season debut",
-   "Raptors&#8217; Kawhi Leonard makes worthwhile pre-season debut",
-   "Karl-Anthony Towns &#8216;very disappointed&#8217; in Knicks&#8217; decision to table talks",
-   "Biggest takeaways from Leonard&#8217;s debut, Raptors&#8217; dominant pre-season win",
-   "NBA Featured 2 Items",
-   "How rookie Allen Graves fits in as Raptors&#8217; contention window opens"
-  ]
- },
- "fadeaway": {
-  "status": 200,
-  "len": 93959,
-  "titles": [
-   "Fadeaway World",
-   "Fadeaway World",
-   "Nick Young Accuses NBA Of Burying Footage Of His Dunk On LeBron James",
-   "DeMarcus Cousins Claims No White Player In NBA History Has Had Cooper Flagg&#8217;s Skill Set",
-   "Michael Carter-Williams Names His Lineup Of Former NBA Teammates",
-   "How Rob Dillingham Went From No. 8 Pick To Out Of The NBA",
-   "Nick Young Says Today&#8217;s NBA Stars Could Score 50 Points On Michael Jordan",
-   "NBA Insider Predicts Rudy Gobert Will 100% Get Traded This Season"
-  ]
- },
- "espn_injuries": {
-  "status": 200,
-  "len": 1532932,
-  "titles": []
- },
- "espn_news_api": {
-  "status": 200,
-  "len": 257040,
-  "titles": []
- },
  "espn_scoreboard": {
   "status": 200,
   "len": 94071,
   "titles": []
  },
  "espn_summary": {
-  "error": "JSONDecodeError('Expecting value: line 1 column 60001 (char 60000)')"
+  "status": 200,
+  "event": "401898403",
+  "len": 463399
  },
  "ghmodels:openai/gpt-4.1": {
-  "error": "TypeError(\"string indices must be integers, not 'str'\")"
+  "status": 200,
+  "out": "OK\r\n",
+  "limits": {}
  },
  "ghmodels:openai/gpt-4.1-mini": {
-  "error": "TypeError(\"string indices must be integers, not 'str'\")"
+  "status": 200,
+  "out": "OK\r\n",
+  "limits": {}
  },
  "ghmodels:openai/gpt-4o-mini": {
-  "error": "TypeError(\"string indices must be integers, not 'str'\")"
+  "status": 200,
+  "out": "OK\r\n",
+  "limits": {}
  },
  "ghmodels:openai/gpt-4o": {
-  "error": "TypeError(\"string indices must be integers, not 'str'\")"
+  "status": 200,
+  "out": "OK\r\n",
+  "limits": {}
+ },
+ "ghmodels:deepseek/deepseek-v3-0324": {
+  "status": 200,
+  "out": "OK\r\n",
+  "limits": {}
+ },
+ "ghmodels:meta/llama-4-maverick-17b-128e-instruct-fp8": {
+  "status": 200,
+  "out": "OK\r\n",
+  "limits": {}
  }
 }

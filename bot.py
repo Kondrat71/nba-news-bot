@@ -54,6 +54,8 @@ TOP_SALARY = float(os.environ.get("TOP_SALARY", "30000000"))       # звезд�
 SIGNIFICANT_SALARY = float(os.environ.get("SIGNIFICANT_SALARY", "3000000"))  # игрок ротации / 1-й раунд
 ESPN = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba"
 GTD_STATUSES = {"day-to-day", "questionable", "doubtful", "probable"}
+MAX_INJURY_EVENTS = int(os.environ.get("MAX_INJURY_EVENTS", "12"))   # больше за минуту — считаем сбоем
+INJURY_COOLDOWN_H = float(os.environ.get("INJURY_COOLDOWN_H", "6"))
 
 USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
               "(KHTML, like Gecko) Chrome/129.0 Safari/537.36")
@@ -486,13 +488,28 @@ class Bot:
         if prev is None:
             log.info("injuries: primed with %d players", len(cur))
             return []
+        events = nba_injuries.diff(prev, cur)
+        if len(events) > MAX_INJURY_EVENTS:
+            # массовое изменение списка (сбой источника или новый формат данных) — не спамим
+            log.warning("injuries: %d changes at once, saved silently", len(events))
+            return []
+        recent = self.store.get("injury_posted") or {}
+        now = time.time()
+        recent = {k: v for k, v in recent.items() if now - v < 86400}
         items = []
-        for ev in nba_injuries.diff(prev, cur):
+        for ev in events:
             if ev["kind"] == "change" and not POST_INJURY_CHANGES:
                 continue
+            # не чаще одного поста об игроке за INJURY_COOLDOWN_H часов (кроме «не сыграет»/возвращения)
+            last = recent.get(ev["pid"], 0)
+            urgent = ev["kind"] == "return" or (ev.get("status", "").lower() == "out" and ev["kind"] == "change")
+            if not urgent and now - last < INJURY_COOLDOWN_H * 3600:
+                continue
+            recent[ev["pid"]] = now
             uid = f"inj:{ev['pid']}:{ev['kind']}:{ev.get('status')}:{ev.get('type')}:{ev.get('date', '')[:10]}"
             items.append(Item(src["name"], "NBA", f"{ev['name']} {ev['kind']}", ev.get("url", ""),
                               uid=uid, kind="injury", priority=0, data=ev))
+        self.store.put("injury_posted", recent)
         return items
 
     def is_duplicate(self, item: Item) -> bool:
@@ -791,6 +808,27 @@ class Bot:
         print("\n".join(lines))
         log.warning("CHECK\n" + "\n".join(lines))
 
+    def report(self) -> None:
+        """Что и сколько бот опубликовал (по сохранённому состоянию)."""
+        now = time.time()
+        lines = []
+        for label, hours in (("24 ч", 24), ("7 дней", 168)):
+            rows = self.store.db.execute(
+                "SELECT source, substr(key,1,instr(key,':')), count(*) FROM seen WHERE posted=1 AND ts>? "
+                "GROUP BY 1,2 ORDER BY 3 DESC", (now - hours * 3600,)).fetchall()
+            lines.append(f"За {label}: " + ", ".join(f"{src}/{pref or 'news'} {n}" for src, pref, n in rows))
+        # по дням и часам для травм
+        rows = self.store.db.execute(
+            "SELECT strftime('%m-%d %H', ts, 'unixepoch'), count(*) FROM seen WHERE posted=1 AND key LIKE 'inj:%' "
+            "AND ts>? GROUP BY 1 ORDER BY 2 DESC LIMIT 8", (now - 168 * 3600,)).fetchall()
+        lines.append("Пики постов о травмах (UTC, час): " + ", ".join(f"{h}ч={n}" for h, n in rows))
+        last = self.store.db.execute(
+            "SELECT strftime('%m-%d %H:%M', ts, 'unixepoch'), source, key, title FROM seen WHERE posted=1 "
+            "ORDER BY ts DESC LIMIT 25").fetchall()
+        lines += [f"{t} {src} {k[:60]} {ti[:50]}" for t, src, k, ti in last]
+        print("\n".join(lines))
+        log.warning("REPORT\n" + "\n".join(lines))
+
     async def demo(self) -> None:
         """Опубликовать по одному примеру: итог матча, травма, слух/конфликт."""
         async with self.http_client() as client:
@@ -884,6 +922,9 @@ def _main() -> None:
         sources = yaml.safe_load(f)["sources"]
     if "--check" in sys.argv:
         asyncio.run(Bot(sources).check())
+        return
+    if "--report" in sys.argv:
+        Bot(sources).report()
         return
     if not BOT_TOKEN or not CHANNEL_ID or "..." in BOT_TOKEN:
         raise SystemExit("Заполните TELEGRAM_BOT_TOKEN и TELEGRAM_CHANNEL_ID")

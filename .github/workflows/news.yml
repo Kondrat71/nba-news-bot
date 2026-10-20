@@ -72,6 +72,7 @@ jobs:
                           -q '.[] | select(.event != "push") | .databaseId'); do gh run cancel "$id"; done
               gh workflow run news.yml --ref "${{ github.ref_name }}" -f mode=run ;;
             check) python bot.py --check ;;
+            report) python bot.py --report ;;
             probe)
               PROBE_ONLY="$(sed -n 2p .github/test-request)" python tools/probe.py
               git config user.name "nba-news-bot"; git config user.email "nba-news-bot@users.noreply.github.com"

@@ -82,6 +82,17 @@ def parse_injuries(data: dict) -> dict[str, dict]:
     return out
 
 
+def _changed(old: dict, new: dict) -> bool:
+    """Значимое изменение: статус, место травмы или флаг GTD. Поля, которых не было
+    в старой записи (после обновления бота), не считаются изменением."""
+    for k in ("status", "type", "gtd"):
+        if k not in old:
+            continue
+        if bool(old[k]) != bool(new.get(k)) if k == "gtd" else (old[k] or "") != (new.get(k) or ""):
+            return True
+    return False
+
+
 def diff(prev: dict[str, dict], cur: dict[str, dict]) -> list[dict]:
     """Новые травмы, смена статуса, возвращения."""
     events = []
@@ -89,8 +100,7 @@ def diff(prev: dict[str, dict], cur: dict[str, dict]) -> list[dict]:
         old = prev.get(pid)
         if old is None:
             events.append({"kind": "new", **inj})
-        elif (old.get("status") != inj.get("status") or old.get("type") != inj.get("type")
-              or bool(old.get("gtd")) != bool(inj.get("gtd"))):
+        elif _changed(old, inj):
             events.append({"kind": "change", "old_status": old.get("status", ""), **inj})
     removed = [p for p in prev if p not in cur]
     if len(removed) <= 25:  # массовое «исчезновение» — сбой источника, а не 25 выздоровевших

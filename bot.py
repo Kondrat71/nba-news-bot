@@ -496,13 +496,14 @@ class Bot:
         recent = self.store.get("injury_posted") or {}
         now = time.time()
         recent = {k: v for k, v in recent.items() if now - v < 86400}
+        sal = await self.salaries(client)
         items = []
         for ev in events:
-            if ev["kind"] == "change" and not POST_INJURY_CHANGES:
+            if not self.injury_worth_posting(ev, prev.get(ev["pid"], {}), sal):
                 continue
-            # не чаще одного поста об игроке за INJURY_COOLDOWN_H часов (кроме «не сыграет»/возвращения)
+            # не чаще одного поста об игроке за INJURY_COOLDOWN_H часов (кроме «не сыграет»)
             last = recent.get(ev["pid"], 0)
-            urgent = ev["kind"] == "return" or (ev.get("status", "").lower() == "out" and ev["kind"] == "change")
+            urgent = ev["kind"] == "change" and ev.get("status", "").lower() == "out"
             if not urgent and now - last < INJURY_COOLDOWN_H * 3600:
                 continue
             recent[ev["pid"]] = now
@@ -511,6 +512,24 @@ class Bot:
                               uid=uid, kind="injury", priority=0, data=ev))
         self.store.put("injury_posted", recent)
         return items
+
+    @staticmethod
+    def injury_worth_posting(ev: dict, old: dict, sal: dict) -> bool:
+        """Отсекаем «дрожание» списка травм: только значимые игроки и реальные изменения статуса."""
+        money = sal.get(ev["name"].lower(), 0.0)
+        if money < SIGNIFICANT_SALARY:
+            return False
+        top = money >= TOP_SALARY
+        status = (ev.get("status") or "").lower()
+        out_like = status in ("out", "doubtful", "out for season", "suspension")
+        if ev["kind"] == "new":
+            return out_like or top
+        if ev["kind"] == "return":
+            return (old.get("status") or "").lower() in ("out", "out for season", "doubtful")
+        # change: важен только сам статус; флаг GTD — только у звёзд
+        if (old.get("status") or "").lower() != status:
+            return True
+        return top and bool(ev.get("gtd")) and not old.get("gtd")
 
     def is_duplicate(self, item: Item) -> bool:
         if item.kind != "news":
@@ -597,8 +616,10 @@ class Bot:
     async def prepare_gtd(self, client, item: Item):
         """Матч идёт: кто из игроков «под вопросом» вышел на площадку, а кто нет."""
         inj = self.store.get("injuries") or {}
+        sal = await self.salaries(client)
         doubtful = [v for v in inj.values() if v.get("team_abbr") in item.data["teams"]
-                    and (v.get("gtd") or v.get("status", "").lower() in GTD_STATUSES)]
+                    and (v.get("gtd") or v.get("status", "").lower() in GTD_STATUSES)
+                    and sal.get(v["name"].lower(), 0.0) >= SIGNIFICANT_SALARY]
         if not doubtful:
             return None
         status, text, _ = await self.get(client, f"{ESPN}/summary?event={item.data['event']}")

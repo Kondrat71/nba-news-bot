@@ -138,7 +138,9 @@ def _last_game(gamelog: dict) -> str:
              f"{s.get('steals', 0)} STL · {s.get('blocks', 0)} BLK · {s.get('turnovers', 0)} TOV")
     line2 = (f"FG% {s.get('fieldGoalPct', '—')} ({(s.get('fieldGoalsMade-fieldGoalsAttempted') or '').replace('-', '/')})"
              f" · 3PM {made(s.get('threePointFieldGoalsMade-threePointFieldGoalsAttempted'))}"
-             f" · FT% {s.get('freeThrowPct', '—')} · {s.get('minutes', '?')} мин.")
+             + (f" · FT% {s.get('freeThrowPct')} ({s['freeThrowsMade-freeThrowsAttempted'].replace('-', '/')})"
+                if s.get("freeThrowsMade-freeThrowsAttempted", "0-0") != "0-0" else " · FT —")
+             + f" · {s.get('minutes', '?')} мин.")
     return (f"🕐 <b>Последний матч</b> {d} {ev.get('atVs', '')} {opp}, {res} {ev.get('score', '')}{pre}\n"
             f"   {html.escape(line1)}\n   {html.escape(line2)}")
 

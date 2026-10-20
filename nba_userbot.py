@@ -35,6 +35,24 @@ HELP = (
 ).format(max=MAX_PLAYERS)
 
 
+TEAM_BADGE = {
+    "ATL": "🦅", "BOS": "☘️", "BKN": "🕸️", "CHA": "🐝", "CHI": "🐂", "CLE": "⚔️", "DAL": "🐴",
+    "DEN": "⛏️", "DET": "⚙️", "GS": "🌉", "GSW": "🌉", "HOU": "🚀", "IND": "🏎️", "LAC": "⛵",
+    "LAL": "💜", "MEM": "🐻", "MIA": "🔥", "MIL": "🦌", "MIN": "🐺", "NO": "⚜️", "NOP": "⚜️",
+    "NY": "🗽", "NYK": "🗽", "OKC": "⚡", "ORL": "🪄", "PHI": "🔔", "PHX": "☀️", "POR": "🌲",
+    "SAC": "👑", "SA": "🤠", "SAS": "🤠", "TOR": "🦖", "UTAH": "🎷", "UTA": "🎷", "WSH": "🧙", "WAS": "🧙",
+}
+
+
+def badge(team: str) -> str:
+    return TEAM_BADGE.get((team or "").upper(), "🏀")
+
+
+def who(p: dict) -> str:
+    """'☘️ Paul George (BOS)'"""
+    return f"{badge(p.get('team', ''))} {p.get('name', '')} ({p.get('team', '')})"
+
+
 def menu() -> dict:
     return {"inline_keyboard": [
         [{"text": "📊 Статистика", "callback_data": "stats"}, {"text": "📋 Мой список", "callback_data": "list"}],
@@ -258,7 +276,7 @@ def _last_game_date(gamelog: dict) -> str:
 
 
 def player_block(p: dict, stats: dict, gamelog: dict, overview: dict, inj: dict | None, describe) -> str:
-    head = f"🏀 <b>{html.escape(p['name'])}</b> · {html.escape(p.get('team', ''))}"
+    head = f"{badge(p.get('team', ''))} <b>{html.escape(p['name'])}</b> · {html.escape(p.get('team', ''))}"
     if p.get("pos"):
         head += f" · {p['pos']}"
     lines = [head, _status(inj, describe)]
@@ -398,12 +416,12 @@ class UserBot:
                 full.append(p["name"])
             else:
                 ids.append(p["id"])
-                added.append(f"{p['name']} ({p.get('team', '')})")
+                added.append(who(p))
         self.set_list(uid, ids)
         e = html.escape
         lines = []
         if added:
-            lines.append(f"✅ <b>Добавлено ({len(added)}):</b>\n" + "\n".join(f"• {e(a)}" for a in added))
+            lines.append(f"✅ <b>Добавлено ({len(added)}):</b>\n" + "\n".join(e(a) for a in added))
         if already:
             lines.append("Уже были в списке: " + e(", ".join(already)))
         if full:
@@ -415,7 +433,7 @@ class UserBot:
         if unsure and len(ids) < MAX_PLAYERS:
             lines.append("🤔 Уточните, кого добавить:")
             for q, opts in unsure[:5]:
-                buttons += [[{"text": f"{q} → {p['name']} ({p.get('team', '')})", "callback_data": f"add:{p['id']}"}]
+                buttons += [[{"text": f"{q} → {who(p)}", "callback_data": f"add:{p['id']}"}]
                             for _, p in opts[:3]]
         buttons += menu()["inline_keyboard"]
         await self.send(client, uid, "\n\n".join(lines), {"inline_keyboard": buttons})
@@ -428,8 +446,7 @@ class UserBot:
         best, second = found[0], (found[1] if len(found) > 1 else None)
         if best[0] >= 85 and (second is None or best[0] - second[0] >= 8):
             return await self.add(client, uid, best[1])
-        buttons = [[{"text": f"{p['name']} ({p.get('team', '')})", "callback_data": f"add:{p['id']}"}]
-                   for _, p in found]
+        buttons = [[{"text": who(p), "callback_data": f"add:{p['id']}"}] for _, p in found]
         await self.send(client, uid, "Кого добавить?", {"inline_keyboard": buttons})
 
     async def add(self, client, uid: int, p: dict) -> None:
@@ -441,7 +458,7 @@ class UserBot:
                                    "через «📋 Мой список».", menu())
         ids.append(p["id"])
         self.set_list(uid, ids)
-        await self.send(client, uid, f"✅ <b>{html.escape(p['name'])}</b> ({p.get('team', '')}) добавлен. "
+        await self.send(client, uid, f"✅ {badge(p.get('team', ''))} <b>{html.escape(p['name'])}</b> ({p.get('team', '')}) добавлен. "
                         f"Игроков в списке: {len(ids)}.\nНапишите ещё имя или нажмите «📊 Статистика».", menu())
 
     async def on_action(self, client, uid: int, data: str) -> None:
@@ -459,10 +476,9 @@ class UserBot:
         if data == "list":
             if not ids:
                 return await self.send(client, uid, "Список пуст. Напишите имя игрока, чтобы добавить.", menu())
-            rows = [[{"text": f"❌ {players.get(i, {}).get('name', i)}", "callback_data": f"del:{i}"}] for i in ids]
+            rows = [[{"text": f"❌ {who(players.get(i, {'name': i}))}", "callback_data": f"del:{i}"}] for i in ids]
             rows.append([{"text": "📊 Статистика", "callback_data": "stats"}])
-            names = "\n".join(f"• {html.escape(players.get(i, {}).get('name', i))} "
-                              f"({players.get(i, {}).get('team', '')})" for i in ids)
+            names = "\n".join(html.escape(who(players.get(i, {"name": i}))) for i in ids)
             return await self.send(client, uid, f"📋 <b>Ваши игроки</b>\n{names}\n\nНажмите на игрока, чтобы удалить.",
                                    {"inline_keyboard": rows})
         if data == "stats":

@@ -39,6 +39,10 @@ FEEDS = {
     "espn_transactions": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/transactions",
     "espn_roster": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/den/roster",
     "espn_models_list": "https://generativelanguage.googleapis.com/v1beta/models?key=" + os.environ.get("GEMINI_API_KEY", ""),
+    "ath_overview": "https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/athletes/3112335/overview",
+    "ath_gamelog": "https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/athletes/3112335/gamelog",
+    "ath_stats": "https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/athletes/3112335/stats",
+    "ath_core": "https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/seasons/2027/types/2/athletes/3112335/statistics",
     "espn_scoreboard": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261013",
 }
 

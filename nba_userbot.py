@@ -154,13 +154,90 @@ def _last_game(gamelog: dict) -> str:
             f"   {html.escape(line1)}\n   {html.escape(line2)}")
 
 
-def _next_game(overview: dict, team_abbr: str) -> str:
+def _next_game(overview: dict, after_iso: str = "") -> str:
+    """Следующий матч; если ESPN ещё не обновил расписание и это уже сыгранная игра — не показываем."""
     try:
         ev = overview["nextGame"]["league"]["events"][0]
-        d = datetime.fromisoformat(ev["date"].replace("Z", "+00:00")).astimezone(MSK)
-        return f"📅 <b>Следующий матч</b> {d:%d.%m %H:%M} МСК · {html.escape(ev.get('shortName', ''))}"
+        d = datetime.fromisoformat(ev["date"].replace("Z", "+00:00"))
+        if after_iso:
+            last = datetime.fromisoformat(after_iso.replace("Z", "+00:00"))
+            if d <= last + timedelta(hours=3):
+                return ""
+        if d < datetime.now(timezone.utc) - timedelta(hours=3):
+            return ""
+        return f"📅 <b>Следующий матч</b> {d.astimezone(MSK):%d.%m %H:%M} МСК · {html.escape(ev.get('shortName', ''))}"
     except Exception:
         return ""
+
+
+def _season_from_gamelog(gamelog: dict) -> tuple[str, list, int] | None:
+    """Итоги текущего регулярного сезона, посчитанные по журналу матчей (обновляется сразу после игры)."""
+    names = gamelog.get("names", [])
+    games = []
+    label = ""
+    for st in gamelog.get("seasonTypes", []):
+        dn = st.get("displayName", "")
+        if "regular season" not in dn.lower():
+            continue
+        label = dn.replace(" Regular Season", "")
+        for cat in st.get("categories", []):
+            for e in cat.get("events", []):
+                games.append(dict(zip(names, e.get("stats", []))))
+    if not games:
+        return None
+
+    def num(v):
+        try:
+            return float(v)
+        except (TypeError, ValueError):
+            return 0.0
+
+    def ma(key):
+        m = a = 0
+        for g in games:
+            try:
+                x, y = (int(v) for v in (g.get(key) or "0-0").split("-"))
+            except ValueError:
+                x = y = 0
+            m, a = m + x, a + y
+        return m, a
+    gp = len(games)
+    fg, ft, tp = ma("fieldGoalsMade-fieldGoalsAttempted"), ma("freeThrowsMade-freeThrowsAttempted"), \
+        ma("threePointFieldGoalsMade-threePointFieldGoalsAttempted")
+    tot = {k: sum(num(g.get(k)) for g in games)
+           for k in ("points", "totalRebounds", "assists", "steals", "blocks", "turnovers")}
+    pct = lambda m, a: f"{100 * m / a:.1f}%" if a else "—"
+    avg = lambda v: f"{v / gp:.1f}"
+    rows = [
+        ("", "Всего", "За игру"),
+        ("Игр", str(gp), ""),
+        ("PTS", f"{tot['points']:.0f}", avg(tot["points"])),
+        ("FG%", pct(*fg), f"{fg[0]}/{fg[1]}"),
+        ("FT%", pct(*ft), f"{ft[0]}/{ft[1]}"),
+        ("3PM", str(tp[0]), avg(tp[0])),
+        ("REB", f"{tot['totalRebounds']:.0f}", avg(tot["totalRebounds"])),
+        ("AST", f"{tot['assists']:.0f}", avg(tot["assists"])),
+        ("STL", f"{tot['steals']:.0f}", avg(tot["steals"])),
+        ("BLK", f"{tot['blocks']:.0f}", avg(tot["blocks"])),
+        ("TOV", f"{tot['turnovers']:.0f}", avg(tot["turnovers"])),
+    ]
+    return f"Сезон {label}", rows, gp
+
+
+def _prev_season_line(stats_json: dict) -> str:
+    """Короткая строка о прошлом сезоне — средние за игру."""
+    cats = {c.get("name"): c for c in stats_json.get("categories", [])}
+    avg = cats.get("averages")
+    if not avg or not avg.get("statistics"):
+        return ""
+    rows = [r for r in avg["statistics"] if r.get("season", {}).get("year") != CURRENT_SEASON]
+    if not rows:
+        return ""
+    r = rows[-1]
+    a = dict(zip(avg["names"], r["stats"]))
+    return (f"↩️ Прошлый сезон {r['season'].get('displayName', '')}, за игру: "
+            f"{a.get('avgPoints', '—')} PTS · {a.get('avgRebounds', '—')} REB · {a.get('avgAssists', '—')} AST · "
+            f"FG% {a.get('fieldGoalPct', '—')} · {a.get('gamesPlayed', '?')} игр")
 
 
 def _status(inj: dict | None, describe) -> str:
@@ -175,21 +252,45 @@ def _status(inj: dict | None, describe) -> str:
     return " · ".join(parts)
 
 
+def _last_game_date(gamelog: dict) -> str:
+    dates = [e.get("gameDate", "") for e in gamelog.get("events", {}).values()]
+    return max(dates) if dates else ""
+
+
 def player_block(p: dict, stats: dict, gamelog: dict, overview: dict, inj: dict | None, describe) -> str:
     head = f"🏀 <b>{html.escape(p['name'])}</b> · {html.escape(p.get('team', ''))}"
     if p.get("pos"):
         head += f" · {p['pos']}"
     lines = [head, _status(inj, describe)]
-    for extra in (_last_game(gamelog), _next_game(overview, p.get("team", ""))):
+    for extra in (_last_game(gamelog), _next_game(overview, _last_game_date(gamelog))):
         if extra:
             lines.append(extra)
-    season = _season_rows(stats)
-    if season:
-        label, rows = season
-        lines.append(f"📊 <b>{html.escape(label)}</b>\n" + _table(rows))
+    current = _season_from_gamelog(gamelog) if _gamelog_season(gamelog) == CURRENT_SEASON else None
+    if current:
+        label, rows, gp = current
+        lines.append(f"📊 <b>{html.escape(label)}</b> — регулярный сезон\n" + _table(rows))
+        prev = _prev_season_line(stats)
+        if prev:
+            lines.append(html.escape(prev))
     else:
-        lines.append("📊 Статистики регулярного сезона пока нет")
+        season = _season_rows(stats)
+        if season:
+            label, rows = season
+            lines.append("📊 В новом сезоне игр ещё не было.\n"
+                         f"<b>{html.escape(label.split(' (')[0])}</b> — итоги прошлого сезона\n" + _table(rows))
+        else:
+            lines.append("📊 Статистики регулярного сезона пока нет")
     return "\n".join(lines)
+
+
+def _gamelog_season(gamelog: dict) -> int:
+    for f in gamelog.get("filters", []):
+        if f.get("name") == "season":
+            try:
+                return int(f.get("value"))
+            except (TypeError, ValueError):
+                return 0
+    return 0
 
 
 # ---------------------------------------------------------------- бот
@@ -381,7 +482,7 @@ class UserBot:
     async def block(self, client, p: dict) -> str:
         pid = p["id"]
         hit = self.cache.get(pid)
-        if hit and time.time() - hit[0] < 600:
+        if hit and time.time() - hit[0] < 300:
             return hit[1]
 
         async def get_json(url):
@@ -409,6 +510,10 @@ class UserBot:
         for q in ("jokic", "LeBron James", "gilgeous", "wembanyama", "james"):
             found = search(players, q)
             out.append(f"поиск «{q}»: " + ", ".join(f"{p['name']} ({p['team']}) {sc:.0f}" for sc, p in found[:3]))
+        for q in ("Paul George",):
+            found = search(players, q)
+            if found:
+                out.append(await self.block(client, found[0][1]))
         bulk = ("9. Jalen Johnson     20. Kevin Durant   37. Derrick White   48. Pascal Siakam   65. Jarrett Allen   "
                 "76. Damian Lillard   93. Paul George   104. Jalen Suggs   121. Toumani Camara   132. P.J. Washington")
         for q in split_names(bulk):

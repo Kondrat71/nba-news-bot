@@ -56,6 +56,7 @@ ESPN = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba"
 GTD_STATUSES = {"day-to-day", "questionable", "doubtful", "probable"}
 MAX_INJURY_EVENTS = int(os.environ.get("MAX_INJURY_EVENTS", "12"))   # больше за минуту — считаем сбоем
 INJURY_COOLDOWN_H = float(os.environ.get("INJURY_COOLDOWN_H", "6"))
+USER_BOT = os.environ.get("USER_BOT", "1") == "1"   # личный кабинет подписчиков в чате с ботом
 
 USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
               "(KHTML, like Gecko) Chrome/129.0 Safari/537.36")
@@ -397,21 +398,48 @@ async def _tg_call(client: httpx.AsyncClient, method: str, **kwargs) -> bool:
     return False
 
 
+_BOT_USERNAME: str | None = None
+
+
+async def bot_username(client) -> str:
+    global _BOT_USERNAME
+    if _BOT_USERNAME is None:
+        try:
+            r = await client.get(f"https://api.telegram.org/bot{BOT_TOKEN}/getMe", timeout=20)
+            _BOT_USERNAME = r.json()["result"]["username"]
+        except Exception:
+            return ""
+    return _BOT_USERNAME
+
+
+async def stats_button(client) -> dict | None:
+    name = await bot_username(client)
+    if not name:
+        return None
+    return {"inline_keyboard": [[{"text": "📊 Статистика моих игроков", "url": f"https://t.me/{name}?start=stats"}]]}
+
+
 async def send_telegram(client: httpx.AsyncClient, text: str, photo_url: str = "",
-                        photo: bytes | None = None, fallback_photo: bytes | None = None) -> bool:
+                        photo: bytes | None = None, fallback_photo: bytes | None = None,
+                        markup: dict | None = None) -> bool:
     """Пост с картинкой. Если Telegram не принял картинку по ссылке — запасная карточка, потом текст."""
     data = {"chat_id": CHANNEL_ID, "caption": fit_caption(text), "parse_mode": "HTML"}
+    if markup:
+        data["reply_markup"] = markup
     if photo_url:
         if await _tg_call(client, "sendPhoto", json={**data, "photo": photo_url}):
             return True
         log.warning("photo by url failed (%s)", photo_url)
         photo = photo or fallback_photo
     if photo:
-        if await _tg_call(client, "sendPhoto", data=data, files={"photo": ("card.jpg", photo, "image/jpeg")}):
+        form = {k: (json.dumps(v) if isinstance(v, dict) else v) for k, v in data.items()}
+        if await _tg_call(client, "sendPhoto", data=form, files={"photo": ("card.jpg", photo, "image/jpeg")}):
             return True
-    return await _tg_call(client, "sendMessage", json={
-        "chat_id": CHANNEL_ID, "text": text, "parse_mode": "HTML",
-        "link_preview_options": {"is_disabled": False, "prefer_large_media": True}})
+    msg = {"chat_id": CHANNEL_ID, "text": text, "parse_mode": "HTML",
+           "link_preview_options": {"is_disabled": False, "prefer_large_media": True}}
+    if markup:
+        msg["reply_markup"] = markup
+    return await _tg_call(client, "sendMessage", json=msg)
 
 
 # ---------------------------------------------------------------- bot
@@ -582,23 +610,31 @@ class Bot:
     # ---- зарплаты игроков (значимость) по составам ESPN, обновляются раз в 12 часов
     async def salaries(self, client) -> dict[str, float]:
         cached = self.store.get("salaries") or {}
-        if cached.get("map") and time.time() - cached.get("ts", 0) < 12 * 3600:
+        if (cached.get("map") and time.time() - cached.get("ts", 0) < 12 * 3600
+                and self.store.get("players")):
             return cached["map"]
         sal: dict[str, float] = {}
+        players: dict[str, dict] = {}
         try:
             _, text, _ = await self.get(client, f"{ESPN}/teams")
-            teams = [t["team"]["id"] for t in json.loads(text)["sports"][0]["leagues"][0]["teams"]]
-            for tid in teams:
+            teams = [(t["team"]["id"], t["team"]["abbreviation"])
+                     for t in json.loads(text)["sports"][0]["leagues"][0]["teams"]]
+            for tid, abbr in teams:
                 status, text, _ = await self.get(client, f"{ESPN}/teams/{tid}/roster")
                 if status >= 400:
                     continue
                 for a in json.loads(text).get("athletes", []):
                     money = float((a.get("contract") or {}).get("salary") or 0)
                     sal[a.get("displayName", "").lower()] = money
+                    if a.get("id"):
+                        players[str(a["id"])] = {"id": str(a["id"]), "name": a.get("displayName", ""),
+                                                 "team": abbr, "salary": money,
+                                                 "pos": (a.get("position") or {}).get("abbreviation", "")}
         except Exception as exc:
             log.warning("salaries refresh failed: %r", exc)
         if len(sal) > 300:
             self.store.put("salaries", {"ts": time.time(), "map": sal})
+            self.store.put("players", players)
             log.info("salaries: %d players", len(sal))
             return sal
         return cached.get("map", {})
@@ -767,7 +803,8 @@ class Bot:
         except Exception as exc:
             log.warning("prepare failed for %s: %r", item.title, exc)
             return False
-        ok = await send_telegram(client, text, url, photo, fallback)
+        markup = await stats_button(client) if item.kind == "game" and USER_BOT else None
+        ok = await send_telegram(client, text, url, photo, fallback, markup)
         if ok:
             self.store.add(item, posted=True)
         log.info("%s [%s] %s", "posted" if ok else "FAILED", item.source, item.title)
@@ -787,13 +824,22 @@ class Bot:
     async def run_for(self, minutes: float, interval: int = 60) -> None:
         deadline = time.monotonic() + minutes * 60
         log.info("translation: %s", tr.status())
-        async with self.http_client() as client:
+        async with self.http_client() as client, self.http_client() as tg_client:
+            chat = None
+            if USER_BOT:
+                import nba_userbot
+                chat = asyncio.create_task(nba_userbot.UserBot(self, BOT_TOKEN).loop(tg_client, deadline))
             while True:
                 started = time.monotonic()
-                await self.cycle(client)
+                try:
+                    await self.cycle(client)
+                except Exception as exc:
+                    log.warning("cycle failed: %r", exc)
                 if time.monotonic() + interval > deadline:
                     break
                 await asyncio.sleep(max(5, interval - (time.monotonic() - started)))
+            if chat:
+                chat.cancel()
         self.store.cleanup()
 
     async def run(self) -> None:
@@ -955,6 +1001,33 @@ def _main() -> None:
                 if not await send_telegram(client, "✅ Бот новостей NBA и G League подключён к каналу."):
                     raise SystemExit(1)
         asyncio.run(_test())
+        return
+    if "--userbot-test" in sys.argv:
+        async def _ut():
+            import nba_userbot
+            async with Bot.http_client() as client:
+                b = Bot(sources)
+                log.warning("USERBOT\n" + await nba_userbot.UserBot(b, BOT_TOKEN).selftest(client))
+        asyncio.run(_ut())
+        return
+    if "--button" in sys.argv:  # пост в канале с кнопкой личной статистики (и попытка закрепить)
+        async def _button():
+            async with Bot.http_client() as client:
+                markup = await stats_button(client)
+                text = ("📊 <b>Статистика ваших игроков</b>\n\n"
+                        "Соберите свой список игроков НБА и получайте по кнопке: статус (травмы), "
+                        "последний матч, следующую игру и итоги сезона — PTS, FG%, FT%, 3PM, REB, AST, "
+                        "STL, BLK, TOV.\n\nНажмите кнопку ниже и напишите боту имя игрока.")
+                r = await client.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage", json={
+                    "chat_id": CHANNEL_ID, "text": text, "parse_mode": "HTML", "reply_markup": markup}, timeout=30)
+                res = r.json()
+                log.warning("button post: %s", str(res)[:200])
+                mid = (res.get("result") or {}).get("message_id")
+                if mid:
+                    p = await client.post(f"https://api.telegram.org/bot{BOT_TOKEN}/pinChatMessage", json={
+                        "chat_id": CHANNEL_ID, "message_id": mid, "disable_notification": True}, timeout=30)
+                    log.warning("pin: %s", p.text[:200])
+        asyncio.run(_button())
         return
     if "--demo" in sys.argv:
         asyncio.run(Bot(sources).demo())

@@ -76,7 +76,7 @@ jobs:
             probe)
               PROBE_ONLY="$(sed -n 2p .github/test-request)" python tools/probe.py
               git config user.name "nba-news-bot"; git config user.email "nba-news-bot@users.noreply.github.com"
-              git add -f debug && git commit -qm "debug: probe" && git pull -q --rebase origin main && git push -q ;;
+              git add -f debug && git commit -qm "debug: probe" && git pull -q --rebase --autostash origin main && git push -q ;;
             *)     python bot.py --test ;;
           esac
 

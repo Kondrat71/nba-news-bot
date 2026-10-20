@@ -54,7 +54,7 @@ for name, url in FEEDS.items():
         status, text = get(url)
         titles = re.findall(r"<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</title>", text, re.S)[:8]
         report[name] = {"status": status, "len": len(text), "titles": titles}
-        (OUT / f"{name}.txt").write_text(text if name == "espn_scoreboard" else text[:60000], encoding="utf-8")
+        (OUT / f"{name}.txt").write_text(text if name == "espn_scoreboard" or name.startswith("ath_") else text[:60000], encoding="utf-8")
     except Exception as exc:
         report[name] = {"error": repr(exc)[:300]}
 

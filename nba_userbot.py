@@ -26,7 +26,8 @@ MSK = timezone(timedelta(hours=3))
 HELP = (
     "🏀 <b>Статистика ваших игроков НБА</b>\n\n"
     "• Напишите имя игрока — например <code>Jokic</code> или <code>LeBron James</code>, — "
-    "и я добавлю его в ваш список (до {max} игроков).\n"
+    "и я добавлю его в ваш список (до {max} игроков). Можно сразу списком: каждый игрок с новой строки, "
+    "через запятую или с номерами (<code>9. Jalen Johnson 20. Kevin Durant</code>).\n"
     "• «📊 Статистика» — статус, последний матч, следующий матч и итоги сезона: "
     "PTS, FG%, FT%, 3PM, REB, AST, STL, BLK, TOV.\n"
     "• «📋 Мой список» — посмотреть и удалить игроков.\n\n"
@@ -44,6 +45,14 @@ def menu() -> dict:
 def _norm(s: str) -> str:
     s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
     return re.sub(r"[^a-z0-9 ]+", "", s.lower().replace("-", " ").replace(".", "")).strip()
+
+
+def split_names(text: str) -> list[str]:
+    """Список имён из сообщения: по строкам, через запятую/точку с запятой или с номерами «9. Name 20. Name»."""
+    text = re.sub(r"(?:^|\s)\d{1,3}[.)]\s*", "\n", text)       # номера «9.» / «20)» -> разрыв
+    parts = re.split(r"[\n,;•]+", text)
+    names = [re.sub(r"\s+", " ", p).strip(" -–—\t") for p in parts]
+    return [n for n in names if len(n) >= 3]
 
 
 def search(players: dict[str, dict], query: str, limit: int = 6) -> list[tuple[float, dict]]:
@@ -262,7 +271,53 @@ class UserBot:
             return await self.on_action(client, uid, "help")
         if text.startswith("/"):
             return await self.send(client, uid, HELP, menu())
+        names = split_names(text)
+        if len(names) > 1:
+            return await self.on_bulk(client, uid, names[:30])
         await self.on_search(client, uid, text[:60])
+
+    async def on_bulk(self, client, uid: int, names: list[str]) -> None:
+        """Добавить сразу несколько игроков."""
+        players = await self.players(client)
+        ids = self.get_list(uid)
+        added, already, missing, unsure, full = [], [], [], [], []
+        for q in names:
+            found = search(players, q)
+            if not found:
+                missing.append(q)
+                continue
+            best, second = found[0], (found[1] if len(found) > 1 else None)
+            if best[0] < 85 or (second and best[0] - second[0] < 8 and best[0] < 100):
+                unsure.append((q, found[:4]))
+                continue
+            p = best[1]
+            if p["id"] in ids:
+                already.append(p["name"])
+            elif len(ids) >= MAX_PLAYERS:
+                full.append(p["name"])
+            else:
+                ids.append(p["id"])
+                added.append(f"{p['name']} ({p.get('team', '')})")
+        self.set_list(uid, ids)
+        e = html.escape
+        lines = []
+        if added:
+            lines.append(f"✅ <b>Добавлено ({len(added)}):</b>\n" + "\n".join(f"• {e(a)}" for a in added))
+        if already:
+            lines.append("Уже были в списке: " + e(", ".join(already)))
+        if full:
+            lines.append(f"⚠️ Лимит {MAX_PLAYERS} игроков, не поместились: " + e(", ".join(full)))
+        if missing:
+            lines.append("❓ Не нашёл в составах НБА: " + e(", ".join(missing)))
+        lines.append(f"Игроков в списке: {len(ids)} из {MAX_PLAYERS}.")
+        buttons = []
+        if unsure and len(ids) < MAX_PLAYERS:
+            lines.append("🤔 Уточните, кого добавить:")
+            for q, opts in unsure[:5]:
+                buttons += [[{"text": f"{q} → {p['name']} ({p.get('team', '')})", "callback_data": f"add:{p['id']}"}]
+                            for _, p in opts[:3]]
+        buttons += menu()["inline_keyboard"]
+        await self.send(client, uid, "\n\n".join(lines), {"inline_keyboard": buttons})
 
     async def on_search(self, client, uid: int, query: str) -> None:
         found = search(await self.players(client), query)
@@ -354,10 +409,12 @@ class UserBot:
         for q in ("jokic", "LeBron James", "gilgeous", "wembanyama", "james"):
             found = search(players, q)
             out.append(f"поиск «{q}»: " + ", ".join(f"{p['name']} ({p['team']}) {sc:.0f}" for sc, p in found[:3]))
-        for q in ("jokic", "wembanyama"):
+        bulk = ("9. Jalen Johnson     20. Kevin Durant   37. Derrick White   48. Pascal Siakam   65. Jarrett Allen   "
+                "76. Damian Lillard   93. Paul George   104. Jalen Suggs   121. Toumani Camara   132. P.J. Washington")
+        for q in split_names(bulk):
             found = search(players, q)
-            if found:
-                out.append(await self.block(client, found[0][1]))
+            out.append(f"список: {q} -> " + (", ".join(f"{p['name']} ({p['team']}) {sc:.0f}" for sc, p in found[:2])
+                                              if found else "НЕ НАЙДЕН"))
         return "\n".join(out)
 
     # ---- цикл получения сообщений

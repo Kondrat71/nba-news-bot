@@ -19,7 +19,7 @@ from datetime import datetime, timedelta, timezone
 log = logging.getLogger("nba-bot")
 
 CORE = "https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/athletes"
-MAX_PLAYERS = 12
+MAX_PLAYERS = 14
 CURRENT_SEASON = 2027          # сезон 2026-27 у ESPN обозначается годом окончания
 MSK = timezone(timedelta(hours=3))
 
